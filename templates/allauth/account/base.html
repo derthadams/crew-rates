@@ -1,0 +1,15 @@
+{% extends 'rates/base_global.html' %}
+
+{% load static %}
+
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'rates/css/accounts.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="form-accounts">
+    {% block form-accounts %}
+    {% endblock %}
+    </div>
+{% endblock %}

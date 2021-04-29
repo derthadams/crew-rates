@@ -1,0 +1,28 @@
+{% extends "account/base.html" %}
+
+{% load static %}
+
+{% load i18n %}
+
+{% block title %}
+    <title>Signup</title>
+{% endblock %}
+
+
+{% block form-accounts %}
+
+    <div class="text-center mb-4">
+        <img src="{% static 'rates/img/crewrates_logo.png' %}" class="mb-3">
+        <h1>Sign up</h1>
+    </div>
+
+    <p>Thanks for accepting your invitation!</p>
+
+    <p>To start using crewrates.org, sign up with a social account:</p>
+
+
+    <div class="text-center">
+        {% include 'account/provider_list.html' with function="Sign up" %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "account/base.html" %}
+
+{% load static %}
+
+{% load i18n %}
+
+{% block title %}
+    <title>Sign in</title>
+{% endblock %}
+
+{% block form-accounts %}
+
+        <div class="text-center mb-4">
+            <img src="{% static 'rates/img/crewrates_logo.png' %}" class="mb-3">
+            <h1>Sign in</h1>
+        </div>
+
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+            <div class="alert alert-danger">
+            {% else %}
+            <div class="alert alert-success">
+            {% endif %}
+                <a class="close" href="#" data-dismiss="alert">×</a>
+
+                {{ message }}
+
+            </div>
+        {% endfor %}
+
+        <p>To continue, sign in using the social account you signed up with:</p>
+{#        <p>To continue, sign in using a social account:</p>#}
+
+        <div class="text-center mb-3">
+            {% include 'account/provider_list.html' with function="Sign in" %}
+        </div>
+
+        <p>If you would like to sign up, please ask the administrator for an invitation.</p>
+
+
+{% endblock %}

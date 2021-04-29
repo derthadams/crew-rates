@@ -1,0 +1,25 @@
+{% extends 'rates/base_global.html' %}
+
+{% load static %}
+
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'rates/css/rates.css' %}">
+{% endblock %}
+
+{% block header %}
+    <header>
+        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+            <span class="navbar-brand h1 ml-1">Crew Rates</span>
+        </nav>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid p-3" id="content-background">
+        <div class="container p-3" id="content-inner">
+            {% block content-inner %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}
