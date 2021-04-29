@@ -142,6 +142,7 @@ ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_ADAPTER = 'rates.adapters.DefaultSocialAccountAdapter'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
