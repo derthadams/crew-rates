@@ -24,6 +24,7 @@ from allauth.utils import (
 from allauth.socialaccount import app_settings
 from allauth.socialaccount.models import SocialAccount
 
+
 class DefaultSocialAccountAdapter(object):
 
     error_messages = {
@@ -31,6 +32,9 @@ class DefaultSocialAccountAdapter(object):
             "An account already exists with this e-mail address."
             " Please sign in to that account first, then connect"
             " your %s account."
+        ),
+        "no_matching_social_account": _(
+            'You did not sign up with your %s account.'
         )
     }
 
@@ -72,12 +76,19 @@ class DefaultSocialAccountAdapter(object):
             else:
                 print("No social account uid")
 
-            existing_uid = SocialAccount.objects.filter(uid__iexact=sociallogin.account.uid).first()
+            existing_uid = SocialAccount.objects.filter(
+                uid__iexact=sociallogin.account.uid).first()
             if not existing_uid:
-                messages.add_message(request, messages.ERROR, 'You did not sign up using this social account.')
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    self.error_messages['no_matching_social_account']
+                    % sociallogin.account.get_provider().name
+                )
                 # raise ImmediateHttpResponse(HttpResponse(status=500))
                 print("No matching social account")
-                raise ImmediateHttpResponse(HttpResponseRedirect(settings.ACCOUNT_LOGOUT_REDIRECT_URL))
+                raise ImmediateHttpResponse(HttpResponseRedirect(
+                    settings.ACCOUNT_LOGOUT_REDIRECT_URL))
         else:
             print("No social login")
 
