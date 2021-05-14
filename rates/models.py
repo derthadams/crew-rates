@@ -52,6 +52,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_absolute_url(self):
         return "/users/%i/" % self.pk
 
+    def __str__(self):
+        return self.email
+
 
 class Company(models.Model):
     name = models.CharField(max_length=128, unique=True)
@@ -60,17 +63,29 @@ class Company(models.Model):
         verbose_name = 'Company'
         verbose_name_plural = 'Companies'
 
+    def __str__(self):
+        return self.name
+
 
 class JobTitle(models.Model):
     title = models.CharField(max_length=128, unique=True)
+
+    def __str__(self):
+        return self.title
 
 
 class Show(models.Model):
     title = models.CharField(max_length=128)
 
+    def __str__(self):
+        return self.title
+
 
 class Network(models.Model):
     name = models.CharField(max_length=128, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Location(models.Model):
@@ -78,6 +93,9 @@ class Location(models.Model):
     long_name = models.CharField(max_length=128)
     short_name = models.CharField(max_length=128)
     type = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.display_name
 
 
 class Season(models.Model):
@@ -133,8 +151,11 @@ class Season(models.Model):
         default=REALITY
     )
 
+    def __str__(self):
+        return self.title
+
     def save(self, *args, **kwargs):
-        self.title = self.show.title + 'S' + str(self.number)
+        self.title = f'{self.show.title} (Season {str(self.number)})'
         super().save(*args, **kwargs)
 
 
@@ -160,6 +181,10 @@ class RawRateReport(models.Model):
     end_date = models.DateField(null=True, blank=True)
     union = models.BooleanField()
 
+    def __str__(self):
+        return f'{self.user}: {self.show_title} S{self.season_number}, ' \
+            f'{self.job_title_name}, ${self.hourly}'
+
 
 class RateReport(models.Model):
     user = models.ForeignKey(
@@ -182,6 +207,9 @@ class RateReport(models.Model):
         RawRateReport,
         on_delete=models.SET_NULL,
         null=True)
+
+    def __str__(self):
+        return f'{self.user}: {self.season}, {self.job_title}, ${self.hourly}'
 
 
 class SeasonsCompanies(models.Model):
