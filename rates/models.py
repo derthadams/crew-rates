@@ -1,5 +1,6 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 
@@ -49,4 +50,91 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def get_absolute_url(self):
-        return "/users/%i/" % (self.pk)
+        return "/users/%i/" % self.pk
+
+
+class Company(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+
+
+class JobTitle(models.Model):
+    title = models.CharField(max_length=128, unique=True)
+
+
+class Show(models.Model):
+    title = models.CharField(max_length=128)
+
+
+class Network(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+
+
+class Location(models.Model):
+    display_name = models.CharField(max_length=128)
+    long_name = models.CharField(max_length=128)
+    short_name = models.CharField(max_length=128)
+    type = models.CharField(max_length=128)
+
+
+class Season(models.Model):
+    title = models.CharField(max_length = 128)
+    show = models.ForeignKey(Show, on_delete=models.CASCADE)
+    number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+    # genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    union = models.BooleanField()
+    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
+    network = models.ForeignKey(Network, on_delete=models.SET_NULL, null=True)
+    # locations = scopes[0] from the POST request
+    locations = models.ManyToManyField(Location)
+    location_scopes = models.ManyToManyField(Location)
+
+    REALITY = 'RE'
+    DOCUMENTARY = 'DO'
+    GAME = 'GA'
+    LIVE = 'LI'
+    TALK = 'TA'
+    GENRE_CHOICES = [
+        (REALITY, "Reality"),
+        (DOCUMENTARY, "Documentary"),
+        (GAME, "Game"),
+        (LIVE, "Live"),
+        (TALK, "Talk"),
+    ]
+    genre = models.CharField(
+        max_length=2,
+        choices=GENRE_CHOICES,
+        default=REALITY
+    )
+
+
+class RawRateReport(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    job_title_id = models.SmallIntegerField()
+    job_title_name = models.CharField(max_length=128)
+    hourly = models.DecimalField(decimal_places=4, localize=False)
+    guarantee = models.PositiveSmallIntegerField()
+    show_id = models.SmallIntegerField()
+    show_title = models.CharField(max_length=128)
+    season_number = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)])
+    company_id = models.SmallIntegerField(null=True, blank=True)
+    company_name = models.CharField(max_length=128, blank=True)
+    network_id = models.SmallIntegerField(null=True, blank=True)
+    network_name = models.CharField(max_length=128, blank=True)
+    locations = models.JSONField(null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    union = models.BooleanField()
+
+
+class RateReport(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    job_title = models.ForeignKey(
+        JobTitle, on_delete=models.SET_NULL, null=True)
+    hourly = models.DecimalField(decimal_places=2, localize=False)
+    guarantee = models.PositiveSmallIntegerField()
+    season = models.ForeignKey(Season, on_delete=models.SET_NULL, null=True)
+    raw_report = models.ForeignKey(
+        RawRateReport, on_delete=models.SET_NULL, null=True)
