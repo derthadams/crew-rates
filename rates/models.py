@@ -135,6 +135,7 @@ class Season(models.Model):
 
     def save(self, *args, **kwargs):
         self.title = self.show.title + 'S' + str(self.number)
+        super().save(*args, **kwargs)
 
 
 class RawRateReport(models.Model):
