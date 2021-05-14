@@ -78,17 +78,41 @@ class Location(models.Model):
 
 class Season(models.Model):
     title = models.CharField(max_length = 128)
-    show = models.ForeignKey(Show, on_delete=models.CASCADE)
-    number = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
+    show = models.ForeignKey(
+        Show,
+        on_delete=models.CASCADE)
+    number = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1)])
     # genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True)
     start_date = models.DateField()
     end_date = models.DateField()
     union = models.BooleanField()
-    company = models.ForeignKey(Company, on_delete=models.SET_NULL, null=True)
-    network = models.ForeignKey(Network, on_delete=models.SET_NULL, null=True)
+    company = models.ManyToManyField(
+        Company,
+        through='SeasonsCompanies',
+        through_fields=('company', 'season'),
+        on_delete=models.SET_NULL,
+        null=True, blank=True)
+    network = models.ForeignKey(
+        Network,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
     # locations = scopes[0] from the POST request
-    locations = models.ManyToManyField(Location)
-    location_scopes = models.ManyToManyField(Location)
+    locations = models.ManyToManyField(
+        Location,
+        through='SeasonsLocations',
+        through_fields=('location', 'season'),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
+    scopes = models.ManyToManyField(
+        Location,
+        through='SeasonsScopes',
+        through_fields=('scope', 'season'),
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
 
     REALITY = 'RE'
     DOCUMENTARY = 'DO'
@@ -96,11 +120,11 @@ class Season(models.Model):
     LIVE = 'LI'
     TALK = 'TA'
     GENRE_CHOICES = [
-        (REALITY, "Reality"),
-        (DOCUMENTARY, "Documentary"),
-        (GAME, "Game"),
-        (LIVE, "Live"),
-        (TALK, "Talk"),
+        (REALITY, 'Reality'),
+        (DOCUMENTARY, 'Documentary'),
+        (GAME, 'Game'),
+        (LIVE, 'Live'),
+        (TALK, 'Talk'),
     ]
     genre = models.CharField(
         max_length=2,
@@ -130,11 +154,47 @@ class RawRateReport(models.Model):
 
 
 class RateReport(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True)
     job_title = models.ForeignKey(
-        JobTitle, on_delete=models.SET_NULL, null=True)
-    hourly = models.DecimalField(decimal_places=2, localize=False)
+        JobTitle,
+        on_delete=models.SET_NULL,
+        null=True)
+    hourly = models.DecimalField(
+        decimal_places=4,
+        localize=False)
     guarantee = models.PositiveSmallIntegerField()
-    season = models.ForeignKey(Season, on_delete=models.SET_NULL, null=True)
+    season = models.ForeignKey(
+        Season,
+        on_delete=models.SET_NULL,
+        null=True)
     raw_report = models.ForeignKey(
-        RawRateReport, on_delete=models.SET_NULL, null=True)
+        RawRateReport,
+        on_delete=models.SET_NULL,
+        null=True)
+
+
+class SeasonsCompanies(models.Model):
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    company = models.ForeignKey(Company, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'rates_seasons_companies'
+
+
+class SeasonsLocations(models.Model):
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'rates_seasons_locations'
+
+
+class SeasonsScopes(models.Model):
+    season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    scope = models.ForeignKey(Location, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = 'rates_seasons_scopes'
