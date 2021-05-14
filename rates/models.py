@@ -90,9 +90,8 @@ class Season(models.Model):
     company = models.ManyToManyField(
         Company,
         through='SeasonsCompanies',
-        through_fields=('company', 'season'),
-        on_delete=models.SET_NULL,
-        null=True, blank=True)
+        through_fields=('season', 'company'),
+        blank=True)
     network = models.ForeignKey(
         Network,
         on_delete=models.SET_NULL,
@@ -102,16 +101,14 @@ class Season(models.Model):
     locations = models.ManyToManyField(
         Location,
         through='SeasonsLocations',
-        through_fields=('location', 'season'),
-        on_delete=models.SET_NULL,
-        null=True,
+        through_fields=('season', 'location'),
+        related_name='locations',
         blank=True)
     scopes = models.ManyToManyField(
         Location,
         through='SeasonsScopes',
-        through_fields=('scope', 'season'),
-        on_delete=models.SET_NULL,
-        null=True,
+        through_fields=('season', 'scope'),
+        related_name='scopes',
         blank=True)
 
     REALITY = 'RE'
@@ -137,7 +134,10 @@ class RawRateReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job_title_id = models.SmallIntegerField()
     job_title_name = models.CharField(max_length=128)
-    hourly = models.DecimalField(decimal_places=4, localize=False)
+    # On form, set localize=False for hourly field
+    hourly = models.DecimalField(
+        decimal_places=4,
+        max_digits=9)
     guarantee = models.PositiveSmallIntegerField()
     show_id = models.SmallIntegerField()
     show_title = models.CharField(max_length=128)
@@ -164,7 +164,7 @@ class RateReport(models.Model):
         null=True)
     hourly = models.DecimalField(
         decimal_places=4,
-        localize=False)
+        max_digits=9)
     guarantee = models.PositiveSmallIntegerField()
     season = models.ForeignKey(
         Season,
