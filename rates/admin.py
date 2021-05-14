@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import User
+from .models import User, Company, JobTitle, Show, Network, Location, Season, \
+    RawRateReport, RateReport
 
 
 class UserAdmin(BaseUserAdmin):
@@ -33,3 +34,11 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(User, UserAdmin)
+admin.site.register(Company)
+admin.site.register(JobTitle)
+admin.site.register(Show)
+admin.site.register(Network)
+admin.site.register(Location)
+admin.site.register(Season)
+admin.site.register(RawRateReport)
+admin.site.register(RateReport)
