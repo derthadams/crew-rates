@@ -7,6 +7,14 @@
     <link rel="stylesheet" href="{% static 'rates/css/add.css' %}">
 {% endblock %}
 
+{% block scripts %}
+  {{ block.super }}
+    <script defer
+            src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js">
+
+    </script>
+{% endblock %}
+
 {% block content-inner %}
 <div class="container-fluid p-3" id="page-content">
 
