@@ -81,15 +81,15 @@ class Location(models.Model):
 
 
 class Season(models.Model):
-    title = models.CharField(max_length = 128)
+    title = models.CharField(max_length=128, blank=True)
     show = models.ForeignKey(
         Show,
         on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
     # genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
     union = models.BooleanField()
     company = models.ManyToManyField(
         Company,
@@ -132,6 +132,9 @@ class Season(models.Model):
         choices=GENRE_CHOICES,
         default=REALITY
     )
+
+    def save(self, *args, **kwargs):
+        self.title = self.show.title + 'S' + str(self.number)
 
 
 class RawRateReport(models.Model):
