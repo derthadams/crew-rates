@@ -171,6 +171,9 @@ def approve_raw_rate_report(modeladmin, request, queryset):
             if not season.genre:
                 season.genre = raw_report.genre
 
+            if not season.union and raw_report.union:
+                season.union = True
+
             season.save()
 
         else:
