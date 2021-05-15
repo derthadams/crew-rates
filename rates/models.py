@@ -180,6 +180,7 @@ class RawRateReport(models.Model):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     union = models.BooleanField()
+    approved = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user}: {self.show_title} S{self.season_number}, ' \
