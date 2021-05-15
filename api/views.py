@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.apps import apps
 from django.views import View
 from django.http import JsonResponse
 import requests
@@ -31,16 +31,44 @@ class LocationDetailsAPIView(View):
 
 
 class JobTitlesAPIView(View):
-    pass
+    def get(self, request, *args, **kwargs):
+        job_title = apps.get_model('rates', 'JobTitle')
+        results = list(
+            job_title.objects.filter(
+                title__icontains=self.request.GET.get('q')
+            )
+            .values('id', 'title'))
+        return JsonResponse({"results": results})
 
 
 class ShowsAPIView(View):
-    pass
+    def get(self, request, *args, **kwargs):
+        show = apps.get_model('rates', 'Show')
+        results = list(
+            show.objects.filter(
+                title__icontains=self.request.GET.get('q')
+            )
+            .values('id', 'title'))
+        return JsonResponse({"results": results})
 
 
 class CompaniesAPIView(View):
-    pass
+    def get(self, request, *args, **kwargs):
+        company = apps.get_model('rates', 'Company')
+        results = list(
+            company.objects.filter(
+                name__icontains=self.request.GET.get('q')
+            )
+            .values('id', 'name'))
+        return JsonResponse({"results": results})
 
 
 class NetworksAPIView(View):
-    pass
+    def get(self, request, *args, **kwargs):
+        network = apps.get_model('rates', 'Network')
+        results = list(
+            network.objects.filter(
+                name__icontains=self.request.GET.get('q')
+            )
+            .values('id', 'name'))
+        return JsonResponse({"results": results})
