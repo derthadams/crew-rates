@@ -1,8 +1,5 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django import forms
-from django.db import models
-
 from .models import User, Company, JobTitle, Show, Network, Location, Season, \
     RawRateReport, RateReport
 
@@ -35,19 +32,56 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ('groups', 'user_permissions',)
 
 
+class SeasonCompanyInline(admin.TabularInline):
+    model = Season.companies.through
+    ordering = ('season__title',)
+    readonly_fields = ['season']
+    can_delete = False
+    verbose_name = 'Seasons'
+    extra = 0
+    max_num = 1
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
+class SeasonInline(admin.TabularInline):
+    model = Season
+    ordering = ('title',)
+    readonly_fields = ['title', 'show', 'number', 'start_date', 'end_date',
+                       'union', 'companies', 'network', 'locations', 'scopes',
+                       'genre']
+    can_delete = False
+    extra = 0
+    max_num = 0
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
+class RateReportInline(admin.TabularInline):
+    model = RateReport
+    ordering = ('job_title',)
+    fields = ['user', 'job_title', 'hourly', 'guarantee']
+    readonly_fields = ['user', 'job_title', 'hourly', 'guarantee', 'season']
+    can_delete = False
+    extra = 0
+    max_num = 0
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
 class CompanyAdmin(admin.ModelAdmin):
     ordering = ['name']
     search_fields = ['name']
+    inlines = [SeasonCompanyInline]
 
 
 class ShowAdmin(admin.ModelAdmin):
     ordering = ['title']
     search_fields = ['title']
+    inlines = [SeasonInline]
 
 
 class NetworkAdmin(admin.ModelAdmin):
     ordering=['name']
     search_fields = ['name']
+    inlines = [SeasonInline]
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -62,7 +96,9 @@ class SeasonAdmin(admin.ModelAdmin):
         'show',
         'network',
         'locations',
+        'scopes'
     ]
+    inlines = [RateReportInline]
 
 
 @admin.action(description="Approve raw rate report")
@@ -176,6 +212,7 @@ def make_location_object(location_dict):
 
 class RawRateReportAdmin(admin.ModelAdmin):
     actions = [approve_raw_rate_report]
+    list_filter = ('approved',)
 
 
 admin.site.register(User, UserAdmin)
