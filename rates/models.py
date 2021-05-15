@@ -215,6 +215,7 @@ class RateReport(models.Model):
         Season,
         on_delete=models.SET_NULL,
         null=True)
+    union = models.BooleanField(default=False)
     raw_report = models.ForeignKey(
         RawRateReport,
         on_delete=models.SET_NULL,

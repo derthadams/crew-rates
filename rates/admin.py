@@ -197,6 +197,7 @@ def approve_raw_rate_report(modeladmin, request, queryset):
             hourly=raw_report.hourly,
             guarantee=raw_report.guarantee,
             season=season,
+            union=raw_report.union,
             raw_report=raw_report
         )
 
