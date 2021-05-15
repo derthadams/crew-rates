@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django import forms
+from django.db import models
 
 from .models import User, Company, JobTitle, Show, Network, Location, Season, \
     RawRateReport, RateReport
@@ -60,17 +62,6 @@ class SeasonAdmin(admin.ModelAdmin):
         'network',
         'locations',
     ]
-
-
-admin.site.register(User, UserAdmin)
-admin.site.register(Company, CompanyAdmin)
-admin.site.register(JobTitle)
-admin.site.register(Show, ShowAdmin)
-admin.site.register(Network, NetworkAdmin)
-admin.site.register(Location, LocationAdmin)
-admin.site.register(Season, SeasonAdmin)
-admin.site.register(RawRateReport)
-admin.site.register(RateReport)
 
 
 @admin.action(description="Approve raw rate report")
@@ -170,6 +161,7 @@ def approve_raw_rate_report(modeladmin, request, queryset):
         )
 
         raw_report.approved = True
+        raw_report.save()
 
 
 def make_location_object(location_dict):
@@ -179,3 +171,18 @@ def make_location_object(location_dict):
         short_name=location_dict.short_name,
         type=location_dict.type
     )
+
+
+class RawRateReportAdmin(admin.ModelAdmin):
+    actions = [approve_raw_rate_report]
+
+
+admin.site.register(User, UserAdmin)
+admin.site.register(Company, CompanyAdmin)
+admin.site.register(JobTitle)
+admin.site.register(Show, ShowAdmin)
+admin.site.register(Network, NetworkAdmin)
+admin.site.register(Location, LocationAdmin)
+admin.site.register(Season, SeasonAdmin)
+admin.site.register(RawRateReport, RawRateReportAdmin)
+admin.site.register(RateReport)

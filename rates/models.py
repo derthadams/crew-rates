@@ -111,8 +111,8 @@ class Season(models.Model):
     union = models.BooleanField()
     company = models.ManyToManyField(
         Company,
-        through='SeasonsCompanies',
-        through_fields=('season', 'company'),
+        # through='SeasonsCompanies',
+        # through_fields=('season', 'company'),
         blank=True)
     network = models.ForeignKey(
         Network,
@@ -122,14 +122,14 @@ class Season(models.Model):
     # locations = scopes[0] from the POST request
     locations = models.ManyToManyField(
         Location,
-        through='SeasonsLocations',
-        through_fields=('season', 'location'),
+        # through='SeasonsLocations',
+        # through_fields=('season', 'location'),
         related_name='locations',
         blank=True)
     scopes = models.ManyToManyField(
         Location,
-        through='SeasonsScopes',
-        through_fields=('season', 'scope'),
+        # through='SeasonsScopes',
+        # through_fields=('season', 'scope'),
         related_name='scopes',
         blank=True)
 
@@ -224,25 +224,26 @@ class RateReport(models.Model):
         return f'{self.user}: {self.season}, {self.job_title}, ${self.hourly}'
 
 
-class SeasonsCompanies(models.Model):
-    season = models.ForeignKey(Season, on_delete=models.CASCADE)
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'rates_seasons_companies'
-
-
-class SeasonsLocations(models.Model):
-    season = models.ForeignKey(Season, on_delete=models.CASCADE)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'rates_seasons_locations'
-
-
-class SeasonsScopes(models.Model):
-    season = models.ForeignKey(Season, on_delete=models.CASCADE)
-    scope = models.ForeignKey(Location, on_delete=models.CASCADE)
-
-    class Meta:
-        db_table = 'rates_seasons_scopes'
+# class SeasonsCompanies(models.Model):
+#     season = models.ForeignKey(Season, on_delete=models.CASCADE)
+#     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+#     date_created = models.DateField(null=True, blank=True)
+#
+#     class Meta:
+#         db_table = 'rates_seasons_companies'
+#
+#
+# class SeasonsLocations(models.Model):
+#     season = models.ForeignKey(Season, on_delete=models.CASCADE)
+#     location = models.ForeignKey(Location, on_delete=models.CASCADE)
+#
+#     class Meta:
+#         db_table = 'rates_seasons_locations'
+#
+#
+# class SeasonsScopes(models.Model):
+#     season = models.ForeignKey(Season, on_delete=models.CASCADE)
+#     scope = models.ForeignKey(Location, on_delete=models.CASCADE)
+#
+#     class Meta:
+#         db_table = 'rates_seasons_scopes'
