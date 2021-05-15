@@ -138,17 +138,23 @@ class Season(models.Model):
     GAME = 'GA'
     LIVE = 'LI'
     TALK = 'TA'
+    JUDGE = 'JU'
+
     GENRE_CHOICES = [
         (REALITY, 'Reality'),
         (DOCUMENTARY, 'Documentary'),
         (GAME, 'Game'),
         (LIVE, 'Live'),
         (TALK, 'Talk'),
+        (JUDGE, 'Judge')
     ]
+
+    DEFAULT_GENRE = REALITY
+
     genre = models.CharField(
         max_length=2,
         choices=GENRE_CHOICES,
-        default=REALITY
+        default=DEFAULT_GENRE
     )
 
     def __str__(self):
@@ -181,6 +187,11 @@ class RawRateReport(models.Model):
     end_date = models.DateField(null=True, blank=True)
     union = models.BooleanField()
     approved = models.BooleanField(default=False)
+    genre = models.CharField(
+        max_length=2,
+        choices=Season.GENRE_CHOICES,
+        default=Season.DEFAULT_GENRE
+    )
 
     def __str__(self):
         return f'{self.user}: {self.show_title} S{self.season_number}, ' \
