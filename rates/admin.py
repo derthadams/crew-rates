@@ -79,28 +79,28 @@ def approve_raw_rate_report(modeladmin, request, queryset):
         if raw_report.job_title_id == -1:
             job_title = JobTitle.objects.get_or_create(
                 title=raw_report.job_title_name)
-            job_title_id = job_title.pk
+            job_title_id = job_title[0].pk
         else:
             job_title_id = raw_report.job_title_id
 
         if raw_report.show_id == -1:
             show = Show.objects.get_or_create(
                 title=raw_report.show_title)
-            show_id = show.pk
+            show_id = show[0].pk
         else:
             show_id = raw_report.show_id
 
         if raw_report.company_id == -1:
             company = Company.objects.get_or_create(
                 name=raw_report.company_name)
-            company_id = company.pk
+            company_id = company[0].pk
         else:
             company_id = raw_report.company_id
 
         if raw_report.network_id == -1:
             network = Network.objects.get_or_create(
                 name=raw_report.network_name)
-            network_id = network.pk
+            network_id = network[0].pk
         else:
             network_id = raw_report.network_id
 
