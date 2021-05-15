@@ -56,8 +56,9 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 class SeasonAdmin(admin.ModelAdmin):
+    search_fields = ['title']
     autocomplete_fields = [
-        'company',
+        'companies',
         'show',
         'network',
         'locations',
@@ -123,7 +124,7 @@ def approve_raw_rate_report(modeladmin, request, queryset):
                 season.start_date = raw_report.start_date
                 season.end_date = raw_report.end_date
 
-            season.company.add(company_id)
+            season.companies.add(company_id)
 
             if not season.network:
                 season.network_id = network_id
@@ -143,11 +144,11 @@ def approve_raw_rate_report(modeladmin, request, queryset):
                 start_date=raw_report.start_date,
                 end_date=raw_report.end_date,
                 union=raw_report.union,
-                company_id=company_id,
                 network_id=network_id,
                 genre=raw_report.genre
             )
 
+            season.companies.add(company_id)
             season.locations.add(*locations)
             season.scopes.add(*scopes)
 

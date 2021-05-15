@@ -60,7 +60,7 @@ class Company(models.Model):
     name = models.CharField(max_length=128, unique=True)
 
     class Meta:
-        verbose_name = 'Company'
+        verbose_name = 'company'
         verbose_name_plural = 'Companies'
 
     def __str__(self):
@@ -109,7 +109,7 @@ class Season(models.Model):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     union = models.BooleanField()
-    company = models.ManyToManyField(
+    companies = models.ManyToManyField(
         Company,
         # through='SeasonsCompanies',
         # through_fields=('season', 'company'),
@@ -226,7 +226,7 @@ class RateReport(models.Model):
 
 # class SeasonsCompanies(models.Model):
 #     season = models.ForeignKey(Season, on_delete=models.CASCADE)
-#     company = models.ForeignKey(Company, on_delete=models.CASCADE)
+#     company = models.ForeignKey(company, on_delete=models.CASCADE)
 #     date_created = models.DateField(null=True, blank=True)
 #
 #     class Meta:
