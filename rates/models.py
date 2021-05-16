@@ -186,8 +186,9 @@ class RawRateReport(models.Model):
     show_title = models.CharField(max_length=128)
     season_number = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
-    company_id = models.SmallIntegerField(null=True, blank=True)
-    company_name = models.CharField(max_length=128, blank=True)
+    # company_id = models.SmallIntegerField(null=True, blank=True)
+    # company_name = models.CharField(max_length=128, blank=True)
+    companies = models.JSONField(null=True, blank=True)
     network_id = models.SmallIntegerField(null=True, blank=True)
     network_name = models.CharField(max_length=128, blank=True)
     locations = models.JSONField(null=True, blank=True)
