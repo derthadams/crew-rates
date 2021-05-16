@@ -39,7 +39,7 @@ class SeasonCompanyInline(admin.TabularInline):
     can_delete = False
     verbose_name = 'Seasons'
     extra = 0
-    max_num = 1
+    max_num = 0
     template = 'admin/rates/company/edit_inline/tabular.html'
 
 
@@ -70,23 +70,27 @@ class CompanyAdmin(admin.ModelAdmin):
     ordering = ['name']
     search_fields = ['name']
     inlines = [SeasonCompanyInline]
+    list_display = ('name', 'id',)
 
 
 class ShowAdmin(admin.ModelAdmin):
     ordering = ['title']
     search_fields = ['title']
     inlines = [SeasonInline]
+    list_display = ('title', 'id',)
 
 
 class NetworkAdmin(admin.ModelAdmin):
     ordering=['name']
     search_fields = ['name']
     inlines = [SeasonInline]
+    list_display = ('name', 'id',)
 
 
 class LocationAdmin(admin.ModelAdmin):
     ordering = ['display_name']
     search_fields = ['display_name']
+    list_display = ('display_name', 'id',)
 
 
 class SeasonAdmin(admin.ModelAdmin):
@@ -99,6 +103,7 @@ class SeasonAdmin(admin.ModelAdmin):
         'scopes'
     ]
     inlines = [RateReportInline]
+    list_display = ('title', 'id')
 
 
 @admin.action(description="Approve raw rate report")
