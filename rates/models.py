@@ -36,7 +36,6 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=254, unique=True)
-    # name = models.CharField(max_length=254, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -105,31 +104,40 @@ class Season(models.Model):
         on_delete=models.CASCADE)
     number = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
-    # genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    union = models.BooleanField()
+
+    NON_UNION = "NO"
+    IATSE = "IA"
+    NABET = "NA"
+
+    UNION_CHOICES = [
+        (NON_UNION, 'Non-Union'),
+        (IATSE, 'IATSE'),
+        (NABET, 'NABET'),
+    ]
+
+    DEFAULT_UNION = NON_UNION
+
+    union = models.CharField(
+        max_length=2,
+        choices=UNION_CHOICES,
+        default=DEFAULT_UNION
+    )
     companies = models.ManyToManyField(
         Company,
-        # through='SeasonsCompanies',
-        # through_fields=('season', 'company'),
         blank=True)
     network = models.ForeignKey(
         Network,
         on_delete=models.SET_NULL,
         null=True,
         blank=True)
-    # locations = scopes[0] from the POST request
     locations = models.ManyToManyField(
         Location,
-        # through='SeasonsLocations',
-        # through_fields=('season', 'location'),
         related_name='locations',
         blank=True)
     scopes = models.ManyToManyField(
         Location,
-        # through='SeasonsScopes',
-        # through_fields=('season', 'scope'),
         related_name='scopes',
         blank=True)
 
@@ -169,7 +177,7 @@ class RawRateReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job_title_id = models.SmallIntegerField()
     job_title_name = models.CharField(max_length=128)
-    # On form, set localize=False for hourly field
+    # TODO: On form, set localize=False for hourly field
     hourly = models.DecimalField(
         decimal_places=4,
         max_digits=9)
@@ -185,7 +193,11 @@ class RawRateReport(models.Model):
     locations = models.JSONField(null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    union = models.BooleanField()
+    union = models.CharField(
+        max_length=2,
+        choices=Season.UNION_CHOICES,
+        default=Season.DEFAULT_UNION
+    )
     approved = models.BooleanField(default=False)
     genre = models.CharField(
         max_length=2,
@@ -215,7 +227,11 @@ class RateReport(models.Model):
         Season,
         on_delete=models.SET_NULL,
         null=True)
-    union = models.BooleanField(default=False)
+    union = models.CharField(
+        max_length=2,
+        choices=Season.UNION_CHOICES,
+        default=Season.DEFAULT_UNION
+    )
     raw_report = models.ForeignKey(
         RawRateReport,
         on_delete=models.SET_NULL,
@@ -224,27 +240,3 @@ class RateReport(models.Model):
     def __str__(self):
         return f'{self.user}: {self.season}, {self.job_title}, ${self.hourly}'
 
-
-# class SeasonsCompanies(models.Model):
-#     season = models.ForeignKey(Season, on_delete=models.CASCADE)
-#     company = models.ForeignKey(company, on_delete=models.CASCADE)
-#     date_created = models.DateField(null=True, blank=True)
-#
-#     class Meta:
-#         db_table = 'rates_seasons_companies'
-#
-#
-# class SeasonsLocations(models.Model):
-#     season = models.ForeignKey(Season, on_delete=models.CASCADE)
-#     location = models.ForeignKey(Location, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         db_table = 'rates_seasons_locations'
-#
-#
-# class SeasonsScopes(models.Model):
-#     season = models.ForeignKey(Season, on_delete=models.CASCADE)
-#     scope = models.ForeignKey(Location, on_delete=models.CASCADE)
-#
-#     class Meta:
-#         db_table = 'rates_seasons_scopes'
