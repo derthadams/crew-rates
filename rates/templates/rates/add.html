@@ -28,6 +28,7 @@
 
       <!--  Job Survey  -->
       <form id="rate-survey">
+        {% csrf_token %}
         <div id="rate-widget-base"></div>
 
         <!--  Rate Widget Template -->
@@ -79,7 +80,7 @@
         <!--  Basic Job Information-->
         <div class="form-group mt-3">
           <label for="job-title">Job Title</label>
-          <input type="text" class="form-control basicAutoComplete"
+          <input type="text" class="form-control"
                  id="job-title" autocomplete="off"
                  placeholder="Job Title">
         </div>
@@ -103,23 +104,31 @@
         </div>
 
         <div class="form-group">
-          <label for="production-company">Production Company</label>
-          <input type="text" class="form-control basicAutoComplete"
+          <label for="production-company">Production Companies</label>
+          <input type="text" class="form-control"
                  id="production-company" autocomplete="off"
                  placeholder="Production Company">
         </div>
         <div class="form-group">
           <label for="network">Network or Streaming Platform</label>
-          <input type="text" class="form-control basicAutoComplete"
+          <input type="text" class="form-control"
                  id="network" autocomplete="off"
                  placeholder="Network or Streaming Platform">
         </div>
+
+{#        <div class="form-group">#}
+{#          <label for="production-location">Filming Location</label>#}
+{#          <select class="form-control basicAutoSelect"#}
+{#                  id="production-location"#}
+{#                  placeholder="Search for a location..."#}
+{#                  autocomplete="off"></select>#}
+{#        </div>#}
+
         <div class="form-group">
-          <label for="production-location">Filming Location</label>
-          <select class="form-control basicAutoSelect"
-                  id="production-location"
-                  placeholder="Search for a location..."
-                  autocomplete="off"></select>
+          <label for="locations">Filming Location(s)</label>
+          <select name="" id="locations" class="form-control"
+                  autocomplete="off" multiple="multiple">
+          </select>
         </div>
 
         <!--  Start and End Dates-->

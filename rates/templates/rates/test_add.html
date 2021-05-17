@@ -1,0 +1,192 @@
+{% extends 'rates/base_rates.html' %}
+
+{% load static %}
+
+{% block styles %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'rates/css/add.css' %}">
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+  <script defer
+          src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js">
+  </script>
+  <script defer
+          src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+  <script defer type="module" src="{% static 'rates/js/add_rate.js' %}"></script>
+{#  <script>#}
+{#      let js_url = "{% static 'rates/js/' %}"#}
+{#  </script>#}
+{% endblock %}
+
+{% block title %}
+  <title>Add a Rate</title>
+{% endblock %}
+
+{% block content-inner %}
+
+  {# Headline and Rate Display #}
+  <div class="m-3" id="survey-contents">
+    <h1>Add a Rate</h1>
+    <p>Your anonymous rate information will help all crew members
+      negotiate better deals.</p>
+  </div>
+
+  {# Survey Form #}
+  <form action="" id="rate-survey">
+    {% csrf_token %}
+
+    {# Hidden Fields #}
+    {% for field in form.hidden_fields %}
+      {{ field }}
+    {% endfor %}
+
+    {# Show Title and Season Number #}
+    <div class="row">
+      <div class="col-9">
+        <div class="form-group">
+          <label for="{{ form.show_title.id_for_label }}">
+            {{ form.show_title.label }}</label>
+          {{ form.show_title }}
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="form-group">
+          <label for="{{ form.season_number.id_for_label }}">
+            {{ form.season_number.label }}</label>
+          {{ form.season_number }}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      {# Genre #}
+      <div class="form-group col-6">
+        <label for="{{ form.genre.id_for_label }}">
+          {{ form.genre.label }}</label>
+        {{ form.genre }}
+      </div>
+
+      {# Union Status (dropdown) #}
+      <div class="form-group col-6">
+        <label for="{{ form.union.id_for_label }}">
+          {{ form.union.label }}
+        </label>
+        {{ form.union }}
+      </div>
+
+    </div>
+
+    {# Union Status (Radio) #}
+    {#          <div class="m-3 form-group">#}
+    {#            <div class="row btn-group btn-group-toggle d-flex"#}
+    {#                 data-toggle="buttons">#}
+    {#              {% for button in form.union %}#}
+    {#                <label class="col-4 btn btn-sm btn-outline-dark active">#}
+    {#                  {{ button }}#}
+    {#                </label>#}
+    {#              {% endfor %}#}
+    {##}
+    {#            </div>#}
+    {#          </div>#}
+
+  <div id="rate-widget-base"></div>
+
+    {# Job Title #}
+    <div class="form-group">
+      <label for="{{ form.job_title_name.id_for_label }}">
+        {{ form.job_title_name.label }}</label>
+      {{ form.job_title_name }}
+    </div>
+
+    {# Production Companies #}
+    <div class="form-group">
+      <label for="{{ form.companies.id_for_label }}">
+        {{ form.companies.label }}</label>
+      {{ form.companies }}
+    </div>
+
+    {# Network #}
+    <div class="form-group">
+      <label for="{{ form.network_name.id_for_label }}">
+        {{ form.network_name.label }}</label>
+      {{ form.network_name }}
+    </div>
+
+    {# Locations #}
+    <div class="form-group">
+      <label for="{{ form.locations.id_for_label }}">
+        {{ form.locations.label }}</label>
+      {{ form.locations }}
+    </div>
+
+    {# Start Date #}
+    <div class="form-group">
+      <label for="{{ form.start_date.id_for_label }}">
+        {{ form.start_date.label }}</label>
+      {{ form.start_date }}
+    </div>
+
+    {# End Date #}
+    <div class="form-group">
+      <label for="{{ form.end_date.id_for_label }}">
+        {{ form.end_date.label }}</label>
+      {{ form.end_date }}
+    </div>
+
+    {# Submit #}
+    <div class="form-group mt-4">
+      <input type="submit" class="btn btn-success form-control"
+             value="Submit Rate">
+    </div>
+
+  </form>
+
+  {# Rate Widget Template #}
+  <template id="rate-widget">
+    <div class="rate-widget-container">
+      <div>
+        <div class="rate-display">$<span
+                class="daily-rate-display">---</span>/
+          <span class="guar-hours-display">--</span></div>
+        <div>($<span
+                class="hourly-rate-display">--.--</span>/hr)
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col">
+          <label>Rate
+            <input type="number"
+                   class="form-control rate-input"
+                   name="rate" placeholder="$">
+          </label>
+        </div>
+        <div class="col">
+          <label>Guaranteed Hours
+            <input type="number"
+                   class="form-control guar-hours-input"
+                   name="guar-hours">
+          </label>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="col">
+          <div class="btn-group btn-group-toggle d-flex"
+               data-toggle="buttons">
+            <label class="btn btn-sm btn-outline-dark active">
+              <input type="radio" name="hour-or-day"
+                     class="per-day" checked> Per Day
+            </label>
+            <label class="btn btn-sm btn-outline-dark">
+              <input type="radio" name="hour-or-day"
+                     class="per-hour"> Per Hour
+            </label>
+          </div>
+        </div>
+        <div class="col"></div>
+      </div>
+    </div>
+  </template>
+
+{% endblock %}

@@ -3,4 +3,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('add-rate/', views.AddRateView.as_view(), name='add-rate')
 ]
