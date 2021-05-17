@@ -25,16 +25,18 @@ class RawRateReportForm(ModelForm):
             'hourly': HiddenInput(),
             'guarantee': HiddenInput(),
             'show_id': HiddenInput(),
+            'show_title': Select(),
             'network_id': HiddenInput(),
             'network_name': Select(),
             'start_date': DateInput(attrs={'type': 'date'}),
             'end_date': DateInput(attrs={'type': 'date'}),
             # 'union': RadioSelect(),
             'companies': SelectMultiple,
-            'locations': SelectMultiple,
+            'locations': Select(attrs={'multiple': 'multiple'}),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs.update({'class': 'form-control'})
+            self.fields[field].widget.attrs.update({'class': 'form-control',
+                                                    'autocomplete': 'off'})

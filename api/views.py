@@ -1,4 +1,5 @@
 from django.apps import apps
+from django.db.models import F
 from django.views import View
 from django.http import JsonResponse
 import requests
@@ -37,7 +38,8 @@ class JobTitlesAPIView(View):
             job_title.objects.filter(
                 title__icontains=self.request.GET.get('q')
             )
-            .values('id', 'title'))
+            .annotate(text=F('title'))
+            .values('id', 'text'))
         return JsonResponse({"results": results})
 
 
@@ -48,7 +50,8 @@ class ShowsAPIView(View):
             show.objects.filter(
                 title__icontains=self.request.GET.get('q')
             )
-            .values('id', 'title'))
+            .annotate(text=F('title'))
+            .values('id', 'text'))
         return JsonResponse({"results": results})
 
 
@@ -59,7 +62,8 @@ class CompaniesAPIView(View):
             company.objects.filter(
                 name__icontains=self.request.GET.get('q')
             )
-            .values('id', 'name'))
+            .annotate(text=F('name'))
+            .values('id', 'text'))
         return JsonResponse({"results": results})
 
 
@@ -70,5 +74,6 @@ class NetworksAPIView(View):
             network.objects.filter(
                 name__icontains=self.request.GET.get('q')
             )
-            .values('id', 'name'))
+            .annotate(text=F('name'))
+            .values('id', 'text'))
         return JsonResponse({"results": results})

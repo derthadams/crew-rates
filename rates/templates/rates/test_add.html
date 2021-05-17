@@ -4,20 +4,22 @@
 
 {% block styles %}
   {{ block.super }}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+          rel="stylesheet" />
   <link rel="stylesheet" href="{% static 'rates/css/add.css' %}">
 {% endblock %}
 
 {% block scripts %}
   {{ block.super }}
   <script defer
+          src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <script defer
           src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js">
   </script>
-  <script defer
-          src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
-  <script defer type="module" src="{% static 'rates/js/add_rate.js' %}"></script>
-{#  <script>#}
-{#      let js_url = "{% static 'rates/js/' %}"#}
-{#  </script>#}
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.2.1/js.cookie.min.js">
+  </script>
+  <script defer type="module"
+          src="{% static 'rates/js/add_rate.js' %}"></script>
 {% endblock %}
 
 {% block title %}
@@ -27,14 +29,14 @@
 {% block content-inner %}
 
   {# Headline and Rate Display #}
-  <div class="m-3" id="survey-contents">
+  <div class="" id="survey-contents">
     <h1>Add a Rate</h1>
     <p>Your anonymous rate information will help all crew members
       negotiate better deals.</p>
   </div>
 
   {# Survey Form #}
-  <form action="" id="rate-survey">
+  <form action="" method="POST" id="rate-survey">
     {% csrf_token %}
 
     {# Hidden Fields #}
@@ -50,6 +52,7 @@
             {{ form.show_title.label }}</label>
           {{ form.show_title }}
         </div>
+
       </div>
       <div class="col-3">
         <div class="form-group">
@@ -90,7 +93,7 @@
     {##}
     {#            </div>#}
     {#          </div>#}
-
+  <p>What rate were you paid for this project?</p>
   <div id="rate-widget-base"></div>
 
     {# Job Title #}
@@ -100,7 +103,7 @@
       {{ form.job_title_name }}
     </div>
 
-    {# Production Companies #}
+    {# Production Companies#}
     <div class="form-group">
       <label for="{{ form.companies.id_for_label }}">
         {{ form.companies.label }}</label>
@@ -138,23 +141,69 @@
     {# Submit #}
     <div class="form-group mt-4">
       <input type="submit" class="btn btn-success form-control"
-             value="Submit Rate">
+             id="rate-form-submit" value="Submit Rate">
     </div>
 
   </form>
 
   {# Rate Widget Template #}
+{#  <template id="rate-widget">#}
+{#    <div class="rate-widget-container">#}
+{#      <div>#}
+{#        <div class="rate-display">$<span#}
+{#                class="daily-rate-display">---</span>/#}
+{#          <span class="guar-hours-display">--</span></div>#}
+{#        <div>($<span#}
+{#                class="hourly-rate-display">--.--</span>/hr)#}
+{#        </div>#}
+{#      </div>#}
+{#      <div class="row mt-2">#}
+{#        <div class="col">#}
+{#          <label>Rate#}
+{#            <input type="number"#}
+{#                   class="form-control rate-input"#}
+{#                   name="rate" placeholder="$">#}
+{#          </label>#}
+{#        </div>#}
+{#        <div class="col">#}
+{#          <label>Guaranteed Hours#}
+{#            <input type="number"#}
+{#                   class="form-control guar-hours-input"#}
+{#                   name="guar-hours">#}
+{#          </label>#}
+{#        </div>#}
+{#      </div>#}
+{#      <div class="row mt-1">#}
+{#        <div class="col">#}
+{#          <div class="btn-group btn-group-toggle d-flex"#}
+{#               data-toggle="buttons">#}
+{#            <label class="btn btn-sm btn-outline-dark active">#}
+{#              <input type="radio" name="hour-or-day"#}
+{#                     class="per-day" checked> Per Day#}
+{#            </label>#}
+{#            <label class="btn btn-sm btn-outline-dark">#}
+{#              <input type="radio" name="hour-or-day"#}
+{#                     class="per-hour"> Per Hour#}
+{#            </label>#}
+{#          </div>#}
+{#        </div>#}
+{#        <div class="col"></div>#}
+{#      </div>#}
+{#    </div>#}
+{#  </template>#}
+
+    {# Rate Widget Template #}
   <template id="rate-widget">
     <div class="rate-widget-container">
-      <div>
-        <div class="rate-display">$<span
-                class="daily-rate-display">---</span>/
-          <span class="guar-hours-display">--</span></div>
-        <div>($<span
-                class="hourly-rate-display">--.--</span>/hr)
+      <div class="row">
+        <div class="col-4 pt-3">
+          <div class="rate-display">$<span class="daily-rate-display">---</span>/
+            <span class="guar-hours-display">--</span>
+          </div>
+          <div>($<span class="hourly-rate-display">--.--</span>/hr)
+          </div>
         </div>
-      </div>
-      <div class="row mt-2">
+
         <div class="col">
           <label>Rate
             <input type="number"
@@ -163,28 +212,38 @@
           </label>
         </div>
         <div class="col">
-          <label>Guaranteed Hours
+          <label>Guarantee
             <input type="number"
                    class="form-control guar-hours-input"
-                   name="guar-hours">
+                   name="guar-hours" placeholder="hrs">
           </label>
         </div>
+
       </div>
-      <div class="row mt-1">
-        <div class="col">
-          <div class="btn-group btn-group-toggle d-flex"
-               data-toggle="buttons">
-            <label class="btn btn-sm btn-outline-dark active">
-              <input type="radio" name="hour-or-day"
-                     class="per-day" checked> Per Day
-            </label>
-            <label class="btn btn-sm btn-outline-dark">
-              <input type="radio" name="hour-or-day"
-                     class="per-hour"> Per Hour
-            </label>
+
+      <div class="row">
+
+        <div class="col-4"></div>
+
+        <div class="col-8">
+          <div class="row">
+            <div class="col">
+              <div class="btn-group btn-group-toggle d-flex"
+                   data-toggle="buttons">
+                <label class="btn btn-sm btn-outline-dark active">
+                  <input type="radio" name="hour-or-day"
+                         class="per-day" checked> Per Day
+                </label>
+                <label class="btn btn-sm btn-outline-dark">
+                  <input type="radio" name="hour-or-day"
+                         class="per-hour"> Per Hour
+                </label>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="col"></div>
+
+{#        <div class="col-4"></div>#}
       </div>
     </div>
   </template>
