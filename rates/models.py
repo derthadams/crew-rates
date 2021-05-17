@@ -147,14 +147,19 @@ class Season(models.Model):
     LIVE = 'LI'
     TALK = 'TA'
     JUDGE = 'JU'
+    OTHER_UNSCRIPTED = 'OT'
+    SCRIPTED = 'SC'
 
     GENRE_CHOICES = [
         (REALITY, 'Reality'),
         (DOCUMENTARY, 'Documentary'),
-        (GAME, 'Game'),
-        (LIVE, 'Live'),
-        (TALK, 'Talk'),
-        (JUDGE, 'Judge')
+        (GAME, 'Game Show'),
+        (LIVE, 'Live Show'),
+        (TALK, 'Talk Show'),
+        (JUDGE, 'Judge Show'),
+        (OTHER_UNSCRIPTED, 'Other Unscripted'),
+        (SCRIPTED, 'Scripted'),
+
     ]
 
     DEFAULT_GENRE = REALITY
