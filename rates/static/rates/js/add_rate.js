@@ -157,16 +157,15 @@ $('#rate-form-submit').on('click', (event) => {
     };
 
     const data = {
-        job_title_id: job_title_id,
-        // job_title_name: $('#id_job_title_name').select2('data')[0].text,
+        job_title: job_title_id,
         job_title_name: $('#id_job_title_name option:selected').text(),
-        hourly: workedRate.hourlyRate,
+        hourly: Number(workedRate.hourlyRate.toFixed(4)),
         guarantee: workedRate.guaranteedHours,
-        show_id: show_id,
+        show: show_id,
         show_title: $('#id_show_title option:selected').text(),
-        season_number: $('#season-number').val(),
+        season_number: Number($('#id_season_number').val()),
         companies: '',
-        network_id: network_id,
+        network: network_id,
         network_name: $('#id_network_name option:selected').text(),
         locations: locations,
         start_date: $('#id_start_date').val(),
@@ -174,6 +173,7 @@ $('#rate-form-submit').on('click', (event) => {
         union: $('#id_union').val(),
         genre: $('#id_genre').val(),
     };
+    // console.log($('#id_season_number').val());
     console.log(data);
     $.ajax({
         type: "POST",
@@ -190,6 +190,5 @@ $('#rate-form-submit').on('click', (event) => {
         //     alert(result.Result);
         // }
     });
-    console.log(locations);
-
+    // console.log(locations);
 });

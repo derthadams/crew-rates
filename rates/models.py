@@ -180,21 +180,23 @@ class Season(models.Model):
 
 class RawRateReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    job_title_id = models.SmallIntegerField()
+    job_title = models.SmallIntegerField()
     job_title_name = models.CharField(max_length=128)
     # TODO: On form, set localize=False for hourly field
     hourly = models.DecimalField(
         decimal_places=4,
         max_digits=9)
-    guarantee = models.PositiveSmallIntegerField()
-    show_id = models.SmallIntegerField()
+    guarantee = models.SmallIntegerField(
+        # validators=[MinValueValidator(1)]
+    )
+    show = models.SmallIntegerField()
     show_title = models.CharField(max_length=128)
     season_number = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
     # company_id = models.SmallIntegerField(null=True, blank=True)
     # company_name = models.CharField(max_length=128, blank=True)
     companies = models.JSONField(null=True, blank=True)
-    network_id = models.SmallIntegerField(null=True, blank=True)
+    network = models.SmallIntegerField(null=True, blank=True)
     network_name = models.CharField(max_length=128, blank=True)
     locations = models.JSONField(null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
