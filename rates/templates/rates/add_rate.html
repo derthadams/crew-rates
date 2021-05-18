@@ -40,14 +40,16 @@
     {% csrf_token %}
 
     {# Hidden Fields #}
-    {% for field in form.hidden_fields %}
-      {{ field }}
-    {% endfor %}
+{#    {% for field in form.hidden_fields %}#}
+{#      {{ field }}#}
+{#    {% endfor %}#}
+    {{ form.non_field_errors }}
 
     {# Show Title and Season Number #}
     <div class="row">
       <div class="col-9">
         <div class="form-group">
+          {{ form.show_title.errors }}
           <label for="{{ form.show_title.id_for_label }}">
             {{ form.show_title.label }}</label>
           {{ form.show_title }}
@@ -56,6 +58,7 @@
       </div>
       <div class="col-3">
         <div class="form-group">
+          {{ form.season_number.errors }}
           <label for="{{ form.season_number.id_for_label }}">
             {{ form.season_number.label }}</label>
           {{ form.season_number }}
@@ -66,6 +69,7 @@
     <div class="row">
       {# Genre #}
       <div class="form-group col-6">
+        {{ form.genre.errors }}
         <label for="{{ form.genre.id_for_label }}">
           {{ form.genre.label }}</label>
         {{ form.genre }}
@@ -73,6 +77,7 @@
 
       {# Union Status (dropdown) #}
       <div class="form-group col-6">
+        {{ form.union.errors }}
         <label for="{{ form.union.id_for_label }}">
           {{ form.union.label }}
         </label>
@@ -98,6 +103,7 @@
 
     {# Job Title #}
     <div class="form-group">
+      {{ form.job_title_name.errors }}
       <label for="{{ form.job_title_name.id_for_label }}">
         {{ form.job_title_name.label }}</label>
       {{ form.job_title_name }}
@@ -105,6 +111,7 @@
 
     {# Production Companies#}
     <div class="form-group">
+      {{ form.companies.errors }}
       <label for="{{ form.companies.id_for_label }}">
         {{ form.companies.label }}</label>
       {{ form.companies }}
@@ -112,6 +119,7 @@
 
     {# Network #}
     <div class="form-group">
+      {{ form.network_name.errors }}
       <label for="{{ form.network_name.id_for_label }}">
         {{ form.network_name.label }}</label>
       {{ form.network_name }}
@@ -119,6 +127,7 @@
 
     {# Locations #}
     <div class="form-group">
+      {{ form.locations.errors }}
       <label for="{{ form.locations.id_for_label }}">
         {{ form.locations.label }}</label>
       {{ form.locations }}
@@ -126,6 +135,7 @@
 
     {# Start Date #}
     <div class="form-group">
+      {{ form.start_date.errors }}
       <label for="{{ form.start_date.id_for_label }}">
         {{ form.start_date.label }}</label>
       {{ form.start_date }}
@@ -133,6 +143,7 @@
 
     {# End Date #}
     <div class="form-group">
+      {{ form.end_date.errors }}
       <label for="{{ form.end_date.id_for_label }}">
         {{ form.end_date.label }}</label>
       {{ form.end_date }}
@@ -208,14 +219,14 @@
           <label>Rate
             <input type="number"
                    class="form-control rate-input"
-                   name="rate" placeholder="$">
+                   name="rate" placeholder="$" required>
           </label>
         </div>
         <div class="col">
           <label>Guarantee
             <input type="number"
                    class="form-control guar-hours-input"
-                   name="guar-hours" placeholder="hrs">
+                   name="guar-hours" placeholder="hrs" required>
           </label>
         </div>
 
