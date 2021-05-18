@@ -109,45 +109,46 @@ class SeasonAdmin(admin.ModelAdmin):
 @admin.action(description="Approve raw rate report")
 def approve_raw_rate_report(modeladmin, request, queryset):
     for raw_report in queryset:
-        if raw_report.job_title_id == -1:
-            job_title = JobTitle.objects.get_or_create(
+        if raw_report.job_title == -1:
+            job_title_obj = JobTitle.objects.get_or_create(
                 title=raw_report.job_title_name)
-            job_title_id = job_title[0].pk
+            job_title = job_title_obj[0].pk
         else:
-            job_title_id = raw_report.job_title_id
+            job_title = raw_report.job_title
 
-        if raw_report.show_id == -1:
-            show = Show.objects.get_or_create(
+        if raw_report.show == -1:
+            show_obj = Show.objects.get_or_create(
                 title=raw_report.show_title)
-            show_id = show[0].pk
+            show = show_obj[0].pk
         else:
-            show_id = raw_report.show_id
+            show = raw_report.show
 
-        if raw_report.company_id == -1:
-            company = Company.objects.get_or_create(
-                name=raw_report.company_name)
-            company_id = company[0].pk
-        else:
-            company_id = raw_report.company_id
+        #TODO: Implement multiple companies
+        # if raw_report.companies == -1:
+        #     companies_obj = Company.objects.get_or_create(
+        #         name=raw_report.company_name)
+        #     company = companies_obj[0].pk
+        # else:
+        #     company_id = raw_report.company_id
 
-        if raw_report.network_id == -1:
-            network = Network.objects.get_or_create(
+        if raw_report.network == -1:
+            network_obj = Network.objects.get_or_create(
                 name=raw_report.network_name)
-            network_id = network[0].pk
+            network = network_obj[0].pk
         else:
-            network_id = raw_report.network_id
+            network = raw_report.network
 
         if raw_report.locations:
             locations = set()
             scopes = set()
             for location in raw_report.locations['locations']:
-                location_object = make_location_object(location.scopes[0])
-                locations.add(location_object.id)
-                scopes.add(location_object.id)
+                location_object = make_location_object(location['scopes'][0])
+                locations.add(location_object[0].id)
+                scopes.add(location_object[0].id)
 
-                for i in range(1, len(location.scopes)):
-                    scope_object = make_location_object(location.scopes[i])
-                    scopes.add(scope_object)
+                for i in range(1, len(location['scopes'])):
+                    scope_object = make_location_object(location['scopes'][i])
+                    scopes.add(scope_object[0].id)
             locations = list(locations)
             scopes = list(scopes)
         else:
@@ -155,7 +156,7 @@ def approve_raw_rate_report(modeladmin, request, queryset):
             scopes = []
 
         seasons = Season.objects.filter(
-            show__id=show_id,
+            show__id=show,
             number=raw_report.season_number
         )
         if len(seasons):
@@ -165,10 +166,11 @@ def approve_raw_rate_report(modeladmin, request, queryset):
                 season.start_date = raw_report.start_date
                 season.end_date = raw_report.end_date
 
-            season.companies.add(company_id)
+            #TODO: Implement multiple companies
+            # season.companies.add(company_id)
 
             if not season.network:
-                season.network_id = network_id
+                season.network_id = network
 
             season.locations.add(*locations)
             season.scopes.add(*scopes)
@@ -183,22 +185,23 @@ def approve_raw_rate_report(modeladmin, request, queryset):
 
         else:
             season = Season.objects.create(
-                show_id=show_id,
+                show_id=show,
                 number=raw_report.season_number,
                 start_date=raw_report.start_date,
                 end_date=raw_report.end_date,
                 union=raw_report.union,
-                network_id=network_id,
+                network_id=network,
                 genre=raw_report.genre
             )
 
-            season.companies.add(company_id)
+            # TODO: Implement multiple companies
+            # season.companies.add(company_id)
             season.locations.add(*locations)
             season.scopes.add(*scopes)
 
         RateReport.objects.create(
             user=raw_report.user,
-            job_title_id=job_title_id,
+            job_title_id=job_title,
             hourly=raw_report.hourly,
             guarantee=raw_report.guarantee,
             season=season,
@@ -212,10 +215,10 @@ def approve_raw_rate_report(modeladmin, request, queryset):
 
 def make_location_object(location_dict):
     return Location.objects.get_or_create(
-        display_name=location_dict.display_name,
-        long_name=location_dict.long_name,
-        short_name=location_dict.short_name,
-        type=location_dict.type
+        display_name=location_dict['display_name'],
+        long_name=location_dict['long_name'],
+        short_name=location_dict['short_name'],
+        type=location_dict['type']
     )
 
 
