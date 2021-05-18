@@ -6,10 +6,7 @@ from .models import RawRateReport
 class RawRateReportForm(ModelForm):
     class Meta:
         model = RawRateReport
-        exclude = [
-            'user',
-            'approved'
-        ]
+        fields = '__all__'
         labels = {
             'job_title_name': 'Job Title',
             'show_title': 'Show Title',
@@ -20,17 +17,17 @@ class RawRateReportForm(ModelForm):
             'union': 'Union Status'
         }
         widgets = {
-            'job_title_id': HiddenInput(),
-            'job_title_name': Select(),
+            'user': HiddenInput(),
+            'job_title': HiddenInput(),
+            'job_title_name': Select(attrs={'required': 'required'}),
             'hourly': HiddenInput(),
             'guarantee': HiddenInput(),
-            'show_id': HiddenInput(),
-            'show_title': Select(),
-            'network_id': HiddenInput(),
-            'network_name': Select(),
+            'show': HiddenInput(),
+            'show_title': Select(attrs={'required': 'required'}),
+            'network': HiddenInput(),
+            'network_name': Select(attrs={'required': 'required'}),
             'start_date': DateInput(attrs={'type': 'date'}),
             'end_date': DateInput(attrs={'type': 'date'}),
-            # 'union': RadioSelect(),
             'companies': SelectMultiple,
             'locations': Select(attrs={'multiple': 'multiple'}),
         }
