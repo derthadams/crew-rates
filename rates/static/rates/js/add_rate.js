@@ -34,8 +34,24 @@ $('#id_show_title')
         },
         tags: true,
         ajax: {
+            delay: 250,
             url: '/api/shows/',
-        }
+        },
+        createTag: function (params) {
+            let term = $.trim(params.term);
+            // console.log(term);
+            // if (term === '' || $('input.select2-search__field').val().length < 2) {
+            //     return null;
+            // }
+            // console.log($('#select2-id_show_title-container').text());
+            // console.log($(''))
+            // $('#select2-id_show_title-container').text("");
+            return {
+                id: term,
+                text: term,
+
+            }
+        },
     })
     .on('select2:select', event => {
         if (event.params.data.id === event.params.data.text) {
