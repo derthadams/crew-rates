@@ -23,7 +23,7 @@ class AddRateView(View):
         return render(request, 'rates/add_rate.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
-        # sample_data = {
+        # sample_data = json.dumps({
         #     "job_title": 1,
         #     "job_title_name": "Camera Operator",
         #     "hourly": 54.5454,
@@ -39,30 +39,35 @@ class AddRateView(View):
         #     "end_date": "2021-02-01",
         #     "union": "IA",
         #     "genre": "RE",
-        # }
+        # })
+        # print(request.body)
+        # print(f"request body type:{type(request.body)}")
         data = json.loads(request.body)
+        # data = json.loads(sample_data)
         headers = dict(request.headers)
 
         data['user'] = request.user.id
+        # data['user'] = 1
 
-        print(json.dumps(data, indent=4))
+        # print(json.dumps(data, indent=4))
         # print(json.dumps(headers, indent=4))
 
         # form = RawRateReportForm(data)
         form = RawRateReportForm(data)
 
-        print(form.is_bound)
+        # print(form.is_bound)
 
         if form.is_valid():
-            print("Form valid")
+            # print("Form valid")
             form.save()
             return HttpResponseRedirect(reverse('thanks'))
         else:
-            print("Form not valid")
-            print(form.errors)
+            # print("Form not valid")
+            # print(form.errors)
             # return HttpResponse("Form not valid")
             # return render(request, 'rates/add_rate.html', {'form': form})
             context = {'form': form}
+            # print(f"context: \n{context}")
             return render(request, 'rates/add_rate.html', context)
 
 
