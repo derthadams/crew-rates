@@ -59,6 +59,22 @@ $('#id_show_title')
         } else {
             show_id = event.params.data.id;
         }
+        // console.log(`Show ID after select event: ${show_id}`)
+    });
+
+// $('#select2-id_show_title-container')
+//     .on('click', event => {
+//         console.log('click');
+//     });
+//
+// $('.select2-selection')
+//     .on('click', event => {
+//         console.log('select2-selection');
+//     });
+
+$('id-genre')
+    .select2({
+        theme: 'bootstrap4',
     });
 
 $('#id_job_title_name')
