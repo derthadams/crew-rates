@@ -70,6 +70,9 @@ class AddRateView(View):
             # print(f"context: \n{context}")
             return render(request, 'rates/add_rate.html', context)
 
+    # TODO: When user submits form the data is transmitted and processed, but the page
+    #       does not redirect to the thanks url!!
+
 
 def thanks(request):
     template = loader.get_template('rates/thanks.html')
