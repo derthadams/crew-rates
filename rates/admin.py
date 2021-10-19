@@ -141,7 +141,8 @@ def approve_raw_rate_report(modeladmin, request, queryset):
         if raw_report.locations:
             locations = set()
             scopes = set()
-            for location in raw_report.locations['locations']:
+            # for location in raw_report.locations['locations']:
+            for location in raw_report.locations:
                 location_object = make_location_object(location['scopes'][0])
                 locations.add(location_object[0].id)
                 scopes.add(location_object[0].id)
