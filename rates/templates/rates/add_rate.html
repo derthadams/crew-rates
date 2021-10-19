@@ -153,6 +153,11 @@
       {{ form.end_date }}
     </div>
 
+    {# Handle redirects TODO: Does not do anything #}
+    {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+
     {# Submit #}
     <div class="form-group mt-4">
       <input type="submit" class="btn btn-success form-control"
