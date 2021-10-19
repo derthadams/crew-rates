@@ -185,10 +185,10 @@ $('#id_locations')
 
 $('#rate-form-submit').on('click', (event) => {
     event.preventDefault();
-    let selected = $('#id_locations').select2("data");
-    let selected_locations = [];
-    for(let location of selected) {
-        selected_locations.push(locationDetails[location.id])
+    let selected_locations = $('#id_locations').select2("data");
+    let selected_location_details = [];
+    for(let location of selected_locations) {
+        selected_location_details.push(locationDetails[location.id])
     }
     let locations = {
         locations: selected_locations
@@ -205,7 +205,7 @@ $('#rate-form-submit').on('click', (event) => {
         companies: company_ids,
         network: network_id || -1,
         network_name: $('#id_network_name option:selected').text(),
-        locations: locations,
+        locations: selected_location_details,
         start_date: $('#id_start_date').val(),
         end_date: $('#id_end_date').val(),
         union: $('#id_union').val(),
