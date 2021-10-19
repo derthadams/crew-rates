@@ -6,6 +6,7 @@ let sessionID = newSessionID();
 
 let show_id;
 let job_title_id;
+let company_ids = [];
 let network_id;
 
 const csrftoken = Cookies.get('csrftoken');
@@ -60,6 +61,27 @@ $('#id_job_title_name')
             job_title_id = -1;
         } else {
             job_title_id = event.params.data.id;
+        }
+    });
+
+$('#id_companies')
+    .select2({
+        placeholder: "Search for companies...",
+        minimumInputLength: 3,
+        multiple: true,
+        language: {
+            inputTooShort: args => ""
+        },
+        // theme: 'bootstrap4',
+        ajax: {
+            url: '/api/companies/',
+        },
+    })
+    .on('select2:select', (event) => {
+        if (event.params.data.id === event.params.data.text) {
+            company_ids.push(-1);
+        } else {
+            company_ids.push(event.params.data.id);
         }
     });
 
@@ -164,8 +186,8 @@ $('#rate-form-submit').on('click', (event) => {
         show: show_id,
         show_title: $('#id_show_title option:selected').text(),
         season_number: Number($('#id_season_number').val()),
-        companies: '',
-        network: network_id,
+        companies: company_ids,
+        network: network_id || -1,
         network_name: $('#id_network_name option:selected').text(),
         locations: locations,
         start_date: $('#id_start_date').val(),
