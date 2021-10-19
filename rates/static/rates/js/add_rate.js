@@ -211,11 +211,11 @@ $('#rate-form-submit').on('click', (event) => {
     };
 
     const data = {
-        job_title: job_title_id,
+        job_title: job_title_id || -1,
         job_title_name: $('#id_job_title_name option:selected').text(),
         hourly: Number(workedRate.hourlyRate.toFixed(4)),
         guarantee: workedRate.guaranteedHours,
-        show: show_id,
+        show: show_id || -1,
         show_title: $('#id_show_title option:selected').text(),
         season_number: Number($('#id_season_number').val()),
         companies: company_ids,
