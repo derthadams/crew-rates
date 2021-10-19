@@ -19,7 +19,7 @@ function makeNewOptionID(event) {
     if(event.params.data.id === event.params.data.text) {
         event.params.data.id = -1;
     }
-    console.log(event.params.data);
+    // console.log(event.params.data);
 }
 
 const workedRateContainer = document.getElementById('rate-widget-base');
@@ -29,10 +29,12 @@ const workedRate = new RateWidget('worked-rate', workedRateContainer);
 $('#id_show_title')
     .select2({
         minimumInputLength: 3,
-        language: {
-            inputTooShort: args => ""
-        },
+        // language: {
+        //     inputTooShort: args => ""
+        // },
+        // allowClear: true,
         tags: true,
+        // theme: 'bootstrap4',
         ajax: {
             delay: 250,
             url: '/api/shows/',
@@ -144,6 +146,7 @@ $('#id_locations')
         language: {
             inputTooShort: args => ""
         },
+        // theme: 'bootstrap4',
         ajax: {
             url: '/api/autocomplete/',
             data: function(params) {
@@ -195,7 +198,6 @@ $('#id_locations')
                     scopes: scopes
                 }
         });
-        // console.log(locationDetails);
         sessionID = newSessionID();
     });
 
@@ -206,9 +208,6 @@ $('#rate-form-submit').on('click', (event) => {
     for(let location of selected_locations) {
         selected_location_details.push(locationDetails[location.id])
     }
-    let locations = {
-        locations: selected_locations
-    };
 
     const data = {
         job_title: job_title_id || -1,
@@ -227,8 +226,7 @@ $('#rate-form-submit').on('click', (event) => {
         union: $('#id_union').val(),
         genre: $('#id_genre').val(),
     };
-    // console.log($('#id_season_number').val());
-    console.log(data);
+
     $.ajax({
         type: "POST",
         url: "/add-rate/",
@@ -244,5 +242,4 @@ $('#rate-form-submit').on('click', (event) => {
         //     alert(result.Result);
         // }
     });
-    // console.log(locations);
 });
