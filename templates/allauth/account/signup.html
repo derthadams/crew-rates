@@ -12,17 +12,53 @@
 {% block form-accounts %}
 
     <div class="text-center mb-4">
-        <img src="{% static 'rates/img/crewrates_logo.png' %}" class="mb-3">
-        <h1>Sign up</h1>
+      <img src="{% static 'rates/img/cr_square_logo.svg' %}" width=100 class="mb-3">
+      <img src="{% static 'rates/img/cr_text_logo.svg' %}" width=200 class="mt-3">
     </div>
 
     <p>Thanks for accepting your invitation!</p>
 
-    <p>To start using crewrates.org, sign up with a social account:</p>
-
-
     <div class="text-center">
         {% include 'account/provider_list.html' with function="Sign up" %}
+    </div>
+    <div class="my-3">
+        <hr class="or">
+    </div>
+
+
+    <div class="email-signup container">
+        <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+        {{ form.non_field_error }}
+
+        <div class="form-group">
+          {{ form.email.errors }}
+        <input class="form-control" type="{{ form.email.type }}" name="{{ form.email.name }}"
+               value="{% if form.email.value %} {{ form.email.value }} {% endif %}"
+               placeholder="Email" required id="id_email">
+        </div>
+
+        <div class="form-group mt-n2">
+          {{ form.password1.errors }}
+        <input class="form-control" type="{{ form.password1.type }}" name="{{ form.password1.name }}"
+               placeholder="Password" required id="id_password1">
+        </div>
+
+        <div class="form-group mt-n2">
+          {{ form.password2.errors }}
+        <input class="form-control" type="{{ form.password2.type }}" name="{{ form.password2.name }}"
+               placeholder="Re-type password" required id="id_password2">
+        </div>
+
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-dark btn-block">Sign up with email</button>
+        </div>
+
+    </form>
     </div>
 
 {% endblock %}
