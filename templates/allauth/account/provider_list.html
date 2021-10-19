@@ -22,7 +22,8 @@
            href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
             {% with 'rates/img/logo_'|add:provider.name|add:'.png' as logo_url %}
                 <img src="{% static logo_url %}" alt="" width="40"
-                     height="40" class="social-logo">{% endwith %}{{ function }} with {{ provider.name }}</a>
+                     height="40" class="social-logo">{% endwith %}
+          {{ function }} with {{ provider.name }}</a>
     </div>
 {% endfor %}
 
