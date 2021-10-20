@@ -54,3 +54,14 @@ def send_deauthorization_request(sender, request, socialaccount, socialtoken, **
         response = requests.post('https://oauth2.googleapis.com/revoke', params=payload,
                                  headers=headers)
         print(response.status_code)
+    elif socialaccount.provider == 'twitter':
+        app = SocialApp.objects.get(provider='twitter')
+        url = u'https://api.twitter.com/1.1/oauth/invalidate_token'
+        header_oauth = OAuth1(app.client_id, app.secret, socialtoken.token, socialtoken.token_secret,
+                              signature_type='auth_header')
+        params = {
+            'access_token': socialtoken.token
+        }
+        response = requests.post(url, auth=header_oauth, params=params)
+        print(response.status_code)
+        print(response.text)
