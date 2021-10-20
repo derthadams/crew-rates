@@ -75,7 +75,10 @@ class DefaultSocialAccountAdapter(object):
                 print("Social account uid: ", sociallogin.account.uid)
             else:
                 print("No social account uid")
+        else:
+            print("No social login")
 
+        if sociallogin.user.id:
             existing_uid = SocialAccount.objects.filter(
                 uid__iexact=sociallogin.account.uid).first()
             if not existing_uid:
@@ -89,8 +92,6 @@ class DefaultSocialAccountAdapter(object):
                 print("No matching social account")
                 raise ImmediateHttpResponse(HttpResponseRedirect(
                     settings.ACCOUNT_LOGOUT_REDIRECT_URL))
-        else:
-            print("No social login")
 
     def authentication_error(
         self,
