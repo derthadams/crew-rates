@@ -1,0 +1,12 @@
+{% for message in messages %}
+  {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+  <div class="alert alert-danger">
+  {% else %}
+  <div class="alert alert-success">
+  {% endif %}
+      <a class="close" href="#" data-dismiss="alert">×</a>
+
+      {{ message }}
+
+  </div>
+{% endfor %}
