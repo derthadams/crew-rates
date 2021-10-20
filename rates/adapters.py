@@ -78,20 +78,20 @@ class DefaultSocialAccountAdapter(object):
         else:
             print("No social login")
 
-        if sociallogin.user.id:
-            existing_uid = SocialAccount.objects.filter(
-                uid__iexact=sociallogin.account.uid).first()
-            if not existing_uid:
-                messages.add_message(
-                    request,
-                    messages.ERROR,
-                    self.error_messages['no_matching_social_account']
-                    % sociallogin.account.get_provider().name
-                )
-                # raise ImmediateHttpResponse(HttpResponse(status=500))
-                print("No matching social account")
-                raise ImmediateHttpResponse(HttpResponseRedirect(
-                    settings.ACCOUNT_LOGOUT_REDIRECT_URL))
+        # if sociallogin.user.id:
+        #     existing_uid = SocialAccount.objects.filter(
+        #         uid__iexact=sociallogin.account.uid).first()
+        #     if not existing_uid:
+        #         messages.add_message(
+        #             request,
+        #             messages.ERROR,
+        #             self.error_messages['no_matching_social_account']
+        #             % sociallogin.account.get_provider().name
+        #         )
+        #         # raise ImmediateHttpResponse(HttpResponse(status=500))
+        #         print("No matching social account")
+        #         raise ImmediateHttpResponse(HttpResponseRedirect(
+        #             settings.ACCOUNT_LOGOUT_REDIRECT_URL))
 
     def authentication_error(
         self,
