@@ -1,4 +1,4 @@
-{% extends "socialaccount/base.html" %}
+{% extends "account/base.html" %}
 
 {% load i18n %}
 
@@ -7,7 +7,7 @@
 {% block content %}
 <h1>{% trans "Account Connections" %}</h1>
 
-  {% include 'account/message_list.html' %}
+{% include 'account/message_list.html' %}
 
 {% if form.accounts %}
 <p>{% blocktrans %}You can sign in to your account using any of the following third party accounts:{% endblocktrans %}</p>
