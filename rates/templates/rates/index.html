@@ -2,6 +2,9 @@
 
 {% block content-inner %}
 <p>Hello world, you're at the index page</p>
+
+{% include 'account/message_list.html' %}
+
 <form method="post" action="{% url 'account_logout' %}" class="inline">
     {% csrf_token %}
     {% if redirect_field_value %}
