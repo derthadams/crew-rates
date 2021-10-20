@@ -71,9 +71,10 @@ class DisconnectForm(Form):
 
     def save(self):
         account = self.cleaned_data["account"]
-        token = SocialToken.objects.get(account_id=account.id)
+        socialtoken = SocialToken.objects.get(account_id=account.id)
         # print(f"Token from save(): {token}")
         account.delete()
         social_account_removed.send(
-            sender=SocialAccount, request=self.request, socialaccount=account, token=token
+            sender=SocialAccount, request=self.request, socialaccount=account,
+            socialtoken=socialtoken
         )

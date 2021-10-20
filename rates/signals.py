@@ -4,7 +4,10 @@ from .models import RawRateReport, User
 from django.core.mail import send_mail
 
 import requests
+from requests_oauthlib import OAuth1
 from pprint import pprint
+
+from allauth.socialaccount.models import SocialApp
 
 social_account_removed = Signal()
 
@@ -28,13 +31,14 @@ def new_rate_report_alert(sender, instance, **kwargs):
 
 
 @receiver(social_account_removed)
-def send_deauthorization_request(sender, request, socialaccount, token, **kwargs):
+def send_deauthorization_request(sender, request, socialaccount, socialtoken, **kwargs):
     # Get user's social account uid and their auth token (socialtoken) from the database
         # For Facebook: send a DELETE request to:
         # https://graph.facebook.com/{uid}/permissions?access_token={access_token}
     if socialaccount.provider == 'facebook':
+        print(f"socialtoken.token: {socialtoken.token}")
         payload = {
-            'access_token': token
+            'access_token': socialtoken.token
         }
         response = requests.delete(f'https://graph.facebook.com/{socialaccount.uid}/permissions',
                                    params=payload)
@@ -42,7 +46,7 @@ def send_deauthorization_request(sender, request, socialaccount, token, **kwargs
         print(response.text)
     elif socialaccount.provider == 'google':
         payload = {
-            'token': token
+            'token': socialtoken.token
         }
         headers = {
             'Content-type': 'application/x-www-form-urlencoded'
