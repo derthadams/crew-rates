@@ -36,13 +36,12 @@ def send_deauthorization_request(sender, request, socialaccount, socialtoken, **
         # For Facebook: send a DELETE request to:
         # https://graph.facebook.com/{uid}/permissions?access_token={access_token}
     if socialaccount.provider == 'facebook':
-        print(f"socialtoken.token: {socialtoken.token}")
         payload = {
             'access_token': socialtoken.token
         }
         response = requests.delete(f'https://graph.facebook.com/{socialaccount.uid}/permissions',
                                    params=payload)
-        pprint(vars(socialaccount))
+        print(response.status_code)
         print(response.text)
     elif socialaccount.provider == 'google':
         payload = {

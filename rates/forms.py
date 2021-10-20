@@ -45,7 +45,6 @@ class RawRateReportForm(ModelForm):
             # pass
             self.fields[field].widget.attrs.update({'class': 'form-control',
                                                     'autocomplete': 'off'})
-            # self.fields[field].widget.attrs.update({'autocomplete': 'off'})
 
 
 class DisconnectForm(Form):
@@ -72,7 +71,6 @@ class DisconnectForm(Form):
     def save(self):
         account = self.cleaned_data["account"]
         socialtoken = SocialToken.objects.get(account_id=account.id)
-        # print(f"Token from save(): {token}")
         account.delete()
         social_account_removed.send(
             sender=SocialAccount, request=self.request, socialaccount=account,
