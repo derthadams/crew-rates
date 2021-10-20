@@ -1,7 +1,11 @@
 from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.dispatch import receiver, Signal
 from .models import RawRateReport, User
 from django.core.mail import send_mail
+
+import requests
+
+social_account_removed = Signal()
 
 
 @receiver(post_save, sender=RawRateReport)
@@ -20,3 +24,17 @@ def new_rate_report_alert(sender, instance, **kwargs):
             emails,
             fail_silently=False
         )
+
+
+@receiver(social_account_removed)
+def send_deauthorization_request(sender, request, socialaccount, token, **kwargs):
+    # Get user's social account uid and their auth token (socialtoken) from the database
+        # For Facebook: send a DELETE request to:
+        # https://graph.facebook.com/{uid}/permissions?access_token={access_token}
+    payload = {
+        'access_token': token
+    }
+    response = requests.delete(f'https://graph.facebook.com/{socialaccount.uid}/permissions',
+                               params=payload)
+    print(response.text)
+    pass

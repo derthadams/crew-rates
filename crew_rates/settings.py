@@ -173,6 +173,10 @@ ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_ADAPTER = 'rates.adapters.DefaultSocialAccountAdapter'
+SOCIALACCOUNT_FORMS = {
+    'disconnect': 'rates.forms.DisconnectForm',
+    'signup': 'allauth.socialaccount.forms.SignupForm',
+}
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

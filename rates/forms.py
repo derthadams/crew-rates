@@ -1,6 +1,10 @@
-from django.forms import ModelForm, HiddenInput, DateInput, RadioSelect, \
-    Select, SelectMultiple
+from django.forms import Form, ModelForm, HiddenInput, DateInput, RadioSelect, \
+    Select, SelectMultiple, ModelChoiceField
 from .models import RawRateReport
+from .adapters import get_adapter
+
+from allauth.socialaccount.models import SocialAccount, SocialToken
+from .signals import social_account_removed
 
 
 class RawRateReportForm(ModelForm):
@@ -42,3 +46,34 @@ class RawRateReportForm(ModelForm):
             self.fields[field].widget.attrs.update({'class': 'form-control',
                                                     'autocomplete': 'off'})
             # self.fields[field].widget.attrs.update({'autocomplete': 'off'})
+
+
+class DisconnectForm(Form):
+    account = ModelChoiceField(
+        queryset=SocialAccount.objects.none(),
+        widget=RadioSelect,
+        required=True,
+    )
+
+    def __init__(self, *args, **kwargs):
+        print("IN DISCONNECT FORM")
+        self.request = kwargs.pop("request")
+        self.accounts = SocialAccount.objects.filter(user=self.request.user)
+        super(DisconnectForm, self).__init__(*args, **kwargs)
+        self.fields["account"].queryset = self.accounts
+
+    def clean(self):
+        cleaned_data = super(DisconnectForm, self).clean()
+        account = cleaned_data.get("account")
+        if account:
+            get_adapter(self.request).validate_disconnect(account, self.accounts)
+        return cleaned_data
+
+    def save(self):
+        account = self.cleaned_data["account"]
+        token = SocialToken.objects.get(account_id=account.id)
+        # print(f"Token from save(): {token}")
+        account.delete()
+        social_account_removed.send(
+            sender=SocialAccount, request=self.request, socialaccount=account, token=token
+        )
