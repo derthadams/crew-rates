@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.twitter',
+    'invitations',
     'sslserver',
 ]
 
@@ -160,7 +161,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # allauth-specific configuration settings
-ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter'
+# ACCOUNT_ADAPTER = 'allauth.account.adapter.DefaultAccountAdapter'
+ACCOUNT_ADAPTER = 'invitations.models.InvitationsAdapter'
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
@@ -177,6 +179,13 @@ SOCIALACCOUNT_FORMS = {
     'disconnect': 'rates.forms.DisconnectForm',
     'signup': 'allauth.socialaccount.forms.SignupForm',
 }
+
+# django-invitations configuration
+INVITATIONS_INVITATION_ONLY = True
+INVITATIONS_ACCEPT_INVITE_AFTER_SIGNUP = True
+INVITATIONS_GONE_ON_ACCEPT_ERROR = False
+INVITATIONS_ADAPTER = ACCOUNT_ADAPTER
+INVITATIONS_EMAIL_SUBJECT_PREFIX = '[Crew Rates]'
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path, re_path
-from django.views.generic import RedirectView
+# from django.views.generic import RedirectView
+from django.conf.urls import url
 
 urlpatterns = [
     # Redirect all email-login-related allauth urls to the signin page
@@ -36,4 +37,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+    url(r'^invitations/', include('invitations.urls', namespace='invitations')),
 ]
