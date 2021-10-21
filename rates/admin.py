@@ -1,7 +1,10 @@
+from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils.translation import ugettext_lazy as _
 from .models import User, Company, JobTitle, Show, Network, Location, Season, \
-    RawRateReport, RateReport
+    RawRateReport, RateReport, RatesInvitation
+from invitations.forms import InvitationAdminAddForm, InvitationAdminChangeForm
 
 
 class UserAdmin(BaseUserAdmin):
@@ -104,6 +107,18 @@ class SeasonAdmin(admin.ModelAdmin):
     ]
     inlines = [RateReportInline]
     list_display = ('title', 'id')
+
+# class InvitationAdmin(admin.ModelAdmin):
+#     list_display = ('email', 'sent', 'accepted')
+#
+#     def get_form(self, request, obj=None, **kwargs):
+#         if obj:
+#             kwargs['form'] = InvitationAdminChangeForm
+#         else:
+#             kwargs['form'] = InvitationAdminAddForm
+#             kwargs['form'].user = request.user
+#             kwargs['form'].request = request
+#         return super(InvitationAdmin, self).get_form(request, obj, **kwargs)
 
 
 @admin.action(description="Approve raw rate report")
@@ -228,6 +243,37 @@ class RawRateReportAdmin(admin.ModelAdmin):
     list_filter = ('approved',)
 
 
+class RatesInvitationAdminAddForm(InvitationAdminAddForm):
+    name = forms.CharField(
+        label=_("Name"),
+        required=False,
+        widget=forms.TextInput(attrs={"type": "text", "size": "30"})
+    )
+
+    def save(self, *args, **kwargs):
+        cleaned_data = super(InvitationAdminAddForm, self).clean()
+        email = cleaned_data.get("email")
+        name = cleaned_data.get("name")
+        params = {'email': email, 'name': name}
+        if cleaned_data.get("inviter"):
+            params['inviter'] = cleaned_data.get("inviter")
+        instance = RatesInvitation.create(**params)
+        instance.send_invitation(self.request)
+        super(InvitationAdminAddForm, self).save(*args, **kwargs)
+        return instance
+
+    class Meta:
+        model = RatesInvitation
+        fields = ("email", "name", "inviter")
+
+
+class RatesInvitationAdminChangeForm(InvitationAdminChangeForm):
+
+    class Meta:
+        model = RatesInvitation
+        fields = '__all__'
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(JobTitle)
@@ -237,3 +283,4 @@ admin.site.register(Location, LocationAdmin)
 admin.site.register(Season, SeasonAdmin)
 admin.site.register(RawRateReport, RawRateReportAdmin)
 admin.site.register(RateReport)
+# admin.site.register(RatesInvitation)

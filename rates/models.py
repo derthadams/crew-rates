@@ -1,8 +1,14 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
+from django.contrib.sites.models import Site
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
+
+from invitations import signals
+from invitations.models import Invitation
+from invitations.adapters import get_invitations_adapter
 
 
 class UserManager(BaseUserManager):
@@ -248,3 +254,38 @@ class RateReport(models.Model):
     def __str__(self):
         return f'{self.user}: {self.season}, {self.job_title}, ${self.hourly}'
 
+
+class RatesInvitation(Invitation):
+    name = models.CharField(
+        max_length=128
+    )
+
+    def send_invitation(self, request, **kwargs):
+        current_site = kwargs.pop('site', Site.objects.get_current())
+        invite_url = reverse('invitations:accept-invite',
+                             args=[self.key])
+        invite_url = request.build_absolute_uri(invite_url)
+        ctx = kwargs
+        ctx.update({
+            'invite_url': invite_url,
+            'site_name': current_site.name,
+            'name': self.name,
+            'email': self.email,
+            'key': self.key,
+            'inviter': self.inviter,
+        })
+
+        email_template = 'invitations/email/email_invite'
+
+        get_invitations_adapter().send_mail(
+            email_template,
+            self.email,
+            ctx)
+        self.sent = timezone.now()
+        self.save()
+
+        signals.invite_url_sent.send(
+            sender=self.__class__,
+            instance=self,
+            invite_url_sent=invite_url,
+            inviter=self.inviter)
