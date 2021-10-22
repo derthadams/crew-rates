@@ -27,7 +27,7 @@
           <hr class="or">
         </div>
 
-        <div class="email-signup">
+        <div>
           <form class="login" method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}
 
@@ -45,7 +45,7 @@
             <input class="form-control" type="{{ form.password.type }}"
                    name="{{ form.password.name }}"
                    placeholder="Password" required id="id_password"
-                   autocomplete="new-password">
+                   autocomplete="current-password">
             </div>
 
             {% if redirect_field_value %}
