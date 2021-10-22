@@ -12,7 +12,7 @@ import json
 
 @login_required
 def index(request):
-    template = loader.get_template('rates/index.html')
+    template = loader.get_template('rates/discover.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
