@@ -1,0 +1,32 @@
+.social-logo {
+    margin: 0 10px 0 10px;
+}
+
+.bs-social-btn {
+    border-radius: 5px;
+    border: 1px solid #e8e8e8;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    /*padding-left: 10px;*/
+    padding-left: 5%;
+    margin-top: 10px;
+    /*width: 250px;*/
+    width: 100%;
+}
+
+.bs-social-btn-delete {
+    border: 1px solid red;
+}
+
+hr {
+    text-align: center;
+    width: 70%
+}
+
+.or:after {
+    background: #fff;
+    content: 'OR';
+    padding: 0 4px;
+    position: relative;
+    top: -13px;
+}

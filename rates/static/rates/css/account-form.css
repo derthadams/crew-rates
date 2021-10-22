@@ -1,0 +1,13 @@
+.form-accounts {
+    border-radius: 10px;
+    width: 100%;
+    max-width: 420px;
+    /*padding-left: 15%;*/
+    /*padding-right: 15%;*/
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-bottom: 50px;
+    margin: auto;
+    /*background-color: white;*/
+    text-align: center;
+}
