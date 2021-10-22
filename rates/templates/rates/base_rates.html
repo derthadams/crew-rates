@@ -50,7 +50,8 @@
                     <a class="dropdown-item" href="/accounts/password/change">Password</a>
                     <a class="dropdown-item" href="/accounts/social/connections">Social accounts</a>
                     <a class="dropdown-item" href="#">Settings</a>
-                    <form method="post" action="{% url 'account_logout' %}" class="dropdown-item">
+                    <div class="dropdown-divider"></div>
+                    <form method="post" action="{% url 'account_logout' %}" class="dropdown-item px-3">
                       {% csrf_token %}
                       {% if redirect_field_value %}
                         <input type="hidden"
@@ -60,7 +61,7 @@
                       <button type="submit"
                               name="{{ redirect_field_name }}"
                               value="{{ redirect_field_value }}"
-                              class="btn px-0 my-n1">Sign out
+                              class="btn pl-2 pr-0 my-n1 btn-block text-left">Sign out
                       </button>
                     </form>
                   </div>
