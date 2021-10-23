@@ -25,6 +25,7 @@
   /*background-color: #0275D8;*/
   /*background-color: #888;*/
   /*color: #FFF;*/
+  border-color: #1b1b1b;
 }
 
 .list-group input[type="radio"]:checked + .list-group-item:before {
