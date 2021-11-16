@@ -1,3 +1,5 @@
+import uuid
+
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.contrib.sites.models import Site
@@ -62,6 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Company(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     name = models.CharField(max_length=128, unique=True)
 
     class Meta:
@@ -73,6 +76,7 @@ class Company(models.Model):
 
 
 class JobTitle(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     title = models.CharField(max_length=128, unique=True)
 
     def __str__(self):
@@ -80,6 +84,7 @@ class JobTitle(models.Model):
 
 
 class Show(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     title = models.CharField(max_length=128)
 
     def __str__(self):
@@ -87,6 +92,7 @@ class Show(models.Model):
 
 
 class Network(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     name = models.CharField(max_length=128, unique=True)
 
     def __str__(self):
