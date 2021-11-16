@@ -38,7 +38,7 @@ class JobTitlesAPIView(View):
             job_title.objects.filter(
                 title__icontains=self.request.GET.get('q')
             )
-            .annotate(value=F('id'), label=F('title'))
+            .annotate(value=F('uuid'), label=F('title'))
             .values('value', 'label'))
         return JsonResponse({"results": results})
 
@@ -50,7 +50,7 @@ class ShowsAPIView(View):
             show.objects.filter(
                 title__icontains=self.request.GET.get('q')
             )
-            .annotate(value=F('id'), label=F('title'))
+            .annotate(value=F('uuid'), label=F('title'))
             .values('value', 'label'))
         return JsonResponse({"results": results})
 
@@ -62,7 +62,7 @@ class CompaniesAPIView(View):
             company.objects.filter(
                 name__icontains=self.request.GET.get('q')
             )
-            .annotate(value=F('id'), label=F('name'))
+            .annotate(value=F('uuid'), label=F('name'))
             .values('value', 'label'))
         return JsonResponse({"results": results})
 
@@ -74,6 +74,6 @@ class NetworksAPIView(View):
             network.objects.filter(
                 name__icontains=self.request.GET.get('q')
             )
-            .annotate(value=F('id'), label=F('name'))
+            .annotate(value=F('uuid'), label=F('name'))
             .values('value', 'label'))
         return JsonResponse({"results": results})
