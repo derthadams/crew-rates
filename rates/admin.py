@@ -108,65 +108,69 @@ class SeasonAdmin(admin.ModelAdmin):
     inlines = [RateReportInline]
     list_display = ('title', 'id')
 
-# class InvitationAdmin(admin.ModelAdmin):
-#     list_display = ('email', 'sent', 'accepted')
-#
-#     def get_form(self, request, obj=None, **kwargs):
-#         if obj:
-#             kwargs['form'] = InvitationAdminChangeForm
-#         else:
-#             kwargs['form'] = InvitationAdminAddForm
-#             kwargs['form'].user = request.user
-#             kwargs['form'].request = request
-#         return super(InvitationAdmin, self).get_form(request, obj, **kwargs)
-
 
 @admin.action(description="Approve raw rate report")
 def approve_raw_rate_report(modeladmin, request, queryset):
     for raw_report in queryset:
-        if raw_report.job_title == -1:
-            job_title_obj = JobTitle.objects.get_or_create(
+        if raw_report.job_title is None:
+            job_title_obj, created = JobTitle.objects.get_or_create(
                 title=raw_report.job_title_name)
-            job_title = job_title_obj[0].pk
         else:
-            job_title = raw_report.job_title
+            job_title_obj = JobTitle.objects.get(uuid=raw_report.job_title)
+        job_title = job_title_obj.pk
 
-        if raw_report.show == -1:
-            show_obj = Show.objects.get_or_create(
+        if raw_report.show is None:
+            show_obj, created = Show.objects.get_or_create(
                 title=raw_report.show_title)
-            show = show_obj[0].pk
         else:
-            show = raw_report.show
+            show_obj = Show.objects.get(uuid=raw_report.show)
+        show = show_obj.pk
 
-        #TODO: Implement multiple companies
-        # if raw_report.companies == -1:
-        #     companies_obj = Company.objects.get_or_create(
-        #         name=raw_report.company_name)
-        #     company = companies_obj[0].pk
-        # else:
-        #     company_id = raw_report.company_id
+        """
+        2021-12-13
+        I'm assuming for now that the companies JSON object looks like this:
+        
+        companies = [
+            {
+                uuid: "0fa1f64b-58d6-4963-914c-b0711c70e051",
+                name: "Magical Elves"
+            },
+            {
+                uuid: None,
+                name: "Some New Company
+            },
+        ]
+        """
+        companies = []
+        for company in raw_report.companies:
+            if company['uuid'] is None:
+                company_obj, created = Company.objects.get_or_create(
+                    name=company['name'])
+            else:
+                company_obj = Company.objects.get(uuid=company['uuid'])
+            companies.append(company_obj.pk)
 
-        if raw_report.network == -1:
-            network_obj = Network.objects.get_or_create(
+        if raw_report.network is None:
+            network_obj, created = Network.objects.get_or_create(
                 name=raw_report.network_name)
-            network = network_obj[0].pk
         else:
-            network = raw_report.network
+            network_obj = Network.objects.get(uuid=raw_report.network)
+        network = network_obj.pk
 
         if raw_report.locations:
-            locations = set()
-            scopes = set()
-            # for location in raw_report.locations['locations']:
+            locations_set = set()
+            scopes_set = set()
+
             for location in raw_report.locations:
-                location_object = make_location_object(location['scopes'][0])
-                locations.add(location_object[0].id)
-                scopes.add(location_object[0].id)
+                location_object, created = make_location_object(location['scopes'][0])
+                locations_set.add(location_object.id)
+                scopes_set.add(location_object.id)
 
                 for i in range(1, len(location['scopes'])):
-                    scope_object = make_location_object(location['scopes'][i])
-                    scopes.add(scope_object[0].id)
-            locations = list(locations)
-            scopes = list(scopes)
+                    scope_object, created = make_location_object(location['scopes'][i])
+                    scopes_set.add(scope_object.id)
+            locations = list(locations_set)
+            scopes = list(scopes_set)
         else:
             locations = []
             scopes = []
@@ -182,14 +186,12 @@ def approve_raw_rate_report(modeladmin, request, queryset):
                 season.start_date = raw_report.start_date
                 season.end_date = raw_report.end_date
 
-            #TODO: Implement multiple companies
-            # season.companies.add(company_id)
-
             if not season.network:
                 season.network_id = network
 
             season.locations.add(*locations)
             season.scopes.add(*scopes)
+            season.companies.add(*companies)
 
             if not season.genre:
                 season.genre = raw_report.genre
@@ -210,10 +212,9 @@ def approve_raw_rate_report(modeladmin, request, queryset):
                 genre=raw_report.genre
             )
 
-            # TODO: Implement multiple companies
-            # season.companies.add(company_id)
             season.locations.add(*locations)
             season.scopes.add(*scopes)
+            season.companies.add(*companies)
 
         RateReport.objects.create(
             user=raw_report.user,
