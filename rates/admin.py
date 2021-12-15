@@ -111,15 +111,16 @@ class SeasonAdmin(admin.ModelAdmin):
 
 @admin.action(description="Approve raw rate report")
 def approve_raw_rate_report(modeladmin, request, queryset):
+    uuid_null = '00000000-0000-0000-0000-000000000000'
     for raw_report in queryset:
-        if raw_report.job_title is None:
+        if raw_report.job_title == uuid_null:
             job_title_obj, created = JobTitle.objects.get_or_create(
                 title=raw_report.job_title_name)
         else:
             job_title_obj = JobTitle.objects.get(uuid=raw_report.job_title)
         job_title = job_title_obj.pk
 
-        if raw_report.show is None:
+        if raw_report.show == uuid_null:
             show_obj, created = Show.objects.get_or_create(
                 title=raw_report.show_title)
         else:
@@ -143,14 +144,14 @@ def approve_raw_rate_report(modeladmin, request, queryset):
         """
         companies = []
         for company in raw_report.companies:
-            if company['uuid'] is None:
+            if company['uuid'] == uuid_null:
                 company_obj, created = Company.objects.get_or_create(
                     name=company['name'])
             else:
                 company_obj = Company.objects.get(uuid=company['uuid'])
             companies.append(company_obj.pk)
 
-        if raw_report.network is None:
+        if raw_report.network == uuid_null:
             network_obj, created = Network.objects.get_or_create(
                 name=raw_report.network_name)
         else:
