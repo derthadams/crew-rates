@@ -192,7 +192,7 @@ class Season(models.Model):
 
 class RawRateReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    job_title = models.CharField(max_length=36, null=True)
+    job_title = models.CharField(max_length=36)
     job_title_name = models.CharField(max_length=128)
     # TODO: On form, set localize=False for hourly field
     hourly = models.DecimalField(
@@ -201,7 +201,7 @@ class RawRateReport(models.Model):
     guarantee = models.SmallIntegerField(
         # validators=[MinValueValidator(1)]
     )
-    show = models.CharField(max_length=36, null=True)
+    show = models.CharField(max_length=36)
     show_title = models.CharField(max_length=128)
     season_number = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
