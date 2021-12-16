@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'invitations',
     'sslserver',
     'corsheaders',
+    'rest_framework',
 ]
 
 # Required for allauth
