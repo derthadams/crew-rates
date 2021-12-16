@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.middleware.csrf import CsrfViewMiddleware
 from django.template import loader
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views import View
 from .forms import RawRateReportForm
 
@@ -18,10 +19,13 @@ def index(request):
 
 
 class AddRateView(View):
+
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         form = RawRateReportForm()
         return render(request, 'rates/add_rate.html', {'form': form})
 
+    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         # sample_data = json.dumps({
         #     "job_title": 1,
@@ -42,7 +46,9 @@ class AddRateView(View):
         # })
         # print(request.body)
         # print(f"request body type:{type(request.body)}")
+        # print(request.POST)
         data = json.loads(request.body)
+        # data = request.body.decode('utf-8')
         # data = json.loads(sample_data)
         headers = dict(request.headers)
 
