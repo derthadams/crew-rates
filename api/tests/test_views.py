@@ -13,12 +13,15 @@ class APIViewsTest(TestCase):
         self.show = apps.get_model('rates', 'Show')
         self.company = apps.get_model('rates', 'Company')
         self.network = apps.get_model('rates', 'Network')
+        self.user_model = apps.get_model('rates', 'User')
+        self.raw_rate_report = apps.get_model('rates', 'RawRateReport')
         self.job_title_url = reverse('job-titles')
         self.show_url = reverse('shows')
         self.company_url = reverse('companies')
         self.network_url = reverse('networks')
         self.autocomplete_url = reverse('autocomplete')
         self.details_url = reverse('details')
+        self.add_rate_url = reverse('add-rate-api')
         self.sessiontoken = uuid.uuid4()
 
     def test_no_job_titles(self):
@@ -157,3 +160,130 @@ class APIViewsTest(TestCase):
         response = self.client.get(self.details_url, params)
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, 'California')
+
+    def test_add_rate_post_with_valid_json(self):
+        self.user_model.objects.create_user(email='john@gmail.com', password='super-secret')
+        self.client.login(email='john@gmail.com', password='super-secret')
+        # self.job_title.objects.get_or_create(title='Camera Operator',
+        #                                      uuid='5c09a673-d0c7-481f-8500-36c581bd7b4e')
+        # self.show.objects.get_or_create(title='Project Runway',
+        #                                 uuid='48a6f024-2aa1-4f29-8db0-de0454385a2c')
+        # self.network.objects.get_or_create(name='Bravo',
+        #                                    uuid='a7f641e0-bbfc-4469-9acd-404f2c8b923f')
+        ajax_form_dict = {
+            "job_title": '5c09a673-d0c7-481f-8500-36c581bd7b4e',
+            "job_title_name": "Camera Operator",
+            "hourly": 54.5454,
+            "guarantee": 10,
+            "show": '48a6f024-2aa1-4f29-8db0-de0454385a2c',
+            "show_title": "Project Runway",
+            "season_number": 4,
+            "companies": [{"uuid": "0fa1f64b-58d6-4963-914c-b0711c70e051",
+                           "name": "Magical Elves"}],
+            "network": 'a7f641e0-bbfc-4469-9acd-404f2c8b923f',
+            "network_name": "Bravo",
+            "locations":
+                [{
+                    "display_name": "Los Angeles, CA, US",
+                    "scopes": [
+                        {
+                            "display_name": "Los Angeles, CA, US",
+                            "long_name": "Los Angeles",
+                            "short_name": "Los Angeles",
+                            "type": "locality"
+                        },
+                        {
+                            "display_name": "Los Angeles County, CA, US",
+                            "long_name": "Los Angeles County",
+                            "short_name": "Los Angeles County",
+                            "type": "administrative_area_level_2"
+                        },
+                        {
+                            "display_name": "California, US",
+                            "long_name": "California",
+                            "short_name": "CA",
+                            "type": "administrative_area_level_1"
+                        },
+                        {
+                            "display_name": "United States",
+                            "long_name": "United States",
+                            "short_name": "US",
+                            "type": "country"
+                        },
+
+                    ]
+                }],
+            "start_date": "2021-01-01",
+            "end_date": "2021-02-01",
+            "union": "IA",
+            "genre": "RE",
+        }
+        response = self.client.post(self.add_rate_url, content_type="application/json",
+                                    data=ajax_form_dict)
+        self.assertEquals(response.status_code, 201)
+        all_reports = self.raw_rate_report.objects.all()
+        self.assertEquals(len(all_reports), 1)
+        print(all_reports[0])
+
+    def test_add_rate_post_with_invalid_json_missing_fields(self):
+        self.user_model.objects.create_user(email='john@gmail.com', password='super-secret')
+        self.client.login(email='john@gmail.com', password='super-secret')
+        # self.job_title.objects.get_or_create(title='Camera Operator',
+        #                                      uuid='5c09a673-d0c7-481f-8500-36c581bd7b4e')
+        # self.show.objects.get_or_create(title='Project Runway',
+        #                                 uuid='48a6f024-2aa1-4f29-8db0-de0454385a2c')
+        # self.network.objects.get_or_create(name='Bravo',
+        #                                    uuid='a7f641e0-bbfc-4469-9acd-404f2c8b923f')
+        ajax_form_dict = {
+            "hourly": 54.5454,
+            "guarantee": 10,
+            "show": '48a6f024-2aa1-4f29-8db0-de0454385a2c',
+            "show_title": "Project Runway",
+            "season_number": 4,
+            "companies": [{"uuid": "0fa1f64b-58d6-4963-914c-b0711c70e051",
+                           "name": "Magical Elves"}],
+            "network": 'a7f641e0-bbfc-4469-9acd-404f2c8b923f',
+            "network_name": "Bravo",
+            "locations":
+                [{
+                    "display_name": "Los Angeles, CA, US",
+                    "scopes": [
+                        {
+                            "display_name": "Los Angeles, CA, US",
+                            "long_name": "Los Angeles",
+                            "short_name": "Los Angeles",
+                            "type": "locality"
+                        },
+                        {
+                            "display_name": "Los Angeles County, CA, US",
+                            "long_name": "Los Angeles County",
+                            "short_name": "Los Angeles County",
+                            "type": "administrative_area_level_2"
+                        },
+                        {
+                            "display_name": "California, US",
+                            "long_name": "California",
+                            "short_name": "CA",
+                            "type": "administrative_area_level_1"
+                        },
+                        {
+                            "display_name": "United States",
+                            "long_name": "United States",
+                            "short_name": "US",
+                            "type": "country"
+                        },
+
+                    ]
+                }],
+            "start_date": "2021-01-01",
+            "end_date": "2021-02-01",
+            "union": "IA",
+            "genre": "RE",
+        }
+        response = self.client.post(self.add_rate_url, content_type="application/json",
+                                    data=ajax_form_dict)
+        self.assertEquals(response.status_code, 400)
+        # print(f"data: {response.data}")
+        # print(f"content: {response.content}")
+        all_reports = self.raw_rate_report.objects.all()
+        self.assertEquals(len(all_reports), 0)
