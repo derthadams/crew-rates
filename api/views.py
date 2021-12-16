@@ -1,9 +1,18 @@
+import requests
+
 from django.apps import apps
 from django.db.models import F
 from django.views import View
 from django.http import JsonResponse
-import requests
+
+from rest_framework import status
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from .api_config import *
+from .serializers import RawRateReportSerializer
 
 
 class LocationAutocompleteAPIView(View):
@@ -77,3 +86,19 @@ class NetworksAPIView(View):
             .annotate(value=F('uuid'), label=F('name'))
             .values('value', 'label'))
         return JsonResponse({"results": results})
+
+
+class AddRate(APIView):
+    serializer_class = RawRateReportSerializer
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        data = request.data
+        data['user'] = request.user.id
+        serializer = RawRateReportSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

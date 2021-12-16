@@ -15,4 +15,5 @@ urlpatterns = [
             name='companies'),
     re_path(r'^networks/$', views.NetworksAPIView.as_view(),
             name='networks'),
+    path('add-rate/', views.AddRate.as_view(), name="add-rate-api")
 ]
