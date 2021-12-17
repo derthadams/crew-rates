@@ -8,6 +8,10 @@ from django.apps import apps
 
 class APIViewsTest(TestCase):
 
+    def create_user_and_log_in(self):
+        self.user_model.objects.create_user(email='john@gmail.com', password='super-secret')
+        self.client.login(email='john@gmail.com', password='super-secret')
+
     def setUp(self):
         self.job_title = apps.get_model('rates', 'JobTitle')
         self.show = apps.get_model('rates', 'Show')
@@ -25,12 +29,14 @@ class APIViewsTest(TestCase):
         self.sessiontoken = uuid.uuid4()
 
     def test_no_job_titles(self):
+        self.create_user_and_log_in()
         response = self.client.get(self.job_title_url + '?q=camera')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
         self.assertEquals(len(data['results']), 0)
 
     def test_one_job_title(self):
+        self.create_user_and_log_in()
         self.job_title.objects.get_or_create(title='camera operator')
         url = reverse('job-titles')
         response = self.client.get(self.job_title_url + '?q=camera')
@@ -39,6 +45,7 @@ class APIViewsTest(TestCase):
         self.assertEquals(len(data['results']), 1)
 
     def test_two_job_titles(self):
+        self.create_user_and_log_in()
         self.job_title.objects.get_or_create(title='camera operator')
         self.job_title.objects.get_or_create(title='camera assistant')
         url = reverse('job-titles')
@@ -48,6 +55,7 @@ class APIViewsTest(TestCase):
         self.assertEquals(len(data['results']), 2)
 
     def test_job_titles_no_match(self):
+        self.create_user_and_log_in()
         self.job_title.objects.get_or_create(title='director of photography')
         self.job_title.objects.get_or_create(title='steadicam operator')
         url = reverse('job-titles')
@@ -57,12 +65,14 @@ class APIViewsTest(TestCase):
         self.assertEquals(len(data['results']), 0)
 
     def test_no_shows(self):
+        self.create_user_and_log_in()
         response = self.client.get(self.show_url + '?q=housewives')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
         self.assertEquals(len(data['results']), 0)
 
     def test_one_show(self):
+        self.create_user_and_log_in()
         self.show.objects.get_or_create(title='Real Housewives of Beverly Hills')
         response = self.client.get(self.show_url + '?q=housewives')
         self.assertEquals(response.status_code, 200)
@@ -70,6 +80,7 @@ class APIViewsTest(TestCase):
         self.assertEquals(len(data['results']), 1)
 
     def test_two_shows(self):
+        self.create_user_and_log_in()
         self.show.objects.get_or_create(title='Real Housewives of New Jersey')
         self.show.objects.get_or_create(title='Real Housewives of Atlanta')
         response = self.client.get(self.show_url + '?q=housewives')
@@ -78,6 +89,7 @@ class APIViewsTest(TestCase):
         self.assertEquals(len(data['results']), 2)
 
     def test_shows_no_match(self):
+        self.create_user_and_log_in()
         self.show.objects.get_or_create(title='Survivor')
         self.show.objects.get_or_create(title='24 Hours to Hell and Back')
         response = self.client.get(self.show_url + '?q=runway')
@@ -330,3 +342,4 @@ class APIViewsTest(TestCase):
         self.assertEquals(response.status_code, 403)
         all_reports = self.raw_rate_report.objects.all()
         self.assertEquals(len(all_reports), 0)
+
