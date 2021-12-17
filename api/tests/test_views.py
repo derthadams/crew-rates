@@ -62,7 +62,15 @@ class APIViewsTest(TestCase):
         response = self.client.get(self.job_title_url + '?q=camera')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 0)
+        self.assertEquals(len(data), 0)
+
+    def test_job_titles_not_logged_in(self):
+        self.job_title.objects.get_or_create(title='camera operator')
+        url = reverse('job-titles')
+        response = self.client.get(self.job_title_url + '?q=camera')
+        self.assertEquals(response.status_code, 403)
+        all_reports = self.raw_rate_report.objects.all()
+        self.assertEquals(len(all_reports), 0)
 
     def test_no_shows(self):
         self.create_user_and_log_in()
@@ -95,7 +103,14 @@ class APIViewsTest(TestCase):
         response = self.client.get(self.show_url + '?q=runway')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 0)
+        self.assertEquals(len(data), 0)
+
+    def test_one_show_not_logged_in(self):
+        self.show.objects.get_or_create(title='Real Housewives of Beverly Hills')
+        response = self.client.get(self.show_url + '?q=housewives')
+        self.assertEquals(response.status_code, 403)
+        all_reports = self.raw_rate_report.objects.all()
+        self.assertEquals(len(all_reports), 0)
 
     def test_no_companies(self):
         response = self.client.get(self.company_url + '?q=endemol')
