@@ -33,7 +33,7 @@ class APIViewsTest(TestCase):
         response = self.client.get(self.job_title_url + '?q=camera')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 0)
+        self.assertEquals(len(data), 0)
 
     def test_one_job_title(self):
         self.create_user_and_log_in()
@@ -42,7 +42,7 @@ class APIViewsTest(TestCase):
         response = self.client.get(self.job_title_url + '?q=camera')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 1)
+        self.assertEquals(len(data), 1)
 
     def test_two_job_titles(self):
         self.create_user_and_log_in()
@@ -52,7 +52,7 @@ class APIViewsTest(TestCase):
         response = self.client.get(self.job_title_url + '?q=camera')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 2)
+        self.assertEquals(len(data), 2)
 
     def test_job_titles_no_match(self):
         self.create_user_and_log_in()
@@ -69,7 +69,7 @@ class APIViewsTest(TestCase):
         response = self.client.get(self.show_url + '?q=housewives')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 0)
+        self.assertEquals(len(data), 0)
 
     def test_one_show(self):
         self.create_user_and_log_in()
@@ -77,7 +77,7 @@ class APIViewsTest(TestCase):
         response = self.client.get(self.show_url + '?q=housewives')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 1)
+        self.assertEquals(len(data), 1)
 
     def test_two_shows(self):
         self.create_user_and_log_in()
@@ -86,7 +86,7 @@ class APIViewsTest(TestCase):
         response = self.client.get(self.show_url + '?q=housewives')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 2)
+        self.assertEquals(len(data), 2)
 
     def test_shows_no_match(self):
         self.create_user_and_log_in()
