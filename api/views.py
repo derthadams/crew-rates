@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .api_config import *
-from .serializers import RawRateReportSerializer
+from .serializers import RawRateReportSerializer, JobTitleSerializer, ShowSerializer
 
 
 class LocationAutocompleteAPIView(View):
@@ -40,20 +40,24 @@ class LocationDetailsAPIView(View):
         return JsonResponse(response.json())
 
 
-class JobTitlesAPIView(View):
-    def get(self, request, *args, **kwargs):
+class JobTitlesAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
         job_title = apps.get_model('rates', 'JobTitle')
-        results = list(
-            job_title.objects.filter(
-                title__icontains=self.request.GET.get('q')
-            )
-            .annotate(value=F('uuid'), label=F('title'))
-            .values('value', 'label'))
-        return JsonResponse({"results": results})
+        results = list(job_title.objects.filter(
+            title__icontains=request.GET.get('q')
+        ).annotate(value=F('uuid'), label=F('title')).values('value', 'label'))
+        data = JobTitleSerializer(results, many=True).data
+        return Response(data, status=status.HTTP_200_OK)
 
 
-class ShowsAPIView(View):
-    def get(self, request, *args, **kwargs):
+class ShowsAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
         show = apps.get_model('rates', 'Show')
         results = list(
             show.objects.filter(
@@ -61,7 +65,8 @@ class ShowsAPIView(View):
             )
             .annotate(value=F('uuid'), label=F('title'))
             .values('value', 'label'))
-        return JsonResponse({"results": results})
+        data = ShowSerializer(results, many=True).data
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class CompaniesAPIView(View):

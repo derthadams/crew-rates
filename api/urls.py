@@ -7,13 +7,11 @@ urlpatterns = [
             name='autocomplete'),
     re_path(r'^details/$', views.LocationDetailsAPIView.as_view(),
             name='details'),
-    re_path(r'^job-titles/$', views.JobTitlesAPIView.as_view(),
-            name='job-titles'),
-    re_path(r'^shows/$', views.ShowsAPIView.as_view(),
-            name='shows'),
     re_path(r'^companies/$', views.CompaniesAPIView.as_view(),
             name='companies'),
     re_path(r'^networks/$', views.NetworksAPIView.as_view(),
             name='networks'),
-    path('add-rate/', views.AddRate.as_view(), name="add-rate-api")
+    path('add-rate/', views.AddRate.as_view(), name="add-rate-api"),
+    path('job-titles/', views.JobTitlesAPIView.as_view(), name='job-titles'),
+    path('shows/', views.ShowsAPIView.as_view(), name='shows')
 ]
