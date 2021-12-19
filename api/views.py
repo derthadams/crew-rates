@@ -12,11 +12,15 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .api_config import *
-from .serializers import RawRateReportSerializer, JobTitleSerializer, ShowSerializer
+from .serializers import RawRateReportSerializer, JobTitleSerializer, ShowSerializer, \
+    CompanySerializer, NetworkSerializer
 
 
-class LocationAutocompleteAPIView(View):
-    def get(self, request, *args, **kwargs):
+class LocationAutocompleteAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
         params = {
             "input": self.request.GET.get('q'),
             "sessiontoken": self.request.GET.get('sessiontoken'),
@@ -25,11 +29,14 @@ class LocationAutocompleteAPIView(View):
             "type": "(regions)"
         }
         response = requests.get(SEARCH_URL, params=params)
-        return JsonResponse(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
 
 
-class LocationDetailsAPIView(View):
-    def get(self, request, *args, **kwargs):
+class LocationDetailsAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
         params = {
             "place_id": self.request.GET.get('q'),
             "sessiontoken": self.request.GET.get('sessiontoken'),
@@ -37,14 +44,14 @@ class LocationDetailsAPIView(View):
             "language": "en-US"
         }
         response = requests.get(DETAILS_URL, params=params)
-        return JsonResponse(response.json())
+        return Response(response.json(), status=status.HTTP_200_OK)
 
 
 class JobTitlesAPIView(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+    def get(self, request):  # noqa
         job_title = apps.get_model('rates', 'JobTitle')
         results = list(job_title.objects.filter(
             title__icontains=request.GET.get('q')
@@ -69,8 +76,11 @@ class ShowsAPIView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
 
-class CompaniesAPIView(View):
-    def get(self, request, *args, **kwargs):
+class CompaniesAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
         company = apps.get_model('rates', 'Company')
         results = list(
             company.objects.filter(
@@ -78,11 +88,15 @@ class CompaniesAPIView(View):
             )
             .annotate(value=F('uuid'), label=F('name'))
             .values('value', 'label'))
-        return JsonResponse({"results": results})
+        data = CompanySerializer(results, many=True).data
+        return Response(data, status=status.HTTP_200_OK)
 
 
-class NetworksAPIView(View):
-    def get(self, request, *args, **kwargs):
+class NetworksAPIView(APIView):
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
         network = apps.get_model('rates', 'Network')
         results = list(
             network.objects.filter(
@@ -90,7 +104,8 @@ class NetworksAPIView(View):
             )
             .annotate(value=F('uuid'), label=F('name'))
             .values('value', 'label'))
-        return JsonResponse({"results": results})
+        data = NetworkSerializer(results, many=True).data
+        return Response(data, status=status.HTTP_200_OK)
 
 
 class AddRate(APIView):

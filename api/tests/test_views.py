@@ -109,68 +109,85 @@ class APIViewsTest(TestCase):
         self.show.objects.get_or_create(title='Real Housewives of Beverly Hills')
         response = self.client.get(self.show_url + '?q=housewives')
         self.assertEquals(response.status_code, 403)
-        all_reports = self.raw_rate_report.objects.all()
-        self.assertEquals(len(all_reports), 0)
 
     def test_no_companies(self):
+        self.create_user_and_log_in()
         response = self.client.get(self.company_url + '?q=endemol')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 0)
+        self.assertEquals(len(data), 0)
 
     def test_one_company(self):
+        self.create_user_and_log_in()
         self.company.objects.get_or_create(name='EndemolShine NorthAmerica')
         response = self.client.get(self.company_url + '?q=endemol')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 1)
+        self.assertEquals(len(data), 1)
 
     def test_two_companies(self):
+        self.create_user_and_log_in()
         self.company.objects.get_or_create(name='Magical Elves, LLC')
         self.company.objects.get_or_create(name='Open 4 Business, LLC')
         response = self.client.get(self.company_url + '?q=llc')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 2)
+        self.assertEquals(len(data), 2)
 
     def test_companies_no_match(self):
+        self.create_user_and_log_in()
         self.company.objects.get_or_create(name='A. Smith & Co.')
         self.company.objects.get_or_create(name='Fremantle Media')
         response = self.client.get(self.company_url + '?q=burnett')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 0)
+        self.assertEquals(len(data), 0)
+
+    def test_one_company_not_logged_in(self):
+        self.company.objects.get_or_create(name='EndemolShine NorthAmerica')
+        response = self.client.get(self.company_url + '?q=endemol')
+        self.assertEquals(response.status_code, 403)
 
     def test_no_networks(self):
+        self.create_user_and_log_in()
         response = self.client.get(self.network_url + '?q=nbc')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 0)
+        self.assertEquals(len(data), 0)
 
     def test_one_network(self):
+        self.create_user_and_log_in()
         self.network.objects.get_or_create(name='Netflix')
         response = self.client.get(self.network_url + '?q=net')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 1)
+        self.assertEquals(len(data), 1)
 
     def test_two_networks(self):
+        self.create_user_and_log_in()
         self.network.objects.get_or_create(name='NBC')
         self.network.objects.get_or_create(name='ABC')
         response = self.client.get(self.network_url + '?q=bc')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 2)
+        self.assertEquals(len(data), 2)
 
     def test_networks_no_match(self):
+        self.create_user_and_log_in()
         self.network.objects.get_or_create(name='HBO Max')
         self.network.objects.get_or_create(name='Disney+')
         response = self.client.get(self.network_url + '?q=apple')
         self.assertEquals(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data['results']), 0)
+        self.assertEquals(len(data), 0)
+
+    def test_one_network_not_logged_in(self):
+        self.network.objects.get_or_create(name='Netflix')
+        response = self.client.get(self.network_url + '?q=net')
+        self.assertEquals(response.status_code, 403)
 
     def test_autocomplete(self):
+        self.create_user_and_log_in()
         params = {
             'q': 'burbank',
             'sessiontoken': str(self.sessiontoken)
@@ -180,6 +197,7 @@ class APIViewsTest(TestCase):
         self.assertContains(response, 'Burbank')
 
     def test_details(self):
+        self.create_user_and_log_in()
         params = {
             'q': 'ChIJlcUYKBWVwoAR1IofkK-RdzA',
             'sessiontoken': str(self.sessiontoken)

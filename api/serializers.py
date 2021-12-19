@@ -16,3 +16,12 @@ class JobTitleSerializer(serializers.Serializer): # noqa
 class ShowSerializer(serializers.Serializer):  # noqa
     value = serializers.UUIDField()
     label = serializers.CharField(max_length=128)
+
+
+class CompanySerializer(serializers.Serializer):  # noqa
+    value = serializers.UUIDField()
+    label = serializers.CharField(max_length=128)
+
+class NetworkSerializer(serializers.Serializer):  # noqa
+    value = serializers.UUIDField()
+    label = serializers.CharField(max_length=128)
