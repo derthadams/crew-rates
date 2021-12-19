@@ -129,12 +129,12 @@ class Season(models.Model):
         (NABET, 'NABET'),
     ]
 
-    DEFAULT_UNION = NON_UNION
+    # DEFAULT_UNION = NON_UNION
 
     union = models.CharField(
-        max_length=2,
+        max_length=4,
         choices=UNION_CHOICES,
-        default=DEFAULT_UNION
+        null=True
     )
     companies = models.ManyToManyField(
         Company,
@@ -174,12 +174,12 @@ class Season(models.Model):
 
     ]
 
-    DEFAULT_GENRE = REALITY
+    # DEFAULT_GENRE = REALITY
 
     genre = models.CharField(
-        max_length=2,
+        max_length=4,
         choices=GENRE_CHOICES,
-        default=DEFAULT_GENRE
+        null=True
     )
 
     def __str__(self):
@@ -214,15 +214,16 @@ class RawRateReport(models.Model):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     union = models.CharField(
-        max_length=2,
+        max_length=4,
         choices=Season.UNION_CHOICES,
-        default=Season.DEFAULT_UNION
+        # default=Season.DEFAULT_UNION
+        null=True
     )
     approved = models.BooleanField(default=False)
     genre = models.CharField(
-        max_length=2,
+        max_length=4,
         choices=Season.GENRE_CHOICES,
-        default=Season.DEFAULT_GENRE
+        null=True
     )
 
     def __str__(self):
@@ -248,9 +249,9 @@ class RateReport(models.Model):
         on_delete=models.SET_NULL,
         null=True)
     union = models.CharField(
-        max_length=2,
+        max_length=4,
         choices=Season.UNION_CHOICES,
-        default=Season.DEFAULT_UNION
+        null=True
     )
     raw_report = models.ForeignKey(
         RawRateReport,
