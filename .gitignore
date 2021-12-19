@@ -11,3 +11,4 @@ media
 /static
 /api/api_config.py
 .coverage
+htmlcov/
