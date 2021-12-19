@@ -119,12 +119,12 @@ WSGI_APPLICATION = 'crew_rates.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db',
-        'USER': 'user',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '5432'
+        'ENGINE': os.environ.get('RATES_DATABASE_ENGINE'),
+        'NAME': os.environ.get('RATES_DATABASE_NAME'),
+        'USER': os.environ.get('RATES_DATABASE_USER'),
+        'PASSWORD': os.environ.get('RATES_DATABASE_PASSWORD'),
+        'HOST': os.environ.get('RATES_DATABASE_HOST'),
+        'PORT': os.environ.get('RATES_DATABASE_PORT')
     }
 }
 
@@ -227,7 +227,10 @@ CORS_ALLOWED_ORIGINS = [
 
 CORS_ALLOW_ALL_ORIGINS = False
 
-try:
-    from .config import *
-except ImportError:
-    pass
+EMAIL_HOST = os.environ.get('RATES_EMAIL_HOST')
+EMAIL_HOST_USER = os.environ.get('RATES_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('RATES_EMAIL_HOST_PASSWORD')
+EMAIL_PORT = os.environ.get('RATES_EMAIL_PORT')
+USE_TLS = os.environ.get('RATES_USE_TLS')
+
+DEFAULT_FROM_EMAIL = "no-reply@crewrates.org"
