@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.apps import apps
 
-from rates.admin import RatesInvitationAdminAddForm
+from rates.admin import RatesInvitationAdminAddForm  # noqa
 
 from .sample_data import valid_json, valid_json_create, valid_json_no_locations
 
