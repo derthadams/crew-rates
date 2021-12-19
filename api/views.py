@@ -2,8 +2,6 @@ import requests
 
 from django.apps import apps
 from django.db.models import F
-from django.views import View
-from django.http import JsonResponse
 
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
@@ -113,7 +111,7 @@ class AddRate(APIView):
     authentication_classes = [SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
+    def post(self, request):  # noqa
         data = request.data
         data['user'] = request.user.id
         serializer = RawRateReportSerializer(data=data)
