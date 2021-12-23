@@ -49,6 +49,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     last_login = models.DateTimeField(null=True, blank=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     USERNAME_FIELD = 'email'
     EMAIL_FIELD = 'email'
@@ -66,6 +67,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Company(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     name = models.CharField(max_length=128, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = 'company'
@@ -78,6 +81,8 @@ class Company(models.Model):
 class JobTitle(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     title = models.CharField(max_length=128, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -86,6 +91,8 @@ class JobTitle(models.Model):
 class Show(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     title = models.CharField(max_length=128)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
@@ -94,6 +101,8 @@ class Show(models.Model):
 class Network(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     name = models.CharField(max_length=128, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.name
@@ -104,6 +113,8 @@ class Location(models.Model):
     long_name = models.CharField(max_length=128)
     short_name = models.CharField(max_length=128)
     type = models.CharField(max_length=128)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.display_name
@@ -118,6 +129,8 @@ class Season(models.Model):
         validators=[MinValueValidator(1)])
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     NON_UNION = "NO"
     IATSE = "IA"
@@ -225,6 +238,8 @@ class RawRateReport(models.Model):
         choices=Season.GENRE_CHOICES,
         null=True
     )
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.user}: {self.show_title} S{self.season_number}, ' \
@@ -257,6 +272,8 @@ class RateReport(models.Model):
         RawRateReport,
         on_delete=models.SET_NULL,
         null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.user}: {self.season}, {self.job_title}, ${self.hourly}'
