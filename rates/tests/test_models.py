@@ -1,6 +1,8 @@
 from django.apps import apps
 from django.test import TestCase
 
+from datetime import datetime, timezone, timedelta
+
 
 class TestModels(TestCase):
 
@@ -84,3 +86,13 @@ class TestModels(TestCase):
         report_str = str(report)
         self.assertEquals(report_str, "john@google.com: Supermarket Sweep (Season 1), "
                                       "Camera Operator, $63.6363")
+
+    def test_created_updated(self):
+        job_title = self.job_title.objects.create(title="Camera Operator")
+        duration = datetime.now(timezone(-timedelta(hours=8))) - job_title.created_at
+        self.assertLessEqual(duration, timedelta(seconds=1))
+        job_title.title = "Steadicam Operator"
+        self.assertNotEquals(job_title.created_at, job_title.modified_at)
+        duration = datetime.now(timezone(-timedelta(hours=8))) - job_title.modified_at
+        self.assertLessEqual(duration, timedelta(seconds=1))
+
