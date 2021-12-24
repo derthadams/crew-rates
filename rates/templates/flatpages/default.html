@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <meta name="googlebot" content="noindex">
+  <meta property="og:url" content="https://crewrates.org">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Crew Rates">
+  <meta property="og:image" content="{% static 'rates/img/cr_square_logo.svg' %}">
+  <meta property="og:description"
+        content="crewrates.org helps TV crew members negotiate better deals by providing
+                 crowdsourced day rates for recent shows. You can also contribute to the project by
+                 anonymously sharing your own
+                 day rates.">
+  <meta property="fb:app_id" content="364543658235743">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+  <title>{{ flatpage.title }}</title>
+</head>
+<body>
+{{ flatpage.content }}
+</body>
+</html>

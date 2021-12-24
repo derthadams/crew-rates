@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.flatpages import views
 from django.urls import include, path, re_path
 # from django.views.generic import RedirectView
 from django.conf.urls import url
@@ -37,5 +38,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+    path('tos/', views.flatpage, {'url': '/tos/'}),
+    path('privacy/', views.flatpage, {'url': '/privacy/'}),
     url(r'^invitations/', include('invitations.urls', namespace='invitations')),
 ]
