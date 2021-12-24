@@ -38,7 +38,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('tos/', views.flatpage, {'url': '/tos/'}),
-    path('privacy/', views.flatpage, {'url': '/privacy/'}),
+    path('tos/', views.flatpage, {'url': '/tos/'}, name='tos'),
+    path('privacy/', views.flatpage, {'url': '/privacy/'}, name='privacy'),
     url(r'^invitations/', include('invitations.urls', namespace='invitations')),
 ]
