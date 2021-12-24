@@ -7,7 +7,6 @@ from django.urls import reverse
 class TestFlatpages(TestCase):
     def setUp(self):
         self.flatpage = apps.get_model('flatpages', 'Flatpage')
-        # self.flatpage_to_site = apps.get_model('flatpages', 'FlatpageSites')
 
     def test_tos(self):
         site = Site.objects.all()[0]
