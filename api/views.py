@@ -4,8 +4,6 @@ from django.apps import apps
 from django.db.models import F
 
 from rest_framework import status
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -15,8 +13,6 @@ from .serializers import RawRateReportSerializer, JobTitleSerializer, ShowSerial
 
 
 class LocationAutocompleteAPIView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         params = {
@@ -31,8 +27,6 @@ class LocationAutocompleteAPIView(APIView):
 
 
 class LocationDetailsAPIView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         params = {
@@ -46,8 +40,6 @@ class LocationDetailsAPIView(APIView):
 
 
 class JobTitlesAPIView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):  # noqa
         job_title = apps.get_model('rates', 'JobTitle')
@@ -59,8 +51,6 @@ class JobTitlesAPIView(APIView):
 
 
 class ShowsAPIView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         show = apps.get_model('rates', 'Show')
@@ -75,8 +65,6 @@ class ShowsAPIView(APIView):
 
 
 class CompaniesAPIView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         company = apps.get_model('rates', 'Company')
@@ -91,8 +79,6 @@ class CompaniesAPIView(APIView):
 
 
 class NetworksAPIView(APIView):
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         network = apps.get_model('rates', 'Network')
@@ -107,9 +93,6 @@ class NetworksAPIView(APIView):
 
 
 class AddRate(APIView):
-    serializer_class = RawRateReportSerializer
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
 
     def post(self, request):  # noqa
         data = request.data
