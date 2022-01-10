@@ -61,8 +61,8 @@ class SeasonInline(admin.TabularInline):
 class RateReportInline(admin.TabularInline):
     model = RateReport
     ordering = ('job_title',)
-    fields = ['user', 'job_title', 'hourly', 'guarantee']
-    readonly_fields = ['user', 'job_title', 'hourly', 'guarantee', 'season']
+    fields = ['user', 'job_title', 'offered_hourly', 'offered_guarantee']
+    readonly_fields = ['user', 'job_title', 'offered_hourly', 'offered_guarantee', 'season']
     can_delete = False
     extra = 0
     max_num = 0

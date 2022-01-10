@@ -205,39 +205,43 @@ class Season(models.Model):
 
 class RawRateReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    job_title = models.CharField(max_length=36)
-    job_title_name = models.CharField(max_length=128)
-    # TODO: On form, set localize=False for hourly field
-    hourly = models.DecimalField(
-        decimal_places=4,
-        max_digits=9)
-    guarantee = models.SmallIntegerField(
-        # validators=[MinValueValidator(1)]
-    )
     show = models.CharField(max_length=36)
     show_title = models.CharField(max_length=128)
     season_number = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
-    # company_id = models.SmallIntegerField(null=True, blank=True)
-    # company_name = models.CharField(max_length=128, blank=True)
     companies = models.JSONField(null=True, blank=True)
     network = models.CharField(max_length=36, null=True)
-    network_name = models.CharField(max_length=128, blank=True)
-    locations = models.JSONField(null=True, blank=True)
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
+    network_name = models.CharField(max_length=128, null=True, blank=True)
+    genre = models.CharField(
+        max_length=4,
+        choices=Season.GENRE_CHOICES,
+        null=True
+    )
     union = models.CharField(
         max_length=4,
         choices=Season.UNION_CHOICES,
         # default=Season.DEFAULT_UNION
         null=True
     )
+    locations = models.JSONField(null=True, blank=True)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    job_title = models.CharField(max_length=36)
+    job_title_name = models.CharField(max_length=128)
+    # TODO: On form, set localize=False for hourly field
+    offered_hourly = models.DecimalField(
+        decimal_places=4,
+        max_digits=9)
+    offered_guarantee = models.PositiveSmallIntegerField()
+    negotiated = models.BooleanField()
+    increased = models.BooleanField(null=True)
+    final_hourly = models.DecimalField(
+        decimal_places=4,
+        max_digits=9,
+        null=True)
+    final_guarantee = models.PositiveSmallIntegerField(null=True)
+
     approved = models.BooleanField(default=False)
-    genre = models.CharField(
-        max_length=4,
-        choices=Season.GENRE_CHOICES,
-        null=True
-    )
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
@@ -251,14 +255,6 @@ class RateReport(models.Model):
         User,
         on_delete=models.SET_NULL,
         null=True)
-    job_title = models.ForeignKey(
-        JobTitle,
-        on_delete=models.SET_NULL,
-        null=True)
-    hourly = models.DecimalField(
-        decimal_places=4,
-        max_digits=9)
-    guarantee = models.PositiveSmallIntegerField()
     season = models.ForeignKey(
         Season,
         on_delete=models.SET_NULL,
@@ -268,6 +264,23 @@ class RateReport(models.Model):
         choices=Season.UNION_CHOICES,
         null=True
     )
+    job_title = models.ForeignKey(
+        JobTitle,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    offered_hourly = models.DecimalField(
+        decimal_places=4,
+        max_digits=9)
+    offered_guarantee = models.PositiveSmallIntegerField()
+    negotiated = models.BooleanField(null=True)
+    increased = models.BooleanField(null=True)
+    final_hourly = models.DecimalField(
+        decimal_places=4,
+        max_digits=9,
+        null=True)
+    final_guarantee = models.PositiveSmallIntegerField(null=True)
+
     raw_report = models.ForeignKey(
         RawRateReport,
         on_delete=models.SET_NULL,
