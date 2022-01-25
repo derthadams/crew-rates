@@ -114,17 +114,17 @@ def approve_raw_rate_report(modeladmin, request, queryset):
     uuid_null = '00000000-0000-0000-0000-000000000000'
     for raw_report in queryset:
         if raw_report.job_title == uuid_null:
-            job_title_obj, created = JobTitle.objects.get_or_create(
+            job_title_obj, created = JobTitle.objects.get_or_create( # noqa
                 title=raw_report.job_title_name)
         else:
-            job_title_obj = JobTitle.objects.get(uuid=raw_report.job_title)
+            job_title_obj = JobTitle.objects.get(uuid=raw_report.job_title) # noqa
         job_title = job_title_obj.pk
 
         if raw_report.show == uuid_null:
-            show_obj, created = Show.objects.get_or_create(
+            show_obj, created = Show.objects.get_or_create( # noqa
                 title=raw_report.show_title)
         else:
-            show_obj = Show.objects.get(uuid=raw_report.show)
+            show_obj = Show.objects.get(uuid=raw_report.show) # noqa
         show = show_obj.pk
 
         """
@@ -220,8 +220,12 @@ def approve_raw_rate_report(modeladmin, request, queryset):
         RateReport.objects.create(
             user=raw_report.user,
             job_title_id=job_title,
-            hourly=raw_report.hourly,
-            guarantee=raw_report.guarantee,
+            offered_hourly=raw_report.offered_hourly,
+            offered_guarantee=raw_report.offered_guarantee,
+            negotiated=raw_report.negotiated,
+            increased=raw_report.increased,
+            final_hourly=raw_report.final_hourly,
+            final_guarantee=raw_report.final_guarantee,
             season=season,
             union=raw_report.union,
             raw_report=raw_report
