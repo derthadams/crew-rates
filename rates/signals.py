@@ -17,13 +17,16 @@ def new_rate_report_alert(sender, instance, **kwargs):
     if not instance.approved:
         super_users = User.objects.filter(is_superuser=True)
         emails = map(lambda x: x.email, super_users)
+        hourly = instance.final_hourly if instance.final_hourly else instance.offered_hourly
+        guarantee = instance.final_guarantee if instance.final_guarantee \
+            else instance.offered_guarantee
         send_mail(
             f'[crewrates.org alert] New rate report for '
             f'{instance.job_title_name} on {instance.show_title} '
             f'S{instance.season_number}',
             f'New rate report for {instance.job_title_name} '
             f'on {instance.show_title} S{instance.season_number}: '
-            f'${instance.hourly}/hr for {instance.guarantee} hours',
+            f'${hourly}/hr for {guarantee} hours',
             'alert@crewrates.org',
             emails,
             fail_silently=False
@@ -41,8 +44,8 @@ def send_deauthorization_request(sender, request, socialaccount, socialtoken, **
         }
         response = requests.delete(f'https://graph.facebook.com/{socialaccount.uid}/permissions',
                                    params=payload)
-        print(response.status_code)
-        print(response.text)
+        # print(response.status_code)
+        # print(response.text)
     elif socialaccount.provider == 'google':
         payload = {
             'token': socialtoken.token
