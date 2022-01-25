@@ -29,7 +29,7 @@
 
         <div class="list-group my-2">
         {% for emailaddress in user.emailaddress_set.all %}
-
+          <div class="mt-2">
             <input id="email_radio_{{ forloop.counter }}" type="radio" name="email"
                {% if emailaddress.primary or user.emailaddress_set.count == 1 %}
                checked="checked"{% endif %}
@@ -38,19 +38,20 @@
             <label for="email_radio_{{ forloop.counter }}"
                    class="{% if emailaddress.primary %}primary_email{% endif %}
                    list-group-item d-flex px-3" >
-              <span class="mr-auto">{{ emailaddress.email }}</span>
+              <span class="me-auto">{{ emailaddress.email }}</span>
               <span>
                 {% if emailaddress.primary %}
-                  <span class="primary badge badge-secondary">{% trans "Primary" %}</span>
+                  <span class="primary badge bg-secondary">{% trans "Primary" %}</span>
                 {% endif %}
                 {% if emailaddress.verified %}
-                  <span class="verified badge badge-primary">{% trans "Verified" %}</span>
+                  <span class="verified badge bg-primary">{% trans "Verified" %}</span>
 {#                {% else %}#}
 {#                  <span class="unverified badge badge-secondary">{% trans "Unverified" %}</span>#}
                 {% endif %}
 
               </span>
             </label>
+          </div>
         {% endfor %}
         </div>
 
@@ -80,7 +81,7 @@
 
     <form method="post" action="{% url 'account_email' %}" class="add_email">
         {% csrf_token %}
-        <div class="form-group text-left">
+        <div class="form-group text-start">
           <label class="form-label" for="id_email">Email</label>
           <div class="input-group">
               {{ form.email.errors }}
@@ -88,10 +89,8 @@
                    value="{% if form.email.value %} {{ form.email.value }} {% endif %}"
 {#                   placeholder="Email" #}
                    required id="id_email" autocomplete="email">
-            <div class="input-group-append">
-                  <button class="btn btn-sm btn-dark"name="action_add" type="submit">
-                    {% trans "Add email" %}</button>
-            </div>
+            <button class="btn btn-sm btn-dark"name="action_add" type="submit">
+              {% trans "Add email" %}</button>
           </div>
         </div>
     </form>
