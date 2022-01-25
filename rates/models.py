@@ -246,8 +246,9 @@ class RawRateReport(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        hourly = self.final_hourly if self.final_hourly else self.offered_hourly
         return f'{self.user}: {self.show_title} S{self.season_number}, ' \
-            f'{self.job_title_name}, ${self.hourly}'
+            f'{self.job_title_name}, ${hourly}'
 
 
 class RateReport(models.Model):
@@ -289,7 +290,8 @@ class RateReport(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f'{self.user}: {self.season}, {self.job_title}, ${self.hourly}'
+        hourly = self.final_hourly if self.final_hourly else self.offered_hourly
+        return f'{self.user}: {self.season}, {self.job_title}, ${hourly}'
 
 
 class RatesInvitation(Invitation):
