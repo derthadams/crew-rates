@@ -18,10 +18,10 @@
 
     <p>Thanks for accepting your invitation!</p>
 
-    <div class="text-center">
+    <div class="text-center mb-5">
         {% include 'account/provider_list.html' with function="Sign up" process="login"%}
     </div>
-    <div class="my-3">
+    <div class="my-4">
         <hr class="or">
     </div>
 
@@ -31,23 +31,29 @@
       {% csrf_token %}
         {{ form.non_field_errors }}
 
-        <div class="form-group">
+        <div class="form-group text-left">
           {{ form.email.errors }}
-        <input class="form-control" type="{{ form.email.type }}" name="{{ form.email.name }}"
+        <label class="form-label" for="id_email">Email</label>
+        <input class="form-control" type="email" name="{{ form.email.name }}"
                value="{% if form.email.value %} {{ form.email.value }} {% endif %}"
-               placeholder="Email" required id="id_email" autocomplete="email">
+{#               placeholder="Email" #}
+               required id="id_email" autocomplete="email">
         </div>
 
-        <div class="form-group mt-n2">
+        <div class="form-group text-left mt-n2">
           {{ form.password1.errors }}
-        <input class="form-control" type="{{ form.password1.type }}" name="{{ form.password1.name }}"
-               placeholder="Password" required id="id_password1" autocomplete="new-password">
+        <label class="form-label" for="id_password1">Password</label>
+        <input class="form-control" type="password" name="{{ form.password1.name }}"
+{#               placeholder="Password" #}
+               required id="id_password1" autocomplete="new-password">
         </div>
 
-        <div class="form-group mt-n2">
+        <div class="form-group text-left mt-n2">
           {{ form.password2.errors }}
-        <input class="form-control" type="{{ form.password2.type }}" name="{{ form.password2.name }}"
-               placeholder="Re-type password" required id="id_password2" autocomplete="new-password">
+        <label class="form-label" for="id_password2">Re-type password</label>
+        <input class="form-control" type="password" name="{{ form.password2.name }}"
+{#               placeholder="Re-type password" #}
+               required id="id_password2" autocomplete="new-password">
         </div>
 
         {% if redirect_field_value %}

@@ -19,11 +19,11 @@
 
         <p>To continue, sign in using your social account or email:</p>
 
-        <div class="text-center mb-3">
+        <div class="text-center mb-5">
             {% include 'account/provider_list.html' with function="Sign in" process="login"%}
         </div>
 
-        <div class="my-3">
+        <div class="my-4">
           <hr class="or">
         </div>
 
@@ -33,10 +33,10 @@
 
             {{ form.non_field_errors }}
 
-            <div class="form-group text-left mt-n2">
+            <div class="form-group text-left">
               {{ form.login.errors }}
               <label class="form-label" for="id_login">Email</label>
-              <input class="form-control" type="{{ form.login.type }}" name="{{ form.login.name }}"
+              <input class="form-control" type="email" name="{{ form.login.name }}"
                    value="{% if form.login.value %} {{ form.login.value }} {% endif %}"
 {#                   placeholder="Email" #}
                    required id="id_login" autocomplete="email">
@@ -45,7 +45,7 @@
             <div class="form-group text-left mt-n2">
               {{ form.password.errors }}
               <label class="form-label" for="id_password">Password</label>
-              <input class="form-control" type="{{ form.password.type }}"
+              <input class="form-control" type="password"
                    name="{{ form.password.name }}"
 {#                   placeholder="Password" #}
                    required id="id_password"
