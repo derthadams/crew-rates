@@ -210,52 +210,60 @@ class APIViewsTest(TestCase):
         self.user_model.objects.create_user(email='john@gmail.com', password='super-secret')
         self.client.login(email='john@gmail.com', password='super-secret')
         ajax_form_dict = {
-            "job_title": '5c09a673-d0c7-481f-8500-36c581bd7b4e',
-            "job_title_name": "Camera Operator",
-            "hourly": 54.5454,
-            "guarantee": 10,
-            "show": '48a6f024-2aa1-4f29-8db0-de0454385a2c',
-            "show_title": "Project Runway",
-            "season_number": 4,
-            "companies": [{"uuid": "0fa1f64b-58d6-4963-914c-b0711c70e051",
-                           "name": "Magical Elves"}],
-            "network": 'a7f641e0-bbfc-4469-9acd-404f2c8b923f',
-            "network_name": "Bravo",
-            "locations":
-                [{
-                    "display_name": "Los Angeles, CA, US",
+            "show": "dba9eb69-ca1f-4040-8215-95635d3643fd",
+            "show_title": "Project Greenlight",
+            "season_number": 6,
+            "companies": [
+                {
+                    "uuid": "caf6966d-a961-4a57-8872-39a4f51ce798",
+                    "name": "EndemolShine NorthAmerica"
+                }
+            ],
+            "network": "8eb7ab01-e38a-469c-b792-3d5e7469dc86",
+            "network_name": "HBO Max",
+            "genre": "RE",
+            "union": "IA",
+            "locations": [
+                {
+                    "display_name": "Los Angeles, CA, USA",
                     "scopes": [
                         {
-                            "display_name": "Los Angeles, CA, US",
                             "long_name": "Los Angeles",
                             "short_name": "Los Angeles",
-                            "type": "locality"
+                            "type": "locality",
+                            "display_name": "Los Angeles, CA, US"
                         },
                         {
-                            "display_name": "Los Angeles County, CA, US",
                             "long_name": "Los Angeles County",
                             "short_name": "Los Angeles County",
-                            "type": "administrative_area_level_2"
+                            "type": "administrative_area_level_2",
+                            "display_name": "Los Angeles County, CA, US"
                         },
                         {
-                            "display_name": "California, US",
                             "long_name": "California",
                             "short_name": "CA",
-                            "type": "administrative_area_level_1"
+                            "type": "administrative_area_level_1",
+                            "display_name": "California, US"
                         },
                         {
-                            "display_name": "United States",
                             "long_name": "United States",
                             "short_name": "US",
-                            "type": "country"
-                        },
-
+                            "type": "country",
+                            "display_name": "United States"
+                        }
                     ]
-                }],
-            "start_date": "2021-01-01",
-            "end_date": "2021-02-01",
-            "union": "IA",
-            "genre": "RE",
+                }
+            ],
+            "start_date": "2022-01-01",
+            "end_date": "2022-01-31",
+            "job_title": "5c09a673-d0c7-481f-8500-36c581bd7b4e",
+            "job_title_name": "Camera Operator",
+            "offered_hourly": 50,
+            "offered_guarantee": 12,
+            "negotiated": True,
+            "increased": True,
+            "final_hourly": 72.7273,
+            "final_guarantee": 10
         }
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=ajax_form_dict)
@@ -268,50 +276,58 @@ class APIViewsTest(TestCase):
         self.user_model.objects.create_user(email='john@gmail.com', password='super-secret')
         self.client.login(email='john@gmail.com', password='super-secret')
         ajax_form_dict = {
-            "hourly": 54.5454,
-            "guarantee": 10,
-            "show": '48a6f024-2aa1-4f29-8db0-de0454385a2c',
-            "show_title": "Project Runway",
-            "season_number": 4,
-            "companies": [{"uuid": "0fa1f64b-58d6-4963-914c-b0711c70e051",
-                           "name": "Magical Elves"}],
-            "network": 'a7f641e0-bbfc-4469-9acd-404f2c8b923f',
-            "network_name": "Bravo",
-            "locations":
-                [{
-                    "display_name": "Los Angeles, CA, US",
+            "show": "dba9eb69-ca1f-4040-8215-95635d3643fd",
+            "show_title": "Project Greenlight",
+            "season_number": 6,
+            "companies": [
+                {
+                    "uuid": "caf6966d-a961-4a57-8872-39a4f51ce798",
+                    "name": "EndemolShine NorthAmerica"
+                }
+            ],
+            "network": "8eb7ab01-e38a-469c-b792-3d5e7469dc86",
+            "network_name": "HBO Max",
+            "genre": "RE",
+            "union": "IA",
+            "locations": [
+                {
+                    "display_name": "Los Angeles, CA, USA",
                     "scopes": [
                         {
-                            "display_name": "Los Angeles, CA, US",
                             "long_name": "Los Angeles",
                             "short_name": "Los Angeles",
-                            "type": "locality"
+                            "type": "locality",
+                            "display_name": "Los Angeles, CA, US"
                         },
                         {
-                            "display_name": "Los Angeles County, CA, US",
                             "long_name": "Los Angeles County",
                             "short_name": "Los Angeles County",
-                            "type": "administrative_area_level_2"
+                            "type": "administrative_area_level_2",
+                            "display_name": "Los Angeles County, CA, US"
                         },
                         {
-                            "display_name": "California, US",
                             "long_name": "California",
                             "short_name": "CA",
-                            "type": "administrative_area_level_1"
+                            "type": "administrative_area_level_1",
+                            "display_name": "California, US"
                         },
                         {
-                            "display_name": "United States",
                             "long_name": "United States",
                             "short_name": "US",
-                            "type": "country"
-                        },
-
+                            "type": "country",
+                            "display_name": "United States"
+                        }
                     ]
-                }],
-            "start_date": "2021-01-01",
-            "end_date": "2021-02-01",
-            "union": "IA",
-            "genre": "RE",
+                }
+            ],
+            "start_date": "2022-01-01",
+            "end_date": "2022-01-31",
+            "offered_hourly": 50,
+            "offered_guarantee": 12,
+            "negotiated": False,
+            "increased": "",
+            "final_hourly": "",
+            "final_guarantee": ""
         }
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=ajax_form_dict)
@@ -323,52 +339,60 @@ class APIViewsTest(TestCase):
 
     def test_add_rate_post_not_logged_in(self):
         ajax_form_dict = {
-            "job_title": '5c09a673-d0c7-481f-8500-36c581bd7b4e',
-            "job_title_name": "Camera Operator",
-            "hourly": 54.5454,
-            "guarantee": 10,
-            "show": '48a6f024-2aa1-4f29-8db0-de0454385a2c',
-            "show_title": "Project Runway",
-            "season_number": 4,
-            "companies": [{"uuid": "0fa1f64b-58d6-4963-914c-b0711c70e051",
-                           "name": "Magical Elves"}],
-            "network": 'a7f641e0-bbfc-4469-9acd-404f2c8b923f',
-            "network_name": "Bravo",
-            "locations":
-                [{
-                    "display_name": "Los Angeles, CA, US",
+            "show": "dba9eb69-ca1f-4040-8215-95635d3643fd",
+            "show_title": "Project Greenlight",
+            "season_number": 6,
+            "companies": [
+                {
+                    "uuid": "caf6966d-a961-4a57-8872-39a4f51ce798",
+                    "name": "EndemolShine NorthAmerica"
+                }
+            ],
+            "network": "8eb7ab01-e38a-469c-b792-3d5e7469dc86",
+            "network_name": "HBO Max",
+            "genre": "RE",
+            "union": "IA",
+            "locations": [
+                {
+                    "display_name": "Los Angeles, CA, USA",
                     "scopes": [
                         {
-                            "display_name": "Los Angeles, CA, US",
                             "long_name": "Los Angeles",
                             "short_name": "Los Angeles",
-                            "type": "locality"
+                            "type": "locality",
+                            "display_name": "Los Angeles, CA, US"
                         },
                         {
-                            "display_name": "Los Angeles County, CA, US",
                             "long_name": "Los Angeles County",
                             "short_name": "Los Angeles County",
-                            "type": "administrative_area_level_2"
+                            "type": "administrative_area_level_2",
+                            "display_name": "Los Angeles County, CA, US"
                         },
                         {
-                            "display_name": "California, US",
                             "long_name": "California",
                             "short_name": "CA",
-                            "type": "administrative_area_level_1"
+                            "type": "administrative_area_level_1",
+                            "display_name": "California, US"
                         },
                         {
-                            "display_name": "United States",
                             "long_name": "United States",
                             "short_name": "US",
-                            "type": "country"
-                        },
-
+                            "type": "country",
+                            "display_name": "United States"
+                        }
                     ]
-                }],
-            "start_date": "2021-01-01",
-            "end_date": "2021-02-01",
-            "union": "IA",
-            "genre": "RE",
+                }
+            ],
+            "start_date": "2022-01-01",
+            "end_date": "2022-01-31",
+            "job_title": "5c09a673-d0c7-481f-8500-36c581bd7b4e",
+            "job_title_name": "Camera Operator",
+            "offered_hourly": 50,
+            "offered_guarantee": 12,
+            "negotiated": True,
+            "increased": True,
+            "final_hourly": 72.7273,
+            "final_guarantee": 10
         }
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=ajax_form_dict)
