@@ -274,7 +274,7 @@ class RateReport(models.Model):
         decimal_places=4,
         max_digits=9)
     offered_guarantee = models.PositiveSmallIntegerField()
-    negotiated = models.BooleanField(null=True)
+    negotiated = models.BooleanField()
     increased = models.BooleanField(null=True)
     final_hourly = models.DecimalField(
         decimal_places=4,
