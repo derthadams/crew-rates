@@ -21,7 +21,9 @@
 
 hr {
     text-align: center;
-    width: 70%
+    margin: auto;
+    width: 70%;
+    opacity: 1;
 }
 
 .or:after {

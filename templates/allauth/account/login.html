@@ -33,7 +33,7 @@
 
             {{ form.non_field_errors }}
 
-            <div class="form-group text-left">
+            <div class="form-group text-start">
               {{ form.login.errors }}
               <label class="form-label" for="id_login">Email</label>
               <input class="form-control" type="email" name="{{ form.login.name }}"
@@ -42,7 +42,7 @@
                    required id="id_login" autocomplete="email">
             </div>
 
-            <div class="form-group text-left mt-n2">
+            <div class="form-group text-start mt-n2">
               {{ form.password.errors }}
               <label class="form-label" for="id_password">Password</label>
               <input class="form-control" type="password"
@@ -61,8 +61,8 @@
               {% trans "Forgot Password?" %}
             </a>
 
-            <div class="form-group">
-              <button type="submit" class="btn btn-dark btn-block primaryAction mt-2">Sign in</button>
+            <div class="form-group d-grid">
+              <button type="submit" class="btn btn-dark primaryAction mt-2">Sign in</button>
             </div>
           </form>
         </div>
