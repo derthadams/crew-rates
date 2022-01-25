@@ -55,7 +55,7 @@ class DisconnectForm(Form):
     )
 
     def __init__(self, *args, **kwargs):
-        print("IN DISCONNECT FORM")
+        # print("IN DISCONNECT FORM")
         self.request = kwargs.pop("request")
         self.accounts = SocialAccount.objects.filter(user=self.request.user)
         super(DisconnectForm, self).__init__(*args, **kwargs)
