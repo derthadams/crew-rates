@@ -33,18 +33,22 @@
 
             {{ form.non_field_errors }}
 
-            <div class="form-group">
+            <div class="form-group text-left mt-n2">
               {{ form.login.errors }}
-            <input class="form-control" type="{{ form.login.type }}" name="{{ form.login.name }}"
+              <label class="form-label" for="id_login">Email</label>
+              <input class="form-control" type="{{ form.login.type }}" name="{{ form.login.name }}"
                    value="{% if form.login.value %} {{ form.login.value }} {% endif %}"
-                   placeholder="Email" required id="id_login" autocomplete="email">
+{#                   placeholder="Email" #}
+                   required id="id_login" autocomplete="email">
             </div>
 
-            <div class="form-group mt-n2">
+            <div class="form-group text-left mt-n2">
               {{ form.password.errors }}
-            <input class="form-control" type="{{ form.password.type }}"
+              <label class="form-label" for="id_password">Password</label>
+              <input class="form-control" type="{{ form.password.type }}"
                    name="{{ form.password.name }}"
-                   placeholder="Password" required id="id_password"
+{#                   placeholder="Password" #}
+                   required id="id_password"
                    autocomplete="current-password">
             </div>
 
@@ -63,7 +67,7 @@
           </form>
         </div>
 
-        <p>If you'd like to sign up, please ask the administrator for an invitation.</p>
+        <p>If you'd like an account, please ask the administrator for an invitation.</p>
 
 
 {% endblock %}
