@@ -68,9 +68,10 @@ class TestModels(TestCase):
         show = self.show.objects.create(title="Supermarket Sweep")
         report = self.raw_rate_report.objects.create(user=user, job_title=job_title.pk,
                                                      job_title_name="Camera Operator",
-                                                     hourly=63.6363, guarantee=10, show=show.pk,
+                                                     offered_hourly=63.6363, offered_guarantee=10,
+                                                     show=show.pk, negotiated=False,
                                                      show_title="Supermarket Sweep",
-                                                     season_number=1)
+                                                     season_number=1, start_date="2020-08-07")
         report_str = str(report)
         self.assertEquals(report_str, "john@google.com: Supermarket Sweep S1, Camera Operator, "
                                       "$63.6363")
@@ -82,7 +83,7 @@ class TestModels(TestCase):
         job_title = self.job_title.objects.create(title="Camera Operator")
         report = self.rate_report.objects.create(user=user, job_title=job_title,
                                                  season=season,
-                                                 hourly=63.6363, guarantee=10)
+                                                 offered_hourly=63.6363, offered_guarantee=10)
         report_str = str(report)
         self.assertEquals(report_str, "john@google.com: Supermarket Sweep (Season 1), "
                                       "Camera Operator, $63.6363")
