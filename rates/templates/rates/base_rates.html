@@ -48,10 +48,11 @@
             <ul class="navbar-nav">
                 {% url 'account_email' as email %}
                 {% url 'account_change_password' as passwd %}
+                {% url 'account_set_password' as paset %}
                 {% url 'socialaccount_connections' as social %}
                 <li class="nav-item dropdown">
                   <a class="nav-link
-                    {%if request.path == email or request.path == passwd or request.path == social%}
+                    {%if request.path == email or request.path == passwd or request.path == paset or request.path == social%}
                     active {% endif %}" href="#" id="navbarDropdownMenuLink"
                     role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Account
