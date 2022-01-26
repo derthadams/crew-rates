@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@800&display=swap" rel="stylesheet">
+{% load i18n %}
+{% load account %}
+
+{% block content %}
+  <div style="text-align: center;">
+    <h1 style="font-family: 'Public Sans', Tahoma, sans-serif;font-size: 48px">crew rates</h1>
+  </div>
+
+  <div style="font-family: Arial, sans-serif; font-size: 14px;">
+    <p>Hello from Crew Rates!</p>
+    {% autoescape off %}
+
+    {% user_display user as user_display %}
+      <p>
+      {% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+        You're receiving this email because user {{ user_display }} has given your email address to register an account on {{ site_domain }}.<br/><br/>
+        Click the button below to confirm this is correct.{% endblocktrans %}</p>
+
+      <div style="text-align: center;">
+        <table style="border-spacing: 0; border-collapse: collapse; margin: auto;">
+          <tr>
+            <td style="border-radius: 2px;
+              text-align: center;
+              vertical-align: center;
+              background-color: #1b1b1b;
+              padding: 0;">
+              <a href="{{ activate_url }}"
+                 style="padding: 8px 12px; border: 1px solid #1b1b1b; border-radius: 3px;
+               font-family: Helvetica, Arial, sans-serif;font-size: 14px;
+               color: #ffffff;text-decoration: none;font-weight:bold;display: block;">
+                Confirm email
+              </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+    {% endautoescape %}
+    <p>Thanks for using crewrates.org!</p>
+  </div>
+
+{% endblock %}
+</html>
