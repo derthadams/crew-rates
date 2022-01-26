@@ -20,19 +20,6 @@ from django.urls import include, path, re_path
 from django.conf.urls import url
 
 urlpatterns = [
-    # Redirect all email-login-related allauth urls to the signin page
-    # path('accounts/password/change/', RedirectView.as_view(url='/')),
-    # path('accounts/password/set/', RedirectView.as_view(url='/')),
-    # path('accounts/password/reset/', RedirectView.as_view(url='/')),
-    # path('accounts/password/reset/done/', RedirectView.as_view(url='/')),
-    # re_path('^accounts/password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$',
-    #         RedirectView.as_view(url='/')),
-    # path('accounts/password/reset/key/done/', RedirectView.as_view(url='/')),
-    # path('accounts/email/', RedirectView.as_view(url='/')),
-    # path('accounts/confirm-email/', RedirectView.as_view(url='/')),
-    # re_path('^accounts/confirm-email/(?P<key>[-:\\w]+)/$',
-    #         RedirectView.as_view(url='/')),
-
     # Include urls for all modules
     path('', include('rates.urls')),
     path('accounts/', include('allauth.urls')),
