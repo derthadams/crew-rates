@@ -1,17 +1,11 @@
 {% extends "account/base.html" %}
 
-{% load static %}
-
 {% load i18n %}
 
 {% block head_title %}{% trans "Sign Up Closed" %}{% endblock %}
 
 {% block form-accounts %}
-  <div class="text-center mb-4">
-    <img src="{% static 'rates/img/cr_square_logo.svg' %}" width=100 class="mb-3">
-    <img src="{% static 'rates/img/cr_text_logo.svg' %}" width=200 class="mt-3">
-  </div>
-
+  {% include 'account/logo.html' %}
   <h3>{% trans "Sorry, access is by invitation only" %}</h3>
   {% include 'account/message_list.html' %}
 

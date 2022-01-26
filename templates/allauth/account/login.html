@@ -1,7 +1,5 @@
 {% extends "account/base.html" %}
 
-{% load static %}
-
 {% load i18n %}
 
 {% block title %}
@@ -10,66 +8,60 @@
 
 {% block form-accounts %}
 
-        <div class="text-center mb-4">
-          <img src="{% static 'rates/img/cr_square_logo.svg' %}" width=100 class="mb-3">
-          <img src="{% static 'rates/img/cr_text_logo.svg' %}" width=200 class="mt-3">
-        </div>
+  {% include 'account/logo.html' %}
+  {% include 'account/message_list.html' %}
 
-        {% include 'account/message_list.html' %}
+  <p>To continue, sign in using your social account or email:</p>
 
-        <p>To continue, sign in using your social account or email:</p>
+  <div class="text-center mb-5">
+      {% include 'account/provider_list.html' with function="Sign in" process="login"%}
+  </div>
 
-        <div class="text-center mb-5">
-            {% include 'account/provider_list.html' with function="Sign in" process="login"%}
-        </div>
+  <div class="my-4">
+    <hr class="or">
+  </div>
 
-        <div class="my-4">
-          <hr class="or">
-        </div>
+  <div>
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+      {% csrf_token %}
 
-        <div>
-          <form class="login" method="POST" action="{% url 'account_login' %}">
-            {% csrf_token %}
+      {{ form.non_field_errors }}
 
-            {{ form.non_field_errors }}
+      <div class="form-group text-start">
+        {{ form.login.errors }}
+        <label class="form-label" for="id_login">Email</label>
+        <input class="form-control" type="email" name="{{ form.login.name }}"
+             value="{% if form.login.value %} {{ form.login.value }} {% endif %}"
+             required id="id_login" autocomplete="email">
+      </div>
 
-            <div class="form-group text-start">
-              {{ form.login.errors }}
-              <label class="form-label" for="id_login">Email</label>
-              <input class="form-control" type="email" name="{{ form.login.name }}"
-                   value="{% if form.login.value %} {{ form.login.value }} {% endif %}"
-{#                   placeholder="Email" #}
-                   required id="id_login" autocomplete="email">
-            </div>
+      <div class="form-group text-start mt-2">
+        {{ form.password.errors }}
+        <label class="form-label" for="id_password">Password</label>
+        <input class="form-control" type="password"
+             name="{{ form.password.name }}"
+             required id="id_password"
+             autocomplete="current-password">
+      </div>
 
-            <div class="form-group text-start mt-2">
-              {{ form.password.errors }}
-              <label class="form-label" for="id_password">Password</label>
-              <input class="form-control" type="password"
-                   name="{{ form.password.name }}"
-{#                   placeholder="Password" #}
-                   required id="id_password"
-                   autocomplete="current-password">
-            </div>
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}"
+             value="{{ redirect_field_value }}" />
+      {% endif %}
 
-            {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}"
-                   value="{{ redirect_field_value }}" />
-            {% endif %}
+      <div class="mt-2">
+        <a class="button secondaryAction" href="{% url 'account_reset_password' %}">
+          {% trans "Forgot Password?" %}
+        </a>
+      </div>
 
-            <div class="mt-2">
-              <a class="button secondaryAction" href="{% url 'account_reset_password' %}">
-                {% trans "Forgot Password?" %}
-              </a>
-            </div>
+      <div class="form-group d-grid">
+        <button type="submit" class="btn btn-dark primaryAction mt-2">Sign in</button>
+      </div>
+    </form>
+  </div>
 
-            <div class="form-group d-grid">
-              <button type="submit" class="btn btn-dark primaryAction mt-2">Sign in</button>
-            </div>
-          </form>
-        </div>
-
-        <p>If you'd like an account, please ask the administrator for an invitation.</p>
+  <p>If you'd like an account, please ask the administrator for an invitation.</p>
 
 
 {% endblock %}

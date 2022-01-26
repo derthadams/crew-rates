@@ -5,9 +5,6 @@
 
 {% get_app_connections user.id as results %}
 
-{#{% get_providers as socialaccount_providers %}#}
-
-{#{% for provider in socialaccount_providers %}#}
 {% for provider in results.unconnected %}
     {% if provider.id == "openid" %}
         {% for brand in provider.get_brands %}
