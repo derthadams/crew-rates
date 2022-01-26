@@ -1,3 +1,9 @@
+a.no-underline,
+a.no-underline:visited,
+a.no-underline:focus {
+    text-decoration: none;
+}
+
 /*body {*/
 /*    padding-top: 65px;*/
 /*}*/
