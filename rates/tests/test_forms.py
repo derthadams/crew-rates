@@ -4,6 +4,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from allauth.socialaccount.models import SocialApp, SocialAccount, SocialToken
+from allauth.account.models import EmailAddress
 
 from rates.forms import DisconnectForm  # noqa
 
@@ -17,6 +18,8 @@ class TestRatesForms(TestCase):
     def test_disconnect_form(self):
         user = self.user_model.objects.create_user(email='john@google.com',
                                                    password='all3my7secrets')
+        email = EmailAddress.objects.create(email='john@google.com', verified=True, primary=True,
+                                            user_id=user.pk)
         facebook = SocialApp.objects.create(provider='facebook', name='Facebook',
                                             client_id='764542658215942',
                                             secret='1fe92ff9f8417ab754d86474accf111e')
