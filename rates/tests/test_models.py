@@ -83,7 +83,8 @@ class TestModels(TestCase):
         job_title = self.job_title.objects.create(title="Camera Operator")
         report = self.rate_report.objects.create(user=user, job_title=job_title,
                                                  season=season,
-                                                 offered_hourly=63.6363, offered_guarantee=10)
+                                                 offered_hourly=63.6363, offered_guarantee=10,
+                                                 negotiated=False)
         report_str = str(report)
         self.assertEquals(report_str, "john@google.com: Supermarket Sweep (Season 1), "
                                       "Camera Operator, $63.6363")
