@@ -12,3 +12,4 @@ media
 /api/api_config.py
 .coverage
 htmlcov/
+node_modules/
