@@ -13,3 +13,4 @@ media
 .coverage
 htmlcov/
 node_modules/
+frontend/static/
