@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     entry: {
         add_rate: './frontend/src/add-rate.js',  // path to our input file
-        // bootstrap_css: './frontend/src/base.js'
+        entry_bootstrap: './frontend/src/entry-bootstrap.js'
     },
     module: {
         rules: [
@@ -20,22 +20,22 @@ module.exports = {
             },
         ]
     },
-    // optimization: {
-    //     chunkIds: 'named',
-    //     splitChunks: {
-    //         chunks: 'all',
-    //         maxInitialRequests: Infinity,
-    //         minSize: 0,
-    //         cacheGroups: {
-    //             react: {
-    //                 test: /[\\/]node_modules[\\/]((?!(bootstrap|@popperjs)).*)[\\/]/,
-    //                 name: 'react',
-    //             },
-    //             bootstrap: {
-    //                 test: /[\\/]node_modules[\\/](bootstrap|@popperjs)[\\/]/,
-    //                 name: 'bootstrap',
-    //             },
-    //         }
-    //     },
-    // },
+    optimization: {
+        chunkIds: 'named',
+        splitChunks: {
+            chunks: 'all',
+            maxInitialRequests: Infinity,
+            minSize: 0,
+            cacheGroups: {
+                react: {
+                    test: /[\\/]node_modules[\\/]((?!(bootstrap|@popperjs)).*)[\\/]/,
+                    name: 'react',
+                },
+                bootstrap: {
+                    test: /[\\/]node_modules[\\/](bootstrap|@popperjs)[\\/]/,
+                    name: 'bootstrap',
+                },
+            }
+        },
+    },
 };

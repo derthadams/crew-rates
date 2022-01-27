@@ -18,9 +18,20 @@ module.exports = merge(common, {
             {
                 test: /\.(css|scss)$/,
                 use: [
-                    MiniCssExtractPlugin.loader,
-                    "css-loader",
-                    "sass-loader"
+                    {loader: MiniCssExtractPlugin.loader},
+                    {loader: "css-loader"},
+                    {loader: "postcss-loader",
+                    options: {
+                        postcssOptions: {
+                            plugins: function() {
+                                return [
+                                    require('autoprexifer')
+                                ];
+                            }
+                        }
+                    }
+                    },
+                    {loader: "sass-loader"},
                 ]
             }
         ]
