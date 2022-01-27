@@ -41,7 +41,7 @@ function Survey() {
     return (
         <StateMachineProvider>
             {process.env.NODE_ENV !== 'production' && <DevTool/>}
-            <BrowserRouter>
+            <BrowserRouter basename="/add-rate">
                 <Routes>
                     <Route path="/" element={<PageOne/>} />
                     <Route path="/2" element={<PageTwo/>} />
