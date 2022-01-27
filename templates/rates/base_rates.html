@@ -35,7 +35,7 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                {% url 'index' as url %}
+                {% url 'discover' as url %}
                 <li class="nav-item">
                     <a class="nav-link {% if request.path == url %} active {% endif %}"
                        href="/">Discover</a>
