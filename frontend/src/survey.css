@@ -1,0 +1,41 @@
+.required-label:after {
+    content:"  *\00a0";
+    color:red;
+}
+
+.was-validated .form-control:valid, .form-control.is-valid {
+    border-color: #CED4DA !important;
+    background-image: inherit !important;
+    box-shadow:inherit !important;
+}
+
+.hidden-element {
+    display: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.btn-group-justified {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate;
+}
+.btn-group-justified .btn,
+.btn-group-justified .btn-group {
+    float: none;
+    display: table-cell;
+    width: 1%;
+}
+.btn-group-justified .btn .btn,
+.btn-group-justified .btn-group .btn {
+    width: 100%;
+}
+.btn-group-justified .btn .dropdown-menu,
+.btn-group-justified .btn-group .dropdown-menu {
+    left: auto;
+}
