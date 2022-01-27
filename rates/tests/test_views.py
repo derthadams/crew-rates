@@ -8,9 +8,8 @@ from django.apps import apps
 class RatesViewsTest(TestCase):
 
     def setUp(self):
-        self.index_url = reverse('index')
+        self.discover_url = reverse('discover')
         self.add_rate_url = reverse('add-rate')
-        self.thanks_url = reverse('thanks')
         self.job_title = apps.get_model('rates', 'JobTitle')
         self.show = apps.get_model('rates', 'Show')
         self.network = apps.get_model('rates', 'Network')
@@ -19,7 +18,7 @@ class RatesViewsTest(TestCase):
         self.location = apps.get_model('rates', 'Location')
 
     def test_index_not_logged_in(self):
-        response = self.client.get(self.index_url)
+        response = self.client.get(self.discover_url)
         self.assertEquals(response.status_code, 302)
         response = self.client.get(response.url)
         self.assertEquals(response.status_code, 200)
@@ -29,7 +28,7 @@ class RatesViewsTest(TestCase):
     def test_index_logged_in(self):
         self.user_model.objects.create_user(email='john@gmail.com', password='super-secret')
         self.client.login(email='john@gmail.com', password='super-secret')
-        response = self.client.get(self.index_url)
+        response = self.client.get(self.discover_url)
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, '<h2>Discover</h2>')
 
@@ -38,25 +37,10 @@ class RatesViewsTest(TestCase):
         self.client.login(email='john@gmail.com', password='super-secret')
         response = self.client.get(self.add_rate_url)
         self.assertEquals(response.status_code, 200)
-        self.assertContains(response, '<title>Add a Rate</title>')
+        self.assertContains(response, 'Add a Rate')
 
     def test_get_add_rate_view_not_logged_in(self):
-        response = self.client.get(self.index_url)
-        self.assertEquals(response.status_code, 302)
-        response = self.client.get(response.url)
-        self.assertEquals(response.status_code, 200)
-        self.assertContains(response,
-                            '<p>To continue, sign in using your social account or email:</p>')
-
-    def test_thanks_logged_in(self):
-        self.user_model.objects.create_user(email='john@gmail.com', password='super-secret')
-        self.client.login(email='john@gmail.com', password='super-secret')
-        response = self.client.get(self.thanks_url)
-        self.assertEquals(response.status_code, 200)
-        self.assertContains(response, '<title>Thanks</title>')
-
-    def test_thanks_not_logged_in(self):
-        response = self.client.get(self.thanks_url)
+        response = self.client.get(self.discover_url)
         self.assertEquals(response.status_code, 302)
         response = self.client.get(response.url)
         self.assertEquals(response.status_code, 200)
