@@ -4,12 +4,19 @@
 
 {% block styles %}
   {{ block.super }}
+{#  <link rel="stylesheet" href="{% static '/rates/js/add_rate.css' %}">#}
+{% endblock %}
+
+{% block scripts %}
+  {{ block.super }}
+{#  <script defer src="{% static '/rates/js/react.bundle.js' %}"></script>#}
+  <script defer src="{% static '/rates/js/add_rate.bundle.js' %}"></script>
 {% endblock %}
 
 {% block content-inner %}
 
-  <div>
-    <h1>This is the anchor div for the Add a Rate React App</h1>
+  <div id="root">
+{#    <h1>This is the anchor div for the Add a Rate React App</h1>#}
   </div>
 
 {% endblock %}
