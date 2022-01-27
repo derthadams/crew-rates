@@ -10,7 +10,7 @@ module.exports = merge(common, {
     output: {
         filename: '[name].bundle.js',  // output bundle file name
         path: path.resolve(__dirname, './frontend/static/rates/js/'),  // path to our Django static directory
-        publicPath: '/'
+        publicPath: './static/'
     },
     module: {
         rules: [
