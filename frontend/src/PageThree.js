@@ -14,12 +14,14 @@ import Button from "react-bootstrap/Button";
 import {NIL as uuid_NIL} from "uuid";
 
 import axios from 'axios'
+import Cookies from 'cookies-js'
 
 import {BASE_URL} from "./Survey";
 
 function PageThree(props) {
     const {state} = useStateMachine();
     let navigate = useNavigate();
+    const csrftoken = Cookies.get('csrftoken');
 
     const handleSubmit = () => {
         const formData = state.formData;
@@ -56,13 +58,12 @@ function PageThree(props) {
             final_guarantee: formData.final_guarantee || null
         }
 
-        // console.log(data);
-
-        // TODO: Add csrf token to post request
-        // ie, axios.post(BASE_URL + 'add-rate/', data, {headers: {"X-CSRFToken": csrftoken}}
-        // which is imported as const csrftoken = Cookies.get('csrftoken');
-
-        axios.post(BASE_URL + 'add-rate/', data)
+        axios.post(BASE_URL + 'add-rate/', data,
+            {
+                headers: {
+                    "X-CSRFToken": csrftoken
+                }
+            })
             .then(response => {
                 navigate(`/success`)
             })
