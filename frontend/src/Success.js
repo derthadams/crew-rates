@@ -31,7 +31,7 @@ function Success(props) {
                 <Col className="col-4">
                     <Row>
                         <Button
-                            variant="success"
+                            variant="primary"
                             onClick={handleAnotherRate}
                         >Add Another Rate</Button>
                     </Row>
