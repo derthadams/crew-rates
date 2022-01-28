@@ -17,7 +17,6 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 
 import "./survey.css"
 import AsyncAPISelect from "./AsyncAPISelect";
-import customStyles from "./CustomSelectStyles";
 import {updateFormData} from "./UpdateFunctions";
 import RateWidget from "./RateWidget";
 
@@ -58,7 +57,6 @@ function PageTwo(props) {
     }
 
     const validateNegotiated = () => {
-        console.log("validate negotiated")
         if(methods.getValues('negotiated') === '') {
             methods.setError('negotiated', {
                 type: 'manual',
@@ -68,7 +66,6 @@ function PageTwo(props) {
     }
 
     const validateIncreased = () => {
-        console.log("validate increased")
         if(methods.getValues('increased') === '' && (negotiated || methods.getValues('negotiated'))) {
             methods.setError('increased', {
                 type: 'manual',

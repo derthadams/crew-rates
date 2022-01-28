@@ -76,7 +76,6 @@ function PageOne(props) {
                                     scopes: scopes
                                 }
                     })
-                    // console.log(state.locationDetails);
                     sessionToken = newSessionToken()
                     console.log(`New Session Token: ${sessionToken}`);
                 });
@@ -107,26 +106,19 @@ function PageOne(props) {
     ];
 
     const onSubmit = (data) => {
-        // console.log(data);
         actions.updateFormData(data);
-        // console.log(state.formData)
         navigate(`/2`);
     };
 
     return (
         <div className="my-3">
             <h1 className="display-1">Add a rate</h1>
-            {/*<h1>Add a rate</h1>*/}
 
             <p>Your anonymous rate information will help all crew members
                 negotiate better deals.</p>
             <h6 className="display-6">Show information</h6>
-            {/*<h4>Show information</h4>*/}
 
             <ProgressBar now={33} label=" Step 1 of 3" className="mx-6 my-3"/>
-
-            {/*<h4>Show information</h4>*/}
-            {/*<p>Only fields marked with <span className="text-danger"> *</span> are required.</p>*/}
 
             <Form noValidate onSubmit={handleSubmit(onSubmit)}>
             <Row className="mt-4">
@@ -194,9 +186,6 @@ function PageOne(props) {
                                 ({ message }) => <Form.Text className="text-danger">{message}</Form.Text>
                             }
                         />
-                        {/*<Form.Control.Feedback type="invalid">*/}
-                        {/*    Required.*/}
-                        {/*</Form.Control.Feedback>*/}
                     </Form.Group>
                 </Col>
             </Row>
@@ -360,9 +349,6 @@ function PageOne(props) {
                             control={control}
                             rules={{
                                 validate: {
-                                    // startExists: (v) =>
-                                    //     !(getValues('end_date') !== '' && getValues('start_date') === '') ||
-                                    //     "Start date is required if end date is provided",
                                     endAfterStart: (v) =>
                                         getValues('end_date') === '' ||
                                         new Date(getValues('end_date')) >= new Date(getValues('start_date')) ||
