@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useNavigate } from "react-router-dom";
+import {Navigate, useLocation, useNavigate} from "react-router-dom";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -18,6 +18,10 @@ import axios from 'axios';
 import Cookies from 'cookies-js';
 
 function PageThree(props) {
+    const locationState = useLocation();
+    if( !locationState.state?.fromForm) {
+        return <Navigate to="/" replace state={{fromForm: true}}/>
+    }
     const [submitted, setSubmitted] = useState(false);
     const {state} = useStateMachine();
     let navigate = useNavigate();
@@ -60,8 +64,6 @@ function PageThree(props) {
             final_guarantee: formData.final_guarantee || null
         }
 
-        console.log(data);
-
         axios.post(apiUrls['add-rate-api'], data,
             {
                 headers: {
@@ -69,10 +71,10 @@ function PageThree(props) {
                 }
             })
             .then(response => {
-                navigate(`/success`)
+                navigate(`/success`, {state: {fromForm: true}})
             })
             .catch((error)=> {
-                navigate(`/404`, {state: error.response.data})
+                navigate(`/404`, {state: {errors: error.response.data, fromForm: true}})
         })
     }
 
@@ -205,7 +207,7 @@ function PageThree(props) {
                     <Row className="mx-1">
                         <Button
                             size="sm"
-                            onClick={()=>{navigate(`/`);}}>Edit</Button>
+                            onClick={()=>{navigate(`/`, {state: {fromForm: true}});}}>Edit</Button>
                     </Row>
                 </Col>
                 <Col xs={3}>

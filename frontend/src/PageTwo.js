@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 
 import { useForm, useFormContext, FormProvider, Controller } from "react-hook-form"
 import { ErrorMessage } from "@hookform/error-message";
@@ -21,6 +21,10 @@ import {updateFormData} from "./UpdateFunctions";
 import RateWidget from "./RateWidget";
 
 function PageTwo(props) {
+    const locationState = useLocation();
+    if( !locationState.state?.fromForm) {
+        return <Navigate to="/" replace state={{fromForm: true}}/>
+    }
     const { actions, state } = useStateMachine({updateFormData})
     const methods = useForm(
         {
@@ -75,7 +79,7 @@ function PageTwo(props) {
 
     const onSubmit = (data) => {
         actions.updateFormData(convertStrToInt(data));
-        navigate(`/3`);
+        navigate(`/3`, {state: {fromForm: true}});
     };
 
     return (
@@ -236,7 +240,7 @@ function PageTwo(props) {
                                 size="sm"
                                 onClick={()=>{
                                     actions.updateFormData(convertStrToInt(methods.getValues()))
-                                    navigate(-1, {replace: false});
+                                    navigate(-1, {replace: false, state: {fromForm: true}});
                                 }}
                             >Previous</Button>
                         </Row>

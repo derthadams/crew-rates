@@ -90,7 +90,7 @@ function PageOne(props) {
 
     const onSubmit = (data) => {
         actions.updateFormData(data);
-        navigate(`/2`);
+        navigate(`/2`, {state: {fromForm: true}});
     };
 
     return (

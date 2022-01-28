@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 
-import { useLocation } from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 
 function Failure(props) {
-    const state = useLocation();
+    const locationState = useLocation();
+    if( !locationState.state?.fromForm) {
+        return <Navigate to="/" replace state={{fromForm: true}}/>
+    }
 
     return (
         <div>
             <h1>Failure</h1>
-            {Object.keys(state.state).map((key) =>
-            <p key={key}><span>{key}: </span><span>{state.state[key]}</span></p>)}
+            {Object.keys(locationState.state.errors).map((key) =>
+            <p key={key}><span>{key}: </span><span>{locationState.state.errors[key]}</span></p>)}
         </div>
     )
 }
