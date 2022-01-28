@@ -24,7 +24,7 @@ function Success(props) {
     return (
         <div className="my-3">
             <h1 className="display-1">Thanks!</h1>
-            <p>We appreciate you submitting your rate report and giving back to the community!</p>
+            <p>We appreciate you giving back to the community by submitting your rate report.</p>
             <p>Your report will appear on the site within 48 hours.</p>
             <Row className="mt-5">
                 <Col className="col-4"> </Col>

@@ -173,6 +173,71 @@ function PageOne(props) {
             </Row>
 
             <Row>
+                <Col xs={6}>
+                    <Form.Group className="mb-3" controlId="startDate">
+                        <Form.Label className="required-label">Start date</Form.Label>
+                        <Controller
+                            name='start_date'
+                            control={control}
+                            rules={{
+                                required: {
+                                    value: true,
+                                    message: 'Start date is required'
+                                }
+                            }}
+                            render={({   field ,
+                                         fieldState: { invalid }}) =>
+                                <Form.Control
+                                    {...field}
+                                    type="date"
+                                    isInvalid={invalid}
+                                />}
+                        />
+                        <ErrorMessage
+                            errors={errors}
+                            name='start_date'
+                            render = {
+                                ({ message }) =>
+                                    <Form.Text className="text-danger">{message}</Form.Text>
+                            }
+                        />
+                    </Form.Group>
+                </Col>
+                <Col xs={6}>
+                    <Form.Group className="mb-3" controlId="endDate">
+                        <Form.Label>End date</Form.Label>
+                        <Controller
+                            name='end_date'
+                            control={control}
+                            rules={{
+                                validate: {
+                                    endAfterStart: (v) =>
+                                        getValues('end_date') === '' ||
+                                        new Date(getValues('end_date')) >= new Date(getValues('start_date')) ||
+                                        "End date should be later than start date"
+                                }
+                            }}
+                            render={({   field ,
+                                         fieldState: { invalid }}) =>
+                                <Form.Control
+                                    {...field}
+                                    type="date"
+                                    isInvalid={invalid}
+                                />}
+                        />
+                        <ErrorMessage
+                            errors={errors}
+                            name='end_date'
+                            render = {
+                                ({ message }) =>
+                                    <Form.Text className="text-danger">{message}</Form.Text>
+                            }
+                        />
+                    </Form.Group>
+                </Col>
+            </Row>
+
+            <Row>
                 <Form.Group className="mb-3" controlId="companies">
                     <Form.Label>Production companies</Form.Label>
                     <Controller
@@ -289,70 +354,6 @@ function PageOne(props) {
 
                 {/*Selected option list is state.selectValue*/}
                 {/*selectValue is always a list, even if the select element is not multiple*/}
-            <Row>
-                <Col xs={6}>
-                    <Form.Group className="mb-3" controlId="startDate">
-                        <Form.Label className="required-label">Start date</Form.Label>
-                        <Controller
-                            name='start_date'
-                            control={control}
-                            rules={{
-                                required: {
-                                    value: true,
-                                    message: 'Start date is required'
-                                }
-                            }}
-                            render={({   field ,
-                                         fieldState: { invalid }}) =>
-                            <Form.Control
-                                {...field}
-                                type="date"
-                                isInvalid={invalid}
-                            />}
-                        />
-                        <ErrorMessage
-                            errors={errors}
-                            name='start_date'
-                            render = {
-                                ({ message }) =>
-                                    <Form.Text className="text-danger">{message}</Form.Text>
-                            }
-                        />
-                    </Form.Group>
-                </Col>
-                <Col xs={6}>
-                    <Form.Group className="mb-3" controlId="endDate">
-                        <Form.Label>End date</Form.Label>
-                        <Controller
-                            name='end_date'
-                            control={control}
-                            rules={{
-                                validate: {
-                                    endAfterStart: (v) =>
-                                        getValues('end_date') === '' ||
-                                        new Date(getValues('end_date')) >= new Date(getValues('start_date')) ||
-                                        "End date should be later than start date"
-                                }
-                            }}
-                            render={({   field ,
-                                         fieldState: { invalid }}) =>
-                            <Form.Control
-                                {...field}
-                                type="date"
-                                isInvalid={invalid}
-                            />}
-                        />
-                        <ErrorMessage
-                            errors={errors}
-                            name='end_date'
-                            render = {
-                                ({ message }) =>
-                                    <Form.Text className="text-danger">{message}</Form.Text>
-                            }
-                        />
-                    </Form.Group>
-                </Col>
-            </Row>
 
             <Row className="mt-3">
                 <Col xs={9}>
