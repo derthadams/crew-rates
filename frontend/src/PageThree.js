@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 import { useNavigate } from "react-router-dom";
 
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
-import Table from "react-bootstrap/Table"
-import Card from "react-bootstrap/Card"
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Table from "react-bootstrap/Table";
+import Card from "react-bootstrap/Card";
+import Spinner from "react-bootstrap/Spinner";
 
 import { useStateMachine } from "little-state-machine";
 import ProgressBar from "react-bootstrap/ProgressBar";
@@ -13,17 +14,19 @@ import Button from "react-bootstrap/Button";
 
 import {NIL as uuid_NIL} from "uuid";
 
-import axios from 'axios'
-import Cookies from 'cookies-js'
+import axios from 'axios';
+import Cookies from 'cookies-js';
 
 import {BASE_URL} from "./Survey";
 
 function PageThree(props) {
+    const [submitted, setSubmitted] = useState(false);
     const {state} = useStateMachine();
     let navigate = useNavigate();
     const csrftoken = Cookies.get('csrftoken');
 
     const handleSubmit = () => {
+        setSubmitted(true);
         const formData = state.formData;
         let selected_location_details = [];
         for(let location of formData.locations) {
@@ -206,10 +209,26 @@ function PageThree(props) {
                 </Col>
                 <Col xs={3}>
                     <Row className="mx-1">
-                        <Button
-                            size="sm"
-                            variant="success"
-                            onClick={handleSubmit}>Submit</Button>
+                        {submitted ?
+                            (<Button
+                                size="sm"
+                                variant="success"
+                                disabled>
+                                <Spinner
+                                    as="span"
+                                    animation="border"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                />
+                                <span>&nbsp;&nbsp;Sending...</span>
+                            </Button>) :
+
+                            (<Button
+                                size="sm"
+                                variant="success"
+                                onClick={handleSubmit}>Submit
+                        </Button>)}
                     </Row>
                 </Col>
             </Row>
