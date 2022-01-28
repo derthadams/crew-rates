@@ -26,7 +26,7 @@ class AsyncAPISelect extends React.Component {
 
     asyncOptions = (inputValue) =>
         inputValue.length >= MINIMUM_QUERY_LENGTH &&
-        axios.get(this.props.base_url + this.props.url + '/', {
+        axios.get(this.props.url, {
             params: this.getParams(this.props.getSessionToken, inputValue)
         }).then(this.props.callback)
 

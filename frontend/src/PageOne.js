@@ -47,7 +47,7 @@ function PageOne(props) {
                 let selected = inputValue.slice(-1)[0];
                 let place_id = selected.value;
                 console.log(sessionToken)
-                axios.get(BASE_URL + 'details/', {
+                axios.get(apiUrls['details'], {
                     params: {
                         q: place_id,
                         sessiontoken: sessionToken
@@ -119,8 +119,7 @@ function PageOne(props) {
                                     invalid={invalid}
                                     lsmValue={state.formData.show_title}
                                     creatable={true}
-                                    base_url={BASE_URL}
-                                    url="shows"
+                                    url={apiUrls['shows']}
                                     search_text="a show"
                                     callback={(response) => response.data}
                                 />
@@ -186,8 +185,7 @@ function PageOne(props) {
                             lsmValue={state.formData.companies}
                             creatable={true}
                             isMulti={true}
-                            base_url={BASE_URL}
-                            url="companies"
+                            url={apiUrls['companies']}
                             search_text="production companies"
                             callback={(response) => response.data}
                             invalid={invalid}
@@ -209,8 +207,7 @@ function PageOne(props) {
                             lsmValue={state.formData.network}
                             creatable={true}
                             isMulti={false}
-                            base_url={BASE_URL}
-                            url="networks"
+                            url={apiUrls['networks']}
                             search_text="a network or streaming platform"
                             callback={(response) => response.data}
                             invalid={invalid}
@@ -269,8 +266,7 @@ function PageOne(props) {
                             lsmValue={state.formData.locations}
                             creatable={false}
                             isMulti={true}
-                            base_url={BASE_URL}
-                            url="autocomplete"
+                            url={apiUrls['autocomplete']}
                             search_text="filming locations"
                             callback={
                                 (response) => response.data['predictions'].map(prediction => ({

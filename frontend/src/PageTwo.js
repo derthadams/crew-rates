@@ -105,8 +105,7 @@ function PageTwo(props) {
                                     {...fieldState}
                                     lsmValue={state.formData.job_title}
                                     creatable={true}
-                                    base_url={BASE_URL}
-                                    url="job-titles"
+                                    url={apiUrls['job-titles']}
                                     search_text="a job title"
                                     callback={(response) => response.data}
                                 />
