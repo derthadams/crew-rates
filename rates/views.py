@@ -39,7 +39,8 @@ def add_rate(request, path=''):
             'shows': reverse('shows'),
             'companies': reverse('companies'),
             'networks': reverse('networks'),
-            'job-titles': reverse('job-titles')
+            'job-titles': reverse('job-titles'),
+            'add-rate-api': reverse('add-rate-api')
         }
     }
     return HttpResponse(template.render(context, request))

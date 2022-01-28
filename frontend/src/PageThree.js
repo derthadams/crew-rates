@@ -17,13 +17,12 @@ import {NIL as uuid_NIL} from "uuid";
 import axios from 'axios';
 import Cookies from 'cookies-js';
 
-import {BASE_URL} from "./Survey";
-
 function PageThree(props) {
     const [submitted, setSubmitted] = useState(false);
     const {state} = useStateMachine();
     let navigate = useNavigate();
     const csrftoken = Cookies.get('csrftoken');
+    const apiUrls = JSON.parse(document.getElementById('apiUrls').textContent);
 
     const handleSubmit = () => {
         setSubmitted(true);
@@ -61,7 +60,9 @@ function PageThree(props) {
             final_guarantee: formData.final_guarantee || null
         }
 
-        axios.post(BASE_URL + 'add-rate/', data,
+        console.log(data);
+
+        axios.post(apiUrls['add-rate-api'], data,
             {
                 headers: {
                     "X-CSRFToken": csrftoken
