@@ -42,7 +42,7 @@ function PageThree(props) {
             network: formData.network ?
                 (formData.network.value === formData.network.label ? uuid_NIL : formData.network.value) :
                 null,
-            network_name: formData.network ? formData.network.label : '',
+            network_name: formData.network ? formData.network.label : null,
             genre: formData.genre ? formData.genre.value : null,
             union: formData.union ? formData.union.value : null,
             locations: selected_location_details,
