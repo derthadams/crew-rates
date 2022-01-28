@@ -1,3 +1,5 @@
+import { dataDefault } from "./Survey";
+
 export function updateLocationDetails(state, payload) {
     return {
         ...state,
@@ -16,4 +18,8 @@ export function updateFormData(state, payload) {
             ...payload,
         }
     }
+}
+
+export function clearFormData(state, payload) {
+    return dataDefault;
 }

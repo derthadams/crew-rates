@@ -13,7 +13,7 @@ import Failure from "./Failure"
 
 const BASE_URL = 'https://localhost:8000/api/';
 
-createStore({
+const dataDefault = {
     locationDetails: {},
     formData: {
         show_title: '',
@@ -35,7 +35,9 @@ createStore({
         final_day_rate: '',
         final_hourly_rate: '',
     }
-}, {});
+}
+
+createStore(dataDefault, {});
 
 function Survey() {
     return (
@@ -55,4 +57,4 @@ function Survey() {
 }
 
 export default Survey;
-export { BASE_URL };
+export { BASE_URL, dataDefault };
