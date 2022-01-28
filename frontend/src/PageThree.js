@@ -41,13 +41,13 @@ function PageThree(props) {
             }),
             network: formData.network ?
                 (formData.network.value === formData.network.label ? uuid_NIL : formData.network.value) :
-                '',
+                null,
             network_name: formData.network ? formData.network.label : '',
-            genre: formData.genre ? formData.genre.value : '',
-            union: formData.union ? formData.union.value : '',
+            genre: formData.genre ? formData.genre.value : null,
+            union: formData.union ? formData.union.value : null,
             locations: selected_location_details,
             start_date: formData.start_date,
-            end_date: formData.end_date,
+            end_date: formData.end_date || null,
             job_title: formData.job_title.value === formData.job_title.label ? uuid_NIL : formData.job_title.value,
             job_title_name: formData.job_title.label,
             offered_hourly: formData.offered_hourly_rate,
