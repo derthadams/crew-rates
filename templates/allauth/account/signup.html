@@ -12,10 +12,10 @@
     {% include 'account/logo.html' %}
     <p>Thanks for accepting your invitation!</p>
 
-    <div class="text-center mb-5">
+    <div class="text-center mb-4">
         {% include 'account/provider_list.html' with function="Sign up" process="login"%}
     </div>
-    <div class="my-4">
+    <div class="mb-2">
         <hr class="or">
     </div>
 
@@ -50,7 +50,7 @@
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
 
-        <div class="form-group d-grid mt-3">
+        <div class="form-group d-grid my-2">
           <button type="submit" class="btn btn-dark btn-block">Sign up with email</button>
         </div>
 
