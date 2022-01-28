@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -11,7 +11,7 @@ import {clearFormData} from "./UpdateFunctions";
 
 function Success(props) {
     const { actions, state } = useStateMachine({clearFormData})
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     useEffect(() => {
         actions.clearFormData({});
