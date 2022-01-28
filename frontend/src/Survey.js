@@ -11,8 +11,6 @@ import PageThree from "./PageThree"
 import Success from "./Success"
 import Failure from "./Failure"
 
-const BASE_URL = 'https://localhost:8000/api/';
-
 const dataDefault = {
     locationDetails: {},
     formData: {
@@ -57,4 +55,4 @@ function Survey() {
 }
 
 export default Survey;
-export { BASE_URL, dataDefault };
+export { dataDefault };

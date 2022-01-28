@@ -24,8 +24,6 @@ import AsyncAPISelect from "./AsyncAPISelect";
 import customStyles from "./CustomSelectStyles";
 import { updateLocationDetails, updateFormData } from "./UpdateFunctions";
 
-import {BASE_URL} from "./Survey";
-
 function PageOne(props) {
     const { actions, state } = useStateMachine({ updateLocationDetails, updateFormData });
     const { control, handleSubmit, formState: { errors }, getValues } = useForm(
@@ -35,6 +33,9 @@ function PageOne(props) {
     );
     let navigate = useNavigate();
     let sessionToken = newSessionToken();
+    const genreOptions = JSON.parse(document.getElementById('genreOptions').textContent);
+    const unionOptions = JSON.parse(document.getElementById('unionOptions').textContent);
+    const apiUrls = JSON.parse(document.getElementById('apiUrls').textContent);
 
     function newSessionToken() {
         return uuid_v4();
@@ -86,9 +87,6 @@ function PageOne(props) {
     const getSessionToken = () => {
         return sessionToken;
     }
-
-    const genreOptions = JSON.parse(document.getElementById('genreOptions').textContent);
-    const unionOptions = JSON.parse(document.getElementById('unionOptions').textContent);
 
     const onSubmit = (data) => {
         actions.updateFormData(data);

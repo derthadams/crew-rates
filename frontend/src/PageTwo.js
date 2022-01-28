@@ -20,8 +20,6 @@ import AsyncAPISelect from "./AsyncAPISelect";
 import {updateFormData} from "./UpdateFunctions";
 import RateWidget from "./RateWidget";
 
-import {BASE_URL} from "./Survey";
-
 function PageTwo(props) {
     const { actions, state } = useStateMachine({updateFormData})
     const methods = useForm(
@@ -31,6 +29,7 @@ function PageTwo(props) {
     );
     const [negotiated, setNegotiated] = useState(methods.getValues('negotiated'));
     const [increased, setIncreased] = useState(methods.getValues('increased'));
+    const apiUrls = JSON.parse(document.getElementById('apiUrls').textContent);
 
     let navigate = useNavigate();
 

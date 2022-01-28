@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template import loader
+from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 
@@ -31,6 +32,14 @@ def add_rate(request, path=''):
                 'value': value,
                 'label': label
             } for value, label in Season.UNION_CHOICES
-        ]
+        ],
+        'apiUrls': {
+            'autocomplete': reverse('autocomplete'),
+            'details': reverse('details'),
+            'shows': reverse('shows'),
+            'companies': reverse('companies'),
+            'networks': reverse('networks'),
+            'job-titles': reverse('job-titles')
+        }
     }
     return HttpResponse(template.render(context, request))
