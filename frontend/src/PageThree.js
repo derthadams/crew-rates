@@ -79,61 +79,61 @@ function PageThree(props) {
                 negotiate better deals.</p>
             <h6 className="display-6">Review and Submit</h6>
             <ProgressBar now={100} label=" Step 3 of 3" className="mx-6 my-3"/>
-            {/*<h1>Page Three</h1>*/}
+
             <Card>
                 <Card.Body>
-                    Please review the information you entered. <br/>
+                    Please review the information you entered.<br/>
                     Select Edit to make changes, or Submit if everything looks good!
                 </Card.Body>
             </Card>
             <Table borderless>
                 <tbody>
                 <tr>
-                    <th>Show title: </th>
+                    <th>Show title:</th>
                     <td>{state.formData.show_title.label}</td>
                 </tr>
 
                 <tr>
-                    <th>Season number: </th>
+                    <th>Season number:</th>
                     <td>{state.formData.season_number}</td>
                 </tr>
 
-                {state.formData.companies.length > 0 &&
+                {state.formData.companies.length > 0 ?
                 <tr>
                     {state.formData.companies.length > 1 ?
-                        <th>Companies: </th> :
-                        <th>Company: </th>}
+                        <th>Companies:</th> :
+                        <th>Company:</th>}
 
                     <td>
                         {state.formData.companies.map((company) => (
                             <span key={company.value}>{company.label}<br/></span>
                         ))}
                     </td>
-                </tr>}
+                </tr> : null}
 
-                {state.formData.network !== '' &&
+                {state.formData.network !== '' ?
                 <tr>
-                    <th>Network: </th>
+                    <th>Network:</th>
                     <td>{state.formData.network.label}</td>
-                </tr>}
+                </tr> : null}
 
-                {state.formData.genre !== '' &&
+                {state.formData.genre !== '' ?
                 <tr>
-                    <th>Genre: </th>
+                    <th>Genre:</th>
                     <td>{state.formData.genre.label}</td>
-                </tr>}
+                </tr> : null}
 
-                {state.formData.union !== '' &&
+                {state.formData.union !== '' ?
                 <tr>
-                    <th>Union: </th>
+                    <th>Union:</th>
                     <td>{state.formData.union.label}</td>
-                </tr>}
+                </tr> : null}
 
                 {state.formData.locations.length > 0 &&
                 <tr>
                     {state.formData.locations.length > 1 ?
-                        <th>Locations: </th> :
-                        <th>Location: </th>}
+                        <th>Locations:</th> :
+                        <th>Location:</th>}
 
                     <td>
                         {state.formData.locations.map((location) => (
@@ -143,25 +143,25 @@ function PageThree(props) {
                 </tr>}
 
                 <tr>
-                    <th>Start date: </th>
+                    <th>Start date:</th>
                     <td>{state.formData.start_date}</td>
                 </tr>
 
-                {state.formData.end_date &&
+                {state.formData.end_date ?
                 <tr>
-                    <th>End date: </th>
+                    <th>End date:</th>
                     <td>{state.formData.end_date}</td>
-                </tr>}
+                </tr> : null}
 
                 <tr>
-                    <th>Job title: </th>
+                    <th>Job title:</th>
                     <td>{state.formData.job_title.label}</td>
                 </tr>
 
                 <tr>
-                    <th>Offered rate: </th>
+                    <th>Offered rate:</th>
                     <td>${state.formData.offered_day_rate}/{state.formData.offered_guarantee}
-                        <span> </span>(${state.formData.offered_hourly_rate}/hr)</td>
+                        <span></span>(${state.formData.offered_hourly_rate}/hr)</td>
                 </tr>
 
                 <tr>
@@ -174,7 +174,7 @@ function PageThree(props) {
                     </th>
                 </tr>
 
-                {state.formData.negotiated &&
+                {state.formData.negotiated ?
                 (<tr>
                     <th colSpan={2}>
                         You
@@ -183,14 +183,14 @@ function PageThree(props) {
                             <span> did not get </span>}
                         a higher rate.
                     </th>
-                </tr>)}
+                </tr>) : null}
 
-                {state.formData.final_hourly_rate &&
+                {state.formData.final_hourly_rate ?
                 (<tr>
-                    <th>Final rate: </th>
+                    <th>Final rate:</th>
                     <td>${state.formData.final_day_rate}/{state.formData.final_guarantee}
-                        <span> </span>(${state.formData.final_hourly_rate}/hr)</td>
-                </tr>)}
+                        <span></span>(${state.formData.final_hourly_rate}/hr)</td>
+                </tr>) : null}
 
                 </tbody>
             </Table>
