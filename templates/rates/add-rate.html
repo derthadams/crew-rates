@@ -15,8 +15,9 @@
 
 {% block content-inner %}
 
-  <div id="root">
-{#    <h1>This is the anchor div for the Add a Rate React App</h1>#}
-  </div>
+  <div id="root"></div>
+
+  {{ genreOptions|json_script:'genreOptions' }}
+  {{ unionOptions|json_script:'unionOptions' }}
 
 {% endblock %}

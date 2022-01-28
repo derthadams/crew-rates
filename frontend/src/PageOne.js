@@ -87,23 +87,8 @@ function PageOne(props) {
         return sessionToken;
     }
 
-    const genreOptions = [
-        {value: 'RE', label: 'Reality'},
-        {value: 'DO', label: 'Documentary'},
-        {value: 'GA', label: 'Game'},
-        {value: 'LI', label: 'Live'},
-        {value: 'TA', label: 'Talk'},
-        {value: 'JU', label: 'Judge'},
-        {value: 'OT', label: 'Other Unscripted'},
-        {value: 'SC', label: 'Scripted'}
-    ];
-
-    const unionOptions = [
-        {value: 'NO', label: 'Non-Union'},
-        {value: 'IA', label: 'IATSE'},
-        {value: 'NA', label: 'NABET'},
-        // {value: 4, label: 'IBEW'},
-    ];
+    const genreOptions = JSON.parse(document.getElementById('genreOptions').textContent);
+    const unionOptions = JSON.parse(document.getElementById('unionOptions').textContent);
 
     const onSubmit = (data) => {
         actions.updateFormData(data);
