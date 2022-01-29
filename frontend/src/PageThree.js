@@ -201,16 +201,16 @@ function PageThree(props) {
                 </tbody>
             </Table>
             <Row className="mt-3">
-                <Col xs={6}>
+                <Col xs={4} md={6}>
                 </Col>
-                <Col xs={3}>
+                <Col xs={4} md={3}>
                     <Row className="mx-1">
                         <Button
                             size="sm"
                             onClick={()=>{navigate(`/`, {state: {fromForm: true}});}}>Edit</Button>
                     </Row>
                 </Col>
-                <Col xs={3}>
+                <Col xs={4} md={3}>
                     <Row className="mx-1">
                         {submitted ?
                             (<Button
