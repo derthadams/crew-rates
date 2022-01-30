@@ -11,6 +11,7 @@ media
 /static
 /api/api_config.py
 .coverage
+coverage/
 htmlcov/
 node_modules/
 frontend/static/

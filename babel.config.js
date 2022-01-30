@@ -1,8 +1,10 @@
 module.exports = function (api) {
     const presets = [
-        ['@babel/preset-env', {targets: {node: true}, modules: 'auto'}],
-        ['@babel/preset-react', {runtime: 'automatic'}]
-        // '@babel/preset-flow'
+        // ['@babel/preset-env', {targets: {node: true}, modules: 'auto'}],
+        ['@babel/preset-react', {runtime: 'automatic'}],
+        // '@babel/preset-env',
+        // '@babel/preset-react',
+        ['@babel/preset-env', {targets: {node: 'current'}}],
     ];
     // const plugins = [
     //     '@babel/plugin-transform-runtime',
