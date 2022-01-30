@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-import {Navigate, useLocation, useNavigate} from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button"
 
 import { useStateMachine } from "little-state-machine";
-import {clearFormData} from "./UpdateFunctions";
+import { clearFormData } from "./UpdateFunctions";
 
-function Success(props) {
+function Success() {
     const locationState = useLocation();
     if( !locationState.state?.fromForm) {
         return <Navigate to="/" replace state={{fromForm: true}}/>
     }
-    const { actions, state } = useStateMachine({clearFormData})
+    const { actions } = useStateMachine({clearFormData})
     const navigate = useNavigate();
 
     useEffect(() => {

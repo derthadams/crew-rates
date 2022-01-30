@@ -20,6 +20,6 @@ export function updateFormData(state, payload) {
     }
 }
 
-export function clearFormData(state, payload) {
+export function clearFormData() {
     return dataDefault;
 }
