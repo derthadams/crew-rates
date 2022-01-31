@@ -38,6 +38,7 @@ class AsyncAPISelect extends React.Component {
         return (
             this.props.creatable ?
                 <AsyncCreatableSelect
+                    aria-labelledby={this.props.ariaLabelledby}
                     defaultValue={this.props.lsmValue}
                     loadOptions={this.asyncOptions}
                     styles={customStyles(this.props.invalid)}
@@ -48,6 +49,7 @@ class AsyncAPISelect extends React.Component {
                 />
                 :
                 <AsyncSelect
+                    aria-labelledby={this.props.ariaLabelledby}
                     defaultValue={this.props.lsmValue}
                     loadOptions={this.asyncOptions}
                     styles={customStyles(this.props.invalid)}
