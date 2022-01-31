@@ -298,6 +298,7 @@ function PageOne(props) {
                             render={({   field ,
                                          fieldState: { invalid }}) =>
                             <Select
+                                isClearable
                                 aria-labelledby="genre-label"
                                 {...field}
                                 options={genreOptions}
@@ -316,6 +317,7 @@ function PageOne(props) {
                             render={({   field ,
                                          fieldState: { invalid }}) =>
                             <Select
+                                isClearable
                                 aria-labelledby="union-label"
                                 {...field}
                                 options={unionOptions}
