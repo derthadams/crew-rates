@@ -103,11 +103,14 @@ function PageOne(props) {
 
             <ProgressBar now={33} label=" Step 1 of 3" className="mx-6 my-3"/>
 
-            <Form noValidate onSubmit={handleSubmit(onSubmit)}>
+            <Form noValidate onSubmit={handleSubmit(onSubmit)} data-testid="page-one-form">
             <Row className="mt-4">
                 <Col xs={9}>
                     <Form.Group className="mb-3" controlId="showTitle">
-                        <Form.Label className="required-label">Show title</Form.Label>
+                        <Form.Label className="required-label"
+                                    id="show-label">
+                            Show title
+                        </Form.Label>
                         <Controller
                             name='show_title'
                             control={control}
@@ -115,6 +118,7 @@ function PageOne(props) {
                             render={({   field ,
                                          fieldState: { invalid }}) =>
                                 <AsyncAPISelect
+                                    ariaLabelledby="show-label"
                                     {...field}
                                     invalid={invalid}
                                     lsmValue={state.formData.show_title}
@@ -239,13 +243,14 @@ function PageOne(props) {
 
             <Row>
                 <Form.Group className="mb-3" controlId="companies">
-                    <Form.Label>Production companies</Form.Label>
+                    <Form.Label id="companies-label">Production companies</Form.Label>
                     <Controller
                         name='companies'
                         control={control}
                         render={({   field ,
                                      fieldState: { invalid }}) =>
                         <AsyncAPISelect
+                            ariaLabelledby="companies-label"
                             {...field}
                             lsmValue={state.formData.companies}
                             creatable={true}
@@ -261,13 +266,14 @@ function PageOne(props) {
             </Row>
             <Row>
                 <Form.Group className="mb-3" controlId="network">
-                    <Form.Label>Network or streaming platform</Form.Label>
+                    <Form.Label id="network-label">Network or streaming platform</Form.Label>
                     <Controller
                         name='network'
                         control={control}
                         render={({   field ,
                                      fieldState: { invalid }}) =>
                         <AsyncAPISelect
+                            ariaLabelledby="network-label"
                             {...field}
                             lsmValue={state.formData.network}
                             creatable={true}
@@ -284,13 +290,15 @@ function PageOne(props) {
             <Row>
                 <Col xs={6}>
                     <Form.Group className="mb-3" controlId="genre">
-                        <Form.Label>Genre</Form.Label>
+                        <Form.Label id="genre-label">Genre</Form.Label>
                         <Controller
                             name='genre'
+                            data-testid='genre-select'
                             control={control}
                             render={({   field ,
                                          fieldState: { invalid }}) =>
                             <Select
+                                aria-labelledby="genre-label"
                                 {...field}
                                 options={genreOptions}
                                 placeholder={''}
@@ -301,13 +309,14 @@ function PageOne(props) {
                 </Col>
                 <Col xs={6}>
                     <Form.Group className="mb-3" controlId="union">
-                        <Form.Label>Union status</Form.Label>
+                        <Form.Label id="union-label">Union status</Form.Label>
                         <Controller
                             name='union'
                             control={control}
                             render={({   field ,
                                          fieldState: { invalid }}) =>
                             <Select
+                                aria-labelledby="union-label"
                                 {...field}
                                 options={unionOptions}
                                 placeholder={''}
@@ -320,13 +329,14 @@ function PageOne(props) {
 
             <Row>
                 <Form.Group className="mb-3" controlId="locations">
-                    <Form.Label>Filming locations</Form.Label>
+                    <Form.Label id="locations-label">Filming locations</Form.Label>
                     <Controller
                         name='locations'
                         control={control}
                         render={({   field ,
                                      fieldState: { invalid }}) =>
                         <AsyncAPISelect
+                            ariaLabelledby="locations-label"
                             {...field}
                             lsmValue={state.formData.locations}
                             creatable={false}
