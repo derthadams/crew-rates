@@ -103,7 +103,7 @@ function PageOne(props) {
 
             <ProgressBar now={33} label=" Step 1 of 3" className="mx-6 my-3"/>
 
-            <Form noValidate onSubmit={handleSubmit(onSubmit)} data-testid="page-one-form">
+            <Form noValidate onSubmit={handleSubmit(onSubmit)} aria-label="add-rate-1">
             <Row className="mt-4">
                 <Col xs={9}>
                     <Form.Group className="mb-3" controlId="showTitle">
