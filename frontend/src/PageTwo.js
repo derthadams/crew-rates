@@ -90,14 +90,16 @@ function PageTwo() {
             <h6 className="display-6">Rate information</h6>
             <ProgressBar now={66} label=" Step 2 of 3" className="mx-6 my-3"/>
             <FormProvider {...methods}>
-            <Form noValidate onSubmit={methods.handleSubmit((data) => {
+            <Form noValidate
+                  aria-label="add-rate-2"
+                  onSubmit={methods.handleSubmit((data) => {
                 validateNegotiated();
                 validateIncreased();
                 onSubmit(data);
             })}>
                 <Row>
                     <Form.Group className="mb-3" controlId="jobTitle">
-                        <Form.Label className="required-label">What was your job title on the show?</Form.Label>
+                        <Form.Label className="required-label" id="job-title-label">What was your job title on the show?</Form.Label>
                         <Controller
                             name='job_title'
                             control={methods.control}
@@ -105,6 +107,7 @@ function PageTwo() {
                             render={({   field ,
                                          fieldState}) =>
                                 <AsyncAPISelect
+                                    ariaLabelledby="job-title-label"
                                     {...field}
                                     {...fieldState}
                                     lsmValue={state.formData.job_title}
