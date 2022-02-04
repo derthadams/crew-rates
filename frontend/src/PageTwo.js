@@ -22,9 +22,6 @@ import RateWidget from "./RateWidget";
 
 function PageTwo() {
     const locationState = useLocation();
-    if( !locationState.state?.fromForm) {
-        return <Navigate to="/" replace state={{fromForm: true}}/>
-    }
     const { actions, state } = useStateMachine({updateFormData})
     const methods = useForm(
         {
@@ -33,9 +30,12 @@ function PageTwo() {
     );
     const [negotiated, setNegotiated] = useState(methods.getValues('negotiated'));
     const [increased, setIncreased] = useState(methods.getValues('increased'));
-    const apiUrls = JSON.parse(document.getElementById('apiUrls').textContent);
-
     let navigate = useNavigate();
+    if( !locationState.state?.fromForm) {
+        return <Navigate to="/" replace state={{fromForm: true}}/>
+    }
+
+    const apiUrls = JSON.parse(document.getElementById('apiUrls').textContent);
 
     const convertStrToInt = (data) => {
         if(data['offered_guarantee'] !== '') {
