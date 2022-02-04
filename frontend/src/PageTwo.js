@@ -4,7 +4,6 @@ import { Navigate, useNavigate, useLocation } from "react-router-dom";
 
 import {
     useForm,
-    useFormContext,
     FormProvider,
     Controller,
 } from "react-hook-form";
@@ -103,11 +102,15 @@ function PageTwo() {
                 <Form
                     noValidate
                     aria-label="add-rate-2"
-                    onSubmit={methods.handleSubmit((data) => {
+                    onSubmit={async (event) => {
+                        event.preventDefault()
+                        await methods.trigger();
                         validateNegotiated();
                         validateIncreased();
-                        onSubmit(data);
-                    })}
+                        if(Object.keys(methods.formState.errors).length === 0) {
+                            await methods.handleSubmit(onSubmit)()
+                        }
+                    }}
                 >
                     <Row>
                         <Form.Group className="mb-3" controlId="jobTitle">
@@ -297,7 +300,9 @@ function PageTwo() {
                         <Col xs={6}></Col>
                         <Col xs={3}>
                             <Row className="mx-0">
-                                <Button type="submit" size="sm">
+                                <Button
+                                    type="submit"
+                                    size="sm">
                                     Next
                                 </Button>
                             </Row>
