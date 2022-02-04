@@ -120,6 +120,7 @@ function RateWidget(props) {
                                 render={({   field,
                                              fieldState: { invalid}}) =>
                                 <Form.Control
+                                    aria-label={`${props.name}_day_rate`}
                                     {...field}
                                     type="number"
                                     placeholder="$"
@@ -167,6 +168,7 @@ function RateWidget(props) {
                             render={({  field,
                                         fieldState: { invalid }})=>
                                 <Form.Control
+                                    aria-label={`${props.name}_guarantee`}
                                     {...field}
                                     type="number"
                                     placeholder="hrs"
@@ -209,6 +211,7 @@ function RateWidget(props) {
                             render={({  field,
                                         fieldState: { invalid }}) =>
                                 <Form.Control
+                                    aria-label={`${props.name}_hourly_rate`}
                                     {...field}
                                     type="number"
                                     placeholder="$"
