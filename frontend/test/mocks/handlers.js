@@ -1,5 +1,5 @@
 import { rest } from "msw";
-import { pro, bur, end, dis, details } from "./responses";
+import { pro, bur, end, dis, details, cam } from "./responses";
 
 export const handlers = [
     rest.get("/api/shows/", (req, res, ctx) => {
@@ -47,7 +47,7 @@ export const handlers = [
         const q = req.url.searchParams.get("q");
 
         if (q === "Cam") {
-            return res(ctx.json(details));
+            return res(ctx.json(cam));
         }
     })
 ];
