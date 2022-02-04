@@ -20,7 +20,7 @@ import AsyncAPISelect from "./AsyncAPISelect";
 import {updateFormData} from "./UpdateFunctions";
 import RateWidget from "./RateWidget";
 
-function PageTwo(props) {
+function PageTwo() {
     const locationState = useLocation();
     if( !locationState.state?.fromForm) {
         return <Navigate to="/" replace state={{fromForm: true}}/>
