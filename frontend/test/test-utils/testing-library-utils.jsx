@@ -1,14 +1,14 @@
 import { render } from "@testing-library/react";
-import {StateMachineProvider} from "little-state-machine";
+// import {StateMachineProvider} from "little-state-machine";
 import {BrowserRouter} from "react-router-dom";
 
 const stateMachineBrowserRouter = ({children}) => {
     return (
-            <StateMachineProvider>
+            // <StateMachineProvider>
                 <BrowserRouter>
                     {children}
                 </BrowserRouter>
-            </StateMachineProvider>
+            // </StateMachineProvider>
     )
 }
 
