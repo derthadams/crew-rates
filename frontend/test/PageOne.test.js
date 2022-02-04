@@ -192,8 +192,6 @@ describe("PageOne form validation", () => {
 
     test("start_date required validation", async () => {
         render(<PageOne />);
-        // const form = screen.getByRole("form");
-        // console.log(prettyDOM(form));
 
         // User enters show and season but no start date
         const show = screen.getByLabelText(/show title/i);
@@ -271,15 +269,6 @@ describe("PageOne form validation", () => {
     });
 });
 
-/* TODO: When the happy path test is run before the form validation tests, the validation tests
- *   fail. Something is leaking/unresolved at the end of the happy path test and I haven't been
- *   able to find it yet. Could be something in LSM? Tried to mock RHF and LSM, but the problem is
- *   that PageOne relies on their functionality. Seems to only happen when the user clicks the Next
- *   button and the validation succeeds. The LSM state isn't getting cleared.
- *
- * But does it matter if the LSM state even gets set? Maybe completely mock LSM, then put a test in
- * PageOne for the default values - if they're null, don't set them?*/
-
 describe("PageOne happy path", () => {
     beforeAll(() => server.listen());
 
@@ -299,7 +288,6 @@ describe("PageOne happy path", () => {
 
         const show = screen.getByLabelText(/show title/i);
         userEvent.type(show, "Pro");
-        // await selectEvent.select(show, "Prop Culture");
         await selectEvent.select(show, "Project Runway");
 
         const season = screen.getByLabelText(/season/i);
