@@ -24,7 +24,7 @@ import AsyncAPISelect from "./AsyncAPISelect";
 import customStyles from "./CustomSelectStyles";
 import { updateLocationDetails, updateFormData } from "./UpdateFunctions";
 
-function PageOne(props) {
+function PageOne() {
     const { actions, state } = useStateMachine({ updateLocationDetails, updateFormData });
     const { control, handleSubmit, formState: { errors }, getValues } = useForm(
         {
@@ -41,12 +41,11 @@ function PageOne(props) {
         return uuid_v4();
     }
 
-    const handleLocationChange = (inputValue, {action, prevInputValue}) => {
+    const handleLocationChange = (inputValue, {action, }) => {
         if(action === 'select-option') {
             if(inputValue.length > 0) {
                 let selected = inputValue.slice(-1)[0];
                 let place_id = selected.value;
-                console.log(sessionToken)
                 axios.get(apiUrls['details'], {
                     params: {
                         q: place_id,
@@ -78,7 +77,6 @@ function PageOne(props) {
                                 }
                     })
                     sessionToken = newSessionToken()
-                    console.log(`New Session Token: ${sessionToken}`);
                 });
             }
         }
