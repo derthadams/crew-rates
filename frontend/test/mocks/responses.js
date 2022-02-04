@@ -372,3 +372,14 @@ export const details = {
     },
     status: "OK"
 }
+
+export const cam = [
+    {
+        value: "5c09a673-d0c7-481f-8500-36c581bd7b4e",
+        label: "Camera Operator"
+    },
+    {
+        value: "4d932df0-9efa-4996-a4c8-b02d0e9219b7",
+        label: "Camera Assistant"
+    }
+]

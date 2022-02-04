@@ -42,5 +42,12 @@ export const handlers = [
         if (q === "ChIJlcUYKBWVwoAR1IofkK-RdzA") {
             return res(ctx.json(details));
         }
+    }),
+    rest.get("api/job-titles/", (req, res, ctx) => {
+        const q = req.url.searchParams.get("q");
+
+        if (q === "Cam") {
+            return res(ctx.json(details));
+        }
     })
 ];
