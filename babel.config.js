@@ -6,9 +6,9 @@ module.exports = function (api) {
         // '@babel/preset-react',
         ['@babel/preset-env', {targets: {node: 'current'}}],
     ];
-    // const plugins = [
-    //     '@babel/plugin-transform-runtime',
-    // ];
+    const plugins = [
+        '@babel/plugin-transform-runtime',
+    ];
 
     /** this is just for minimal working purposes,
      * for testing larger applications it is
@@ -18,6 +18,6 @@ module.exports = function (api) {
 
     return {
         presets,
-        // plugins
+        plugins
     };
 };
