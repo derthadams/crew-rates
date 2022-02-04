@@ -1,10 +1,14 @@
-import { prettyDOM, render, screen, waitFor } from "./test-utils/testing-library-utils";
+import {
+    prettyDOM,
+    render,
+    screen,
+    waitFor,
+} from "./test-utils/testing-library-utils";
 import selectEvent from "react-select-event";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 
 import PageOne from "../src/PageOne";
-// import { dataDefault } from "../src/Survey";
 
 import optionsScript from "./optionsScript";
 
@@ -16,58 +20,57 @@ jest.mock("react-router-dom", () => ({
     useNavigate: () => mockedUsedNavigate,
 }));
 
-jest.mock('little-state-machine', () => ({
-    // __esModule: true,
+jest.mock("little-state-machine", () => ({
     useStateMachine: () => {
         return {
             actions: {
                 updateFormData: jest.fn(),
-                updateLocationDetails: jest.fn()
+                updateLocationDetails: jest.fn(),
             },
             state: {
                 locationDetails: {},
                 formData: {
-                    show_title: '',
-                    season_number: '',
+                    show_title: "",
+                    season_number: "",
                     companies: [],
-                    network: '',
-                    genre: '',
-                    union: '',
+                    network: "",
+                    genre: "",
+                    union: "",
                     locations: [],
-                    start_date: '',
-                    end_date: '',
-                    job_title: '',
-                    offered_guarantee: '',
-                    offered_day_rate: '',
-                    offered_hourly_rate: '',
-                    negotiated: '',
-                    increased: '',
-                    final_guarantee: '',
-                    final_day_rate: '',
-                    final_hourly_rate: '',
-                }
-            }
-        }
+                    start_date: "",
+                    end_date: "",
+                    job_title: "",
+                    offered_guarantee: "",
+                    offered_day_rate: "",
+                    offered_hourly_rate: "",
+                    negotiated: "",
+                    increased: "",
+                    final_guarantee: "",
+                    final_day_rate: "",
+                    final_hourly_rate: "",
+                },
+            },
+        };
     },
     createStore: jest.fn(),
 }));
 
-describe('PageOne create options in fields', () => {
-    beforeAll(() => server.listen());
+beforeAll(() => server.listen());
 
-    // Pass optionsScript to the document body and create LSM store
-    beforeEach(() => {
-        document.body.innerHTML = optionsScript;
-    });
+// Pass optionsScript to the document body and create LSM store
+beforeEach(() => {
+    document.body.innerHTML = optionsScript;
+});
 
-    // Reset any request handlers that we may add during the tests,
-    // so they don't affect other tests.
-    afterEach(() => server.resetHandlers());
+// Reset any request handlers that we may add during the tests,
+// so they don't affect other tests.
+afterEach(() => server.resetHandlers());
 
-    // Clean up after the tests are finished.
-    afterAll(() => server.close());
+// Clean up after the tests are finished.
+afterAll(() => server.close());
 
-    test('Create show', async () => {
+describe("PageOne create options in fields", () => {
+    test("Create show", async () => {
         render(<PageOne />);
         const form = screen.getByRole("form");
 
@@ -80,35 +83,21 @@ describe('PageOne create options in fields', () => {
 
         const startDate = screen.getByLabelText(/start date/i);
         userEvent.type(startDate, "2022-02-02");
-        expect(form).toHaveFormValues({start_date: "2022-02-02"})
+        expect(form).toHaveFormValues({ start_date: "2022-02-02" });
 
         const nextButton = screen.getByRole("button", { name: /next/i });
         expect(nextButton).toBeInTheDocument();
         userEvent.click(nextButton);
 
         await waitFor(() =>
-                expect(mockedUsedNavigate).toHaveBeenCalledWith(`/2`, {
-                    state: { fromForm: true },
-                })
+            expect(mockedUsedNavigate).toHaveBeenCalledWith(`/2`, {
+                state: { fromForm: true },
+            })
         );
-    })
-})
+    });
+});
 
 describe("PageOne form validation", () => {
-    beforeAll(() => server.listen());
-
-    // Pass optionsScript to the document body and create LSM store
-    beforeEach(() => {
-        document.body.innerHTML = optionsScript;
-    });
-
-    // Reset any request handlers that we may add during the tests,
-    // so they don't affect other tests.
-    afterEach(() => server.resetHandlers());
-
-    // Clean up after the tests are finished.
-    afterAll(() => server.close());
-
     test("show required validation", async () => {
         render(<PageOne />);
 
@@ -270,17 +259,6 @@ describe("PageOne form validation", () => {
 });
 
 describe("PageOne happy path", () => {
-    beforeAll(() => server.listen());
-
-    beforeEach(() => {
-        document.body.innerHTML = optionsScript;
-        // createStore(dataDefault, {});
-    });
-
-    afterEach(() => server.resetHandlers());
-
-    afterAll(() => server.close());
-
     test("happy path", async () => {
         render(<PageOne />);
         // User fills in all fields
