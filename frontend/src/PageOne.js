@@ -159,7 +159,7 @@ function PageOne() {
                                 type="number"
                                 isInvalid={invalid}
                                 onChange={(event) => {
-                                    field.onChange(parseInt(event.target.value, 10))
+                                    field.onChange(event.target.value)
                                 }}
                             />}
                         />

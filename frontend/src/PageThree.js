@@ -39,7 +39,7 @@ function PageThree(props) {
         let data = {
             show: formData.show_title.value === formData.show_title.label ? uuid_NIL : formData.show_title.value,
             show_title: formData.show_title.label,
-            season_number: formData.season_number,
+            season_number: parseInt(formData.season_number),
             companies: formData.companies.map((company) => {
                 return {
                     uuid: company.value === company.label ? uuid_NIL : company.value,
