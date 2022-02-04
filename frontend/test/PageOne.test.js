@@ -3,9 +3,6 @@ import selectEvent from "react-select-event";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 
-// import { createStore } from "little-state-machine";
-import MockStateMachine from "./mocks/MockStateMachine";
-
 import PageOne from "../src/PageOne";
 // import { dataDefault } from "../src/Survey";
 
@@ -19,35 +16,41 @@ jest.mock("react-router-dom", () => ({
     useNavigate: () => mockedUsedNavigate,
 }));
 
-const {actions, state} = MockStateMachine();
-const clearFormData = actions.clearFormData
-
-jest.doMock('little-state-machine', () => ({
-    ...jest.requireActual('little-state-machine'),
+jest.mock('little-state-machine', () => ({
+    // __esModule: true,
     useStateMachine: () => {
         return {
             actions: {
-                updateFormData: actions.updateFormData,
-                updateLocationDetails: actions.updateLocationDetails,
+                updateFormData: jest.fn(),
+                updateLocationDetails: jest.fn()
             },
-            state: state
+            state: {
+                locationDetails: {},
+                formData: {
+                    show_title: '',
+                    season_number: '',
+                    companies: [],
+                    network: '',
+                    genre: '',
+                    union: '',
+                    locations: [],
+                    start_date: '',
+                    end_date: '',
+                    job_title: '',
+                    offered_guarantee: '',
+                    offered_day_rate: '',
+                    offered_hourly_rate: '',
+                    negotiated: '',
+                    increased: '',
+                    final_guarantee: '',
+                    final_day_rate: '',
+                    final_hourly_rate: '',
+                }
+            }
         }
-    }
+    },
+    createStore: jest.fn(),
 }));
-
-// const mockedUseForm = jest.fn(() => {
-//     return {
-//         control: jest.fn(),
-//         handleSubmit: jest.fn(),
-//         formState: {},
-//         getValues: jest.fn(),
-//     }
-// });
-
-// jest.mock('react-hook-form', () => ({
-//     ...jest.requireActual('react-hook-form'),
-//     useForm: () => mockedUseForm,
-// }))
 
 describe('PageOne create options in fields', () => {
     beforeAll(() => server.listen());
@@ -55,7 +58,6 @@ describe('PageOne create options in fields', () => {
     // Pass optionsScript to the document body and create LSM store
     beforeEach(() => {
         document.body.innerHTML = optionsScript;
-        clearFormData();
     });
 
     // Reset any request handlers that we may add during the tests,
@@ -67,39 +69,37 @@ describe('PageOne create options in fields', () => {
 
     test('Create show', async () => {
         render(<PageOne />);
-        // const form = screen.getByRole("form");
+        const form = screen.getByRole("form");
 
         const show = screen.getByLabelText(/show title/i);
         await selectEvent.create(show, "An Unknown Show");
 
         const season = screen.getByLabelText(/season/i);
         userEvent.type(season, "1");
+        expect(form).toHaveFormValues({ season_number: 1 });
 
         const startDate = screen.getByLabelText(/start date/i);
         userEvent.type(startDate, "2022-02-02");
+        expect(form).toHaveFormValues({start_date: "2022-02-02"})
 
         const nextButton = screen.getByRole("button", { name: /next/i });
         expect(nextButton).toBeInTheDocument();
         userEvent.click(nextButton);
-        // console.log(prettyDOM(startDate));
 
-        // await waitFor(()=> expect(form).toHaveFormValues({ start_date: "2022-02-02" }));
-        //
-        // await waitFor(() =>
-        //         expect(mockedUsedNavigate).toHaveBeenCalledWith(`/2`, {
-        //             state: { fromForm: true },
-        //         })
-        // );
+        await waitFor(() =>
+                expect(mockedUsedNavigate).toHaveBeenCalledWith(`/2`, {
+                    state: { fromForm: true },
+                })
+        );
     })
 })
 
-describe.skip("PageOne form validation", () => {
+describe("PageOne form validation", () => {
     beforeAll(() => server.listen());
 
     // Pass optionsScript to the document body and create LSM store
     beforeEach(() => {
         document.body.innerHTML = optionsScript;
-        // createStore(dataDefault, {});
     });
 
     // Reset any request handlers that we may add during the tests,
@@ -112,12 +112,8 @@ describe.skip("PageOne form validation", () => {
     test("show required validation", async () => {
         render(<PageOne />);
 
-        // const show = screen.getByLabelText(/show title/i);
-        // userEvent.clear(show);
-
         // User enters season and start date but no show title
         const season = screen.getByLabelText(/season/i);
-        // userEvent.clear(season);
         userEvent.type(season, "5");
 
         const startDate = screen.getByLabelText(/start date/i);
@@ -125,8 +121,6 @@ describe.skip("PageOne form validation", () => {
 
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
-
-        console.log(prettyDOM(season));
 
         const showError = await screen.findByText(/show title is required/i);
         expect(showError).toBeInTheDocument();
@@ -140,17 +134,11 @@ describe.skip("PageOne form validation", () => {
 
     test("season required validation", async () => {
         render(<PageOne />);
-        // const form = screen.getByRole("form");
 
         // User enters show and start date but no season
         const show = screen.getByLabelText(/show title/i);
         userEvent.type(show, "Pro");
         await selectEvent.select(show, "Prop Culture");
-        // console.log(prettyDOM(form));
-
-        const season = screen.getByLabelText(/season/i);
-        // userEvent.clear(season);
-        console.log(prettyDOM(season));
 
         const startDate = screen.getByLabelText(/start date/i);
         userEvent.type(startDate, "2022-02-02");
@@ -173,19 +161,14 @@ describe.skip("PageOne form validation", () => {
 
     test("season required validation when user backspace deletes their entry", async () => {
         render(<PageOne />);
-        const form = screen.getByRole("form");
 
         // User enters show, enters a season and backspaces out of it, enters start date
         const show = screen.getByLabelText(/show title/i);
-        console.log(prettyDOM(form));
         userEvent.type(show, "Pro");
         await selectEvent.select(show, "Project Runway");
 
-
         const season = screen.getByLabelText(/season/i);
-        // userEvent.clear(season);
         userEvent.type(season, "5");
-        // console.log(prettyDOM(season))
         userEvent.type(season, "{Backspace}");
 
         const startDate = screen.getByLabelText(/start date/i);
@@ -210,6 +193,7 @@ describe.skip("PageOne form validation", () => {
     test("start_date required validation", async () => {
         render(<PageOne />);
         // const form = screen.getByRole("form");
+        // console.log(prettyDOM(form));
 
         // User enters show and season but no start date
         const show = screen.getByLabelText(/show title/i);
@@ -253,12 +237,12 @@ describe.skip("PageOne form validation", () => {
 
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
-        //
-        // await waitFor(() =>
-        //     expect(mockedUsedNavigate).toHaveBeenCalledWith(`/2`, {
-        //         state: { fromForm: true },
-        //     })
-        // );
+
+        await waitFor(() =>
+            expect(mockedUsedNavigate).toHaveBeenCalledWith(`/2`, {
+                state: { fromForm: true },
+            })
+        );
     });
 
     test("end date is before start date", async () => {
@@ -290,11 +274,13 @@ describe.skip("PageOne form validation", () => {
 /* TODO: When the happy path test is run before the form validation tests, the validation tests
  *   fail. Something is leaking/unresolved at the end of the happy path test and I haven't been
  *   able to find it yet. Could be something in LSM? Tried to mock RHF and LSM, but the problem is
- *   that PageOne relies on their functionality.
+ *   that PageOne relies on their functionality. Seems to only happen when the user clicks the Next
+ *   button and the validation succeeds. The LSM state isn't getting cleared.
  *
- * Seems to only happen when the user clicks the Next button and the validation succeeds.*/
+ * But does it matter if the LSM state even gets set? Maybe completely mock LSM, then put a test in
+ * PageOne for the default values - if they're null, don't set them?*/
 
-describe.skip("PageOne happy path", () => {
+describe("PageOne happy path", () => {
     beforeAll(() => server.listen());
 
     beforeEach(() => {
