@@ -7,6 +7,8 @@ export const handlers = [
 
         if (q === "Pro") {
             return res(ctx.json(pro));
+        } else {
+            return res(ctx.json([]))
         }
     }),
     rest.get("api/companies/", (req, res, ctx) => {
@@ -14,6 +16,8 @@ export const handlers = [
 
         if (q === "End") {
             return res(ctx.json(end));
+        } else {
+            return res(ctx.json([]))
         }
     }),
     rest.get("api/networks/", (req, res, ctx) => {
@@ -21,6 +25,8 @@ export const handlers = [
 
         if (q === "Dis") {
             return res(ctx.json(dis));
+        } else {
+            return res(ctx.json([]))
         }
     }),
     rest.get("api/autocomplete/", (req, res, ctx) => {
