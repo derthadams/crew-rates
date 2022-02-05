@@ -73,7 +73,7 @@ function RateWidget(props) {
     }
 
     const calculateHourly = () => {
-        if(guarantee === 0) {
+        if(guarantee === 0 || daily === 0) {
             setHourly(0);
             setValue(`${props.name}_hourly_rate`, '');
         } else {
@@ -84,8 +84,13 @@ function RateWidget(props) {
     }
 
     const calculateDaily = () => {
-        setDaily(Math.round(hourly * hoursToStraightTime(guarantee)));
-        setValue(`${props.name}_day_rate`, Math.round(hourly * hoursToStraightTime(guarantee)));
+        if(guarantee === 0 || hourly === 0) {
+            setDaily(0);
+            setValue(`${props.name}_day_rate`, '');
+        } else {
+            setDaily(Math.round(hourly * hoursToStraightTime(guarantee)));
+            setValue(`${props.name}_day_rate`, Math.round(hourly * hoursToStraightTime(guarantee)));
+        }
     }
 
     useEffect(() => {
