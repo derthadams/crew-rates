@@ -300,11 +300,11 @@ describe("Page Two form validation", () => {
 
     // User tries to advance without entering an offered rate
     // - entering daily but not guarantee
-    test('user tries to advance with only job title and offered daily', async () => {
+    test("user tries to advance with only job title and offered daily", async () => {
         render(<PageTwo />);
 
         const jobTitle = screen.getByLabelText(
-                /what was your job title on the show?/i
+            /what was your job title on the show?/i
         );
         userEvent.type(jobTitle, "Cam");
         await selectEvent.select(jobTitle, "Camera Assistant");
@@ -317,25 +317,29 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const guaranteeError = await screen.findByText(/guarantee is required/i);
+        const guaranteeError = await screen.findByText(
+            /guarantee is required/i
+        );
         expect(guaranteeError).toBeInTheDocument();
 
         const hourlyError = screen.queryByText(/hourly rate is required/i);
         expect(hourlyError).toBeInTheDocument();
 
-        const negotiatedError = screen.queryByText(/this question is required/i);
+        const negotiatedError = screen.queryByText(
+            /this question is required/i
+        );
         expect(negotiatedError).toBeInTheDocument();
 
         await waitFor(() => {
             expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
         });
-    })
+    });
     // - entering hourly but not guarantee
-    test('user tries to advance with only job title and offered hourly', async () => {
+    test("user tries to advance with only job title and offered hourly", async () => {
         render(<PageTwo />);
 
         const jobTitle = screen.getByLabelText(
-                /what was your job title on the show?/i
+            /what was your job title on the show?/i
         );
         userEvent.type(jobTitle, "Cam");
         await selectEvent.select(jobTitle, "Camera Assistant");
@@ -348,25 +352,29 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const guaranteeError = await screen.findByText(/guarantee is required/i);
+        const guaranteeError = await screen.findByText(
+            /guarantee is required/i
+        );
         expect(guaranteeError).toBeInTheDocument();
 
         const dayRateError = screen.queryByText(/day rate is required/i);
         expect(dayRateError).toBeInTheDocument();
 
-        const negotiatedError = screen.queryByText(/this question is required/i);
+        const negotiatedError = screen.queryByText(
+            /this question is required/i
+        );
         expect(negotiatedError).toBeInTheDocument();
 
         await waitFor(() => {
             expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
         });
-    })
+    });
     // - entering neither hourly nor daily
-    test('user tries to advance with only job title', async () => {
+    test("user tries to advance with only job title", async () => {
         render(<PageTwo />);
 
         const jobTitle = screen.getByLabelText(
-                /what was your job title on the show?/i
+            /what was your job title on the show?/i
         );
         userEvent.type(jobTitle, "Cam");
         await selectEvent.select(jobTitle, "Camera Assistant");
@@ -374,27 +382,31 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const guaranteeError = await screen.findByText(/guarantee is required/i);
+        const guaranteeError = await screen.findByText(
+            /guarantee is required/i
+        );
         expect(guaranteeError).toBeInTheDocument();
 
         const dayRateError = screen.queryByText(/day rate is required/i);
         expect(dayRateError).toBeInTheDocument();
 
-        const negotiatedError = screen.queryByText(/this question is required/i);
+        const negotiatedError = screen.queryByText(
+            /this question is required/i
+        );
         expect(negotiatedError).toBeInTheDocument();
 
         await waitFor(() => {
             expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
         });
-    })
+    });
     // User tries to advance without filling any fields
-    test('user tries to advance without filling in any fields', async () => {
-        render(<PageTwo/>)
+    test("user tries to advance without filling in any fields", async () => {
+        render(<PageTwo />);
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
         const jobTitleError = await screen.findByText(/job title is required/i);
-        expect(jobTitleError).toBeInTheDocument()
+        expect(jobTitleError).toBeInTheDocument();
 
         const guaranteeError = screen.queryByText(/guarantee is required/i);
         expect(guaranteeError).toBeInTheDocument();
@@ -402,20 +414,22 @@ describe("Page Two form validation", () => {
         const dayRateError = screen.queryByText(/day rate is required/i);
         expect(dayRateError).toBeInTheDocument();
 
-        const negotiatedError = screen.queryByText(/this question is required/i);
+        const negotiatedError = screen.queryByText(
+            /this question is required/i
+        );
         expect(negotiatedError).toBeInTheDocument();
 
         await waitFor(() => {
             expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
         });
-    })
+    });
 
     // User enters job title and offered rate, tries to advance without answering negotiated
-    test('user enters job title and offered rate but not negotiated', async () => {
-        render(<PageTwo />)
+    test("user enters job title and offered rate but not negotiated", async () => {
+        render(<PageTwo />);
 
         const jobTitle = screen.getByLabelText(
-                /what was your job title on the show?/i
+            /what was your job title on the show?/i
         );
         userEvent.type(jobTitle, "Cam");
         await selectEvent.select(jobTitle, "Camera Assistant");
@@ -433,20 +447,22 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const negotiatedError = await screen.findByText(/this question is required/i);
+        const negotiatedError = await screen.findByText(
+            /this question is required/i
+        );
         expect(negotiatedError).toBeInTheDocument();
 
         await waitFor(() => {
             expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
         });
-    })
+    });
 
     // User enters job title, offered rate, and negotiated but doesn't answer increased
-    test('user enters job title, offered rate, negotiated, but not increased', async () => {
+    test("user enters job title, offered rate, negotiated, but not increased", async () => {
         render(<PageTwo />);
 
         const jobTitle = screen.getByLabelText(
-                /what was your job title on the show?/i
+            /what was your job title on the show?/i
         );
         userEvent.type(jobTitle, "Cam");
         await selectEvent.select(jobTitle, "Camera Operator");
@@ -472,23 +488,25 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const increasedError = await screen.findByText(/this question is required/i);
+        const increasedError = await screen.findByText(
+            /this question is required/i
+        );
         expect(increasedError).toBeInTheDocument();
 
         await waitFor(() => {
             expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
         });
-    })
+    });
 
     // User selects negotiated and increased but doesn't enter a final rate
     // - entering daily but not guarantee
-    test('user enters job title, offered, negotiated, increased, only daily', async () => {
+    test("user enters job title, offered, negotiated, increased, only daily", async () => {
         render(<PageTwo />);
 
         const form = screen.getByRole("form");
 
         const jobTitle = screen.getByLabelText(
-                /what was your job title on the show?/i
+            /what was your job title on the show?/i
         );
         userEvent.type(jobTitle, "Cam");
         await selectEvent.select(jobTitle, "Camera Operator");
@@ -528,26 +546,29 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const guaranteeError = await screen.findByText(/guarantee is required/i)
+        const guaranteeError = await screen.findByText(
+            /guarantee is required/i
+        );
         expect(guaranteeError).toBeInTheDocument();
 
-        const dayRateError = screen.queryByText(/day rate is required/i)
+        const dayRateError = screen.queryByText(/day rate is required/i);
         expect(dayRateError).not.toBeInTheDocument();
 
-        const hourlyRateError = screen.queryByText(/hourly rate is required/i)
+        const hourlyRateError = screen.queryByText(/hourly rate is required/i);
         expect(hourlyRateError).toBeInTheDocument();
 
         await waitFor(() => {
             expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
-    })})
+        });
+    });
     // - entering hourly but not guarantee
-    test('user enters job title, offered, negotiated, increased, only hourly', async () => {
+    test("user enters job title, offered, negotiated, increased, only hourly", async () => {
         render(<PageTwo />);
 
         const form = screen.getByRole("form");
 
         const jobTitle = screen.getByLabelText(
-                /what was your job title on the show?/i
+            /what was your job title on the show?/i
         );
         userEvent.type(jobTitle, "Cam");
         await selectEvent.select(jobTitle, "Camera Operator");
@@ -587,26 +608,29 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const guaranteeError = await screen.findByText(/guarantee is required/i)
+        const guaranteeError = await screen.findByText(
+            /guarantee is required/i
+        );
         expect(guaranteeError).toBeInTheDocument();
 
-        const dayRateError = screen.queryByText(/day rate is required/i)
+        const dayRateError = screen.queryByText(/day rate is required/i);
         expect(dayRateError).toBeInTheDocument();
 
-        const hourlyRateError = screen.queryByText(/hourly rate is required/i)
+        const hourlyRateError = screen.queryByText(/hourly rate is required/i);
         expect(hourlyRateError).not.toBeInTheDocument();
 
         await waitFor(() => {
             expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
-        })})
+        });
+    });
     // - entering neither hourly nor daily
-    test('user enters job title, offered, negotiated, increased, but no final', async () => {
+    test("user enters job title, offered, negotiated, increased, but no final", async () => {
         render(<PageTwo />);
 
         const form = screen.getByRole("form");
 
         const jobTitle = screen.getByLabelText(
-                /what was your job title on the show?/i
+            /what was your job title on the show?/i
         );
         userEvent.type(jobTitle, "Cam");
         await selectEvent.select(jobTitle, "Camera Operator");
@@ -641,26 +665,25 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const dayRateError = await screen.findByText(/day rate is required/i)
+        const dayRateError = await screen.findByText(/day rate is required/i);
         expect(dayRateError).toBeInTheDocument();
 
-        const guaranteeError = screen.queryByText(/guarantee is required/i)
+        const guaranteeError = screen.queryByText(/guarantee is required/i);
         expect(guaranteeError).toBeInTheDocument();
 
-        const hourlyRateError = screen.queryByText(/hourly rate is required/i)
+        const hourlyRateError = screen.queryByText(/hourly rate is required/i);
         expect(hourlyRateError).toBeInTheDocument();
 
         await waitFor(() => {
             expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
         });
-    })
+    });
 
     // User enters number then backspace-deletes their number - check that counterpart number
     // has an emptystring/null value in input (not 0)
-    // Check that the value is still emptystring (I think this is the default, not 0)
     // - for daily
-    test('user enters daily and guarantee, backspaces out daily', async () => {
-        render(<PageTwo />)
+    test("user enters daily and guarantee, backspaces out daily", async () => {
+        render(<PageTwo />);
 
         const form = screen.getByRole("form");
 
@@ -675,16 +698,16 @@ describe("Page Two form validation", () => {
         userEvent.type(offeredGuarantee, "10");
         expect(form).toHaveFormValues({ offered_hourly_rate: 59.0909 });
 
-        userEvent.type(offeredDayRate, "{Backspace}{Backspace}{Backspace}")
+        userEvent.type(offeredDayRate, "{Backspace}{Backspace}{Backspace}");
         const offeredHourlyRate = screen.getByRole("spinbutton", {
-            name: 'offered_hourly_rate'
+            name: "offered_hourly_rate",
         });
 
         expect(offeredHourlyRate).toHaveValue(null);
-    })
+    });
     // - for guarantee
-    test('user enters hourly and guarantee, backspaces out guarantee', async () => {
-        render(<PageTwo />)
+    test("user enters hourly and guarantee, backspaces out guarantee", async () => {
+        render(<PageTwo />);
 
         const form = screen.getByRole("form");
 
@@ -699,16 +722,16 @@ describe("Page Two form validation", () => {
         userEvent.type(offeredGuarantee, "10");
         expect(form).toHaveFormValues({ offered_day_rate: 770 });
 
-        userEvent.type(offeredGuarantee, "{Backspace}{Backspace}")
+        userEvent.type(offeredGuarantee, "{Backspace}{Backspace}");
         const offeredDayRate = screen.getByRole("spinbutton", {
-            name: 'offered_day_rate'
+            name: "offered_day_rate",
         });
 
         expect(offeredDayRate).toHaveValue(null);
-    })
+    });
     // - for hourly
-    test('user enters hourly and guarantee, backspaces out hourly', async () => {
-        render(<PageTwo />)
+    test("user enters hourly and guarantee, backspaces out hourly", async () => {
+        render(<PageTwo />);
 
         const form = screen.getByRole("form");
 
@@ -723,20 +746,24 @@ describe("Page Two form validation", () => {
         userEvent.type(offeredGuarantee, "10");
         expect(form).toHaveFormValues({ offered_day_rate: 770 });
 
-        userEvent.type(offeredHourlyRate, "{Backspace}{Backspace}")
+        userEvent.type(offeredHourlyRate, "{Backspace}{Backspace}");
         const offeredDayRate = screen.getByRole("spinbutton", {
-            name: 'offered_day_rate'
+            name: "offered_day_rate",
         });
 
         expect(offeredDayRate).toHaveValue(null);
-    })
+    });
 
-    // If user enters value in a field, then backspaces it out, check that it's null
+    // If user enters value in a rateWidget field, then backspaces it out, check that it's null
     // - daily
     // - guarantee
     // - hourly
 
-    // If user enters 0 in day rate, check for error
-    // If user enters 0 in guarantee, check for error
-    // If user enters 0 in hourly rate, check for error
+    // If user submits with 0 in day rate, check for error
+    // If user submits with 0 in guarantee, check for error
+    // If user submits with 0 in hourly rate, check for error
+
+    // User expands form to "did you get...", then changes negotiated to no - form retracts to negotiated
+    // User expands form all the way, then changes negotiated to no - form retracts to negotiated
+    // User expands form all the way, then changes increased to no - form retracts to increased
 });
