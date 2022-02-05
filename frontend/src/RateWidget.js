@@ -28,7 +28,7 @@ function RateWidget(props) {
 
     const handleHourlyClick = (event) => {
         setRateType(0);
-        if(guarantee === 0 && daily > 0) {
+        if((guarantee === 0 && daily > 0) || daily === 0) {
             setDaily(0);
             setValue(`${props.name}_day_rate`, '');
         }
@@ -36,7 +36,7 @@ function RateWidget(props) {
 
     const handleDailyClick = (event) => {
         setRateType(1);
-        if(guarantee === 0 && hourly > 0) {
+        if((guarantee === 0 && hourly > 0) || hourly === 0) {
             setHourly(0);
             setValue(`${props.name}_hourly_rate`, '');
         }
