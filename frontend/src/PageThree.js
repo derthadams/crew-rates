@@ -191,7 +191,7 @@ function PageThree(props) {
                     </th>
                 </tr>) : null}
 
-                {state.formData.final_hourly_rate ?
+                {state.formData.increased ?
                 (<tr>
                     <th>Final rate:</th>
                     <td>${state.formData.final_day_rate}/{state.formData.final_guarantee}
