@@ -56,12 +56,22 @@ function PageTwo() {
         if (value === false) {
             setIncreased(false);
             methods.setValue("increased", "");
+            clearFinalRate();
         }
     };
 
     const handleIncreasedChange = (value) => {
         setIncreased(value);
+        if(value === false) {
+            clearFinalRate();
+        }
     };
+
+    const clearFinalRate = () => {
+        methods.setValue("final_day_rate", "");
+        methods.setValue("final_guarantee", "");
+        methods.setValue("final_hourly_rate", "")
+    }
 
     const validateNegotiated = () => {
         if (methods.getValues("negotiated") === "") {
