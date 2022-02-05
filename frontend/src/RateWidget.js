@@ -120,7 +120,7 @@ function RateWidget(props) {
                                         value: true,
                                         message: "Day rate is required"
                                     },
-                                    validate: value => value > 0 || "Daily rate should be greater than 0"
+                                    validate: value => value > 0 || "Day rate should be greater than 0"
                                 }}
                                 render={({   field,
                                              fieldState: { invalid}}) =>
