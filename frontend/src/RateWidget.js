@@ -14,10 +14,6 @@ function RateWidget(props) {
     const [hourly, setHourly] = useState(getValues(`${props.name}_hourly_rate`) || 0);
     const [rateType, setRateType] = useState(1);
 
-    const titleCase = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1,);
-    }
-
     const handleDailyChange = (event) => {
         setDaily(parseFloat(Number(event.target.value).toFixed(2)));
     }
@@ -131,7 +127,7 @@ function RateWidget(props) {
                                 rules={{
                                     required: {
                                         value: true,
-                                        message: `${titleCase(props.name)} day rate is required`
+                                        message: "Day rate is required"
                                     },
                                     validate: value => value > 0 || "Day rate should be greater than 0"
                                 }}
@@ -179,7 +175,7 @@ function RateWidget(props) {
                             rules={{
                                 required: {
                                     value: true,
-                                    message: `${titleCase(props.name)} guarantee is required`
+                                    message: "Guarantee is required"
                                 },
                                 validate: value => value > 0 || "Guarantee should be greater than 0"
                             }}
@@ -222,7 +218,7 @@ function RateWidget(props) {
                             rules={{
                                 required: {
                                     value: true,
-                                    message: `${titleCase(props.name)} hourly rate is required`
+                                    message: "Hourly rate is required"
                                 },
                                 validate: value => value > 0 || "Hourly rate should be greater than 0"
                             }}
