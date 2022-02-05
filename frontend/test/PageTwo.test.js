@@ -279,6 +279,23 @@ describe("Page Two form validation", () => {
         expect(form).toHaveFormValues({ offered_day_rate: null });
     });
 
+    test("clear zero day rate when click to hourly with no guarantee", () => {
+        render(<PageTwo />);
+
+        const form = screen.getByRole("form");
+        const offeredDayRate = screen.getByRole("spinbutton", {
+            name: "offered_day_rate",
+        });
+        userEvent.type(offeredDayRate, "0");
+        expect(form).toHaveFormValues({ offered_day_rate: 0 });
+
+        const offeredHourly = screen.getByRole("spinbutton", {
+            name: "offered_hourly_rate",
+        });
+        userEvent.click(offeredHourly);
+        expect(form).toHaveFormValues({ offered_day_rate: null });
+    });
+
     // User enters hourly then clicks to daily
     // Make sure that hourly is cleared
     test("clear hourly rate when click to day rate with no guarantee", () => {
@@ -296,7 +313,24 @@ describe("Page Two form validation", () => {
         });
         userEvent.click(offeredDayRate);
         expect(form).toHaveFormValues({ offered_hourly_rate: null });
-    })
+    });
+
+    test("clear zero hourly rate when click to day rate with no guarantee", () => {
+        render(<PageTwo />);
+
+        const form = screen.getByRole("form");
+        const offeredHourly = screen.getByRole("spinbutton", {
+            name: "offered_hourly_rate",
+        });
+        userEvent.type(offeredHourly, "0");
+        expect(form).toHaveFormValues({ offered_hourly_rate: 0 });
+
+        const offeredDayRate = screen.getByRole("spinbutton", {
+            name: "offered_day_rate",
+        });
+        userEvent.click(offeredDayRate);
+        expect(form).toHaveFormValues({ offered_hourly_rate: null });
+    });
 
     // User tries to advance without entering an offered rate
     // - entering daily but not guarantee
@@ -756,8 +790,41 @@ describe("Page Two form validation", () => {
 
     // If user enters value in a rateWidget field, then backspaces it out, check that it's null
     // - daily
+    test("user enters daily and backspaces it out", async () => {
+        render(<PageTwo />);
+
+        const offeredDayRate = screen.getByRole("spinbutton", {
+            name: "offered_day_rate",
+        });
+        userEvent.type(offeredDayRate, "650");
+        userEvent.type(offeredDayRate, "{Backspace}{Backspace}{Backspace}");
+        expect(offeredDayRate).toHaveValue(null);
+    });
     // - guarantee
+    test("user enters guarantee and backspaces it out", async () => {
+        render(<PageTwo />);
+
+        const offeredGuarantee = screen.getByRole("spinbutton", {
+            name: "offered_guarantee",
+        });
+        userEvent.type(offeredGuarantee, "12");
+        userEvent.type(offeredGuarantee, "{Backspace}{Backspace}{Backspace}");
+        expect(offeredGuarantee).toHaveValue(null);
+    });
     // - hourly
+    test("user enters hourly and backspaces it out", async () => {
+        render(<PageTwo />);
+
+        const offeredHourlyRate = screen.getByRole("spinbutton", {
+            name: "offered_hourly_rate",
+        });
+        userEvent.type(offeredHourlyRate, "59.0909");
+        userEvent.type(
+            offeredHourlyRate,
+            "{Backspace}{Backspace}{Backspace}{Backspace}{Backspace}{Backspace}{Backspace}{Backspace}{Backspace}"
+        );
+        expect(offeredHourlyRate).toHaveValue(null);
+    });
 
     // If user submits with 0 in day rate, check for error
     // If user submits with 0 in guarantee, check for error
