@@ -482,7 +482,123 @@ describe("Page Two form validation", () => {
 
     // User selects negotiated and increased but doesn't enter a final rate
     // - entering daily but not guarantee
+    test('user enters job title, offered, negotiated, increased, only daily', async () => {
+        render(<PageTwo />);
+
+        const form = screen.getByRole("form");
+
+        const jobTitle = screen.getByLabelText(
+                /what was your job title on the show?/i
+        );
+        userEvent.type(jobTitle, "Cam");
+        await selectEvent.select(jobTitle, "Camera Operator");
+
+        const offeredDayRate = screen.getByRole("spinbutton", {
+            name: "offered_day_rate",
+        });
+        userEvent.type(offeredDayRate, "650");
+
+        const offeredGuarantee = screen.getByRole("spinbutton", {
+            name: "offered_guarantee",
+        });
+        userEvent.type(offeredGuarantee, "12");
+        expect(form).toHaveFormValues({ offered_hourly_rate: 46.4286 });
+
+        const negotiatedYes = screen.getByRole("button", {
+            name: "negotiated_yes",
+        });
+        userEvent.click(negotiatedYes);
+
+        const higherRate = screen.queryByText("Did you get a higher rate?");
+        expect(higherRate).toBeInTheDocument();
+
+        const increasedYes = screen.getByRole("button", {
+            name: "increased_yes",
+        });
+        userEvent.click(increasedYes);
+
+        const congratulations = screen.queryByText(/congratulations!.*/i);
+        expect(congratulations).toBeInTheDocument();
+
+        const finalDayRate = screen.getByRole("spinbutton", {
+            name: "final_day_rate",
+        });
+        userEvent.type(finalDayRate, "850");
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        const guaranteeError = await screen.findByText(/guarantee is required/i)
+        expect(guaranteeError).toBeInTheDocument();
+
+        const dayRateError = screen.queryByText(/day rate is required/i)
+        expect(dayRateError).not.toBeInTheDocument();
+
+        const hourlyRateError = screen.queryByText(/hourly rate is required/i)
+        expect(hourlyRateError).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
+    })})
     // - entering hourly but not guarantee
+    test('user enters job title, offered, negotiated, increased, only hourly', async () => {
+        render(<PageTwo />);
+
+        const form = screen.getByRole("form");
+
+        const jobTitle = screen.getByLabelText(
+                /what was your job title on the show?/i
+        );
+        userEvent.type(jobTitle, "Cam");
+        await selectEvent.select(jobTitle, "Camera Operator");
+
+        const offeredDayRate = screen.getByRole("spinbutton", {
+            name: "offered_day_rate",
+        });
+        userEvent.type(offeredDayRate, "650");
+
+        const offeredGuarantee = screen.getByRole("spinbutton", {
+            name: "offered_guarantee",
+        });
+        userEvent.type(offeredGuarantee, "12");
+        expect(form).toHaveFormValues({ offered_hourly_rate: 46.4286 });
+
+        const negotiatedYes = screen.getByRole("button", {
+            name: "negotiated_yes",
+        });
+        userEvent.click(negotiatedYes);
+
+        const higherRate = screen.queryByText("Did you get a higher rate?");
+        expect(higherRate).toBeInTheDocument();
+
+        const increasedYes = screen.getByRole("button", {
+            name: "increased_yes",
+        });
+        userEvent.click(increasedYes);
+
+        const congratulations = screen.queryByText(/congratulations!.*/i);
+        expect(congratulations).toBeInTheDocument();
+
+        const finalHourlyRate = screen.getByRole("spinbutton", {
+            name: "final_hourly_rate",
+        });
+        userEvent.type(finalHourlyRate, "80");
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        const guaranteeError = await screen.findByText(/guarantee is required/i)
+        expect(guaranteeError).toBeInTheDocument();
+
+        const dayRateError = screen.queryByText(/day rate is required/i)
+        expect(dayRateError).toBeInTheDocument();
+
+        const hourlyRateError = screen.queryByText(/hourly rate is required/i)
+        expect(hourlyRateError).not.toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
+        })})
     // - entering neither hourly nor daily
     test('user enters job title, offered, negotiated, increased, but no final', async () => {
         render(<PageTwo />);
