@@ -827,10 +827,134 @@ describe("Page Two form validation", () => {
     });
 
     // If user submits with 0 in day rate, check for error
+    test("user submits with 0 in day rate", async () => {
+        render(<PageTwo />);
+
+        const jobTitle = screen.getByLabelText(
+            /what was your job title on the show?/i
+        );
+        userEvent.type(jobTitle, "Cam");
+        await selectEvent.select(jobTitle, "Camera Operator");
+
+        const offeredDayRate = screen.getByRole("spinbutton", {
+            name: "offered_day_rate",
+        });
+        userEvent.type(offeredDayRate, "0");
+
+        const offeredGuarantee = screen.getByRole("spinbutton", {
+            name: "offered_guarantee",
+        });
+        userEvent.type(offeredGuarantee, "10");
+
+        const negotiatedNo = screen.getByRole("button", {
+            name: "negotiated_no",
+        });
+        userEvent.click(negotiatedNo);
+
+        const higherRate = screen.queryByText("Did you get a higher rate?");
+        expect(higherRate).not.toBeInTheDocument();
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        const zeroDayRateError = await screen.findByText(
+            /day rate should be greater than 0/i
+        );
+        expect(zeroDayRateError).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
+        });
+    });
     // If user submits with 0 in guarantee, check for error
+    test("user submits with 0 in guarantee", async () => {
+        render(<PageTwo />);
+
+        const jobTitle = screen.getByLabelText(
+            /what was your job title on the show?/i
+        );
+        userEvent.type(jobTitle, "Cam");
+        await selectEvent.select(jobTitle, "Camera Operator");
+
+        const offeredDayRate = screen.getByRole("spinbutton", {
+            name: "offered_day_rate",
+        });
+        userEvent.type(offeredDayRate, "850");
+
+        const offeredGuarantee = screen.getByRole("spinbutton", {
+            name: "offered_guarantee",
+        });
+        userEvent.type(offeredGuarantee, "0");
+
+        const negotiatedNo = screen.getByRole("button", {
+            name: "negotiated_no",
+        });
+        userEvent.click(negotiatedNo);
+
+        const higherRate = screen.queryByText("Did you get a higher rate?");
+        expect(higherRate).not.toBeInTheDocument();
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        const zeroGuaranteeError = await screen.findByText(
+            /guarantee should be greater than 0/i
+        );
+        expect(zeroGuaranteeError).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
+        });
+    });
     // If user submits with 0 in hourly rate, check for error
+    test("user submits with 0 in hourly", async () => {
+        render(<PageTwo />);
+
+        const jobTitle = screen.getByLabelText(
+            /what was your job title on the show?/i
+        );
+        userEvent.type(jobTitle, "Cam");
+        await selectEvent.select(jobTitle, "Camera Operator");
+
+        const offeredHourlyRate = screen.getByRole("spinbutton", {
+            name: "offered_hourly_rate",
+        });
+        userEvent.type(offeredHourlyRate, "0");
+
+        const offeredGuarantee = screen.getByRole("spinbutton", {
+            name: "offered_guarantee",
+        });
+        userEvent.type(offeredGuarantee, "12");
+
+        const negotiatedNo = screen.getByRole("button", {
+            name: "negotiated_no",
+        });
+        userEvent.click(negotiatedNo);
+
+        const higherRate = screen.queryByText("Did you get a higher rate?");
+        expect(higherRate).not.toBeInTheDocument();
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        const zeroHourlyError = await screen.findByText(
+            /hourly rate should be greater than 0/i
+        );
+        expect(zeroHourlyError).toBeInTheDocument();
+
+        await waitFor(() => {
+            expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
+        });
+    });
 
     // User expands form to "did you get...", then changes negotiated to no - form retracts to negotiated
+    
     // User expands form all the way, then changes negotiated to no - form retracts to negotiated
     // User expands form all the way, then changes increased to no - form retracts to increased
+
+    // user fills out whole form, then changes negotiated to no
+    // this will have to be tested at the Survey or end-to-end test level, since the data from final
+    // doesn't exist in the HTML form, but it does persist in RHF and later in LSM (to which these
+    // tests have no access)
+
 });
