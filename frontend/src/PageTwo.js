@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Navigate, useNavigate, useLocation } from "react-router-dom";
 
@@ -51,19 +51,25 @@ function PageTwo() {
         return data;
     };
 
-    const handleNegotiatedChange = (value) => {
+    const handleNegotiatedChange = async (value) => {
         setNegotiated(value);
         if (value === false) {
             setIncreased(false);
             methods.setValue("increased", "");
             clearFinalRate();
         }
+        if (methods.formState.errors["negotiated"]) {
+            await methods.trigger("negotiated")
+        }
     };
 
-    const handleIncreasedChange = (value) => {
+    const handleIncreasedChange = async (value) => {
         setIncreased(value);
         if(value === false) {
             clearFinalRate();
+        }
+        if (methods.formState.errors["increased"]) {
+            await methods.trigger("increased")
         }
     };
 
@@ -144,6 +150,12 @@ function PageTwo() {
                                         url={apiUrls["job-titles"]}
                                         search_text="a job title"
                                         callback={(response) => response.data}
+                                        onChange={async (inputValue, action) => {
+                                            field.onChange(inputValue, action);
+                                            if(methods.formState.errors["job_title"]) {
+                                                await methods.trigger("job_title");
+                                            }
+                                        }}
                                     />
                                 )}
                             />
