@@ -9,6 +9,7 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 
 import PageTwo from "../src/PageTwo";
+import { dataDefault as mockDataDefault } from "../src/dataDefault";
 
 import optionsScript from "./optionsScript";
 
@@ -27,29 +28,7 @@ jest.mock("little-state-machine", () => ({
                 updateFormData: jest.fn(),
                 updateLocationDetails: jest.fn(),
             },
-            state: {
-                locationDetails: {},
-                formData: {
-                    show_title: "",
-                    season_number: "",
-                    companies: [],
-                    network: "",
-                    genre: "",
-                    union: "",
-                    locations: [],
-                    start_date: "",
-                    end_date: "",
-                    job_title: "",
-                    offered_guarantee: "",
-                    offered_day_rate: "",
-                    offered_hourly_rate: "",
-                    negotiated: "",
-                    increased: "",
-                    final_guarantee: "",
-                    final_day_rate: "",
-                    final_hourly_rate: "",
-                },
-            },
+            state: mockDataDefault,
         };
     },
     createStore: jest.fn(),
