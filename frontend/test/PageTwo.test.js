@@ -948,10 +948,10 @@ describe("Page Two form validation", () => {
     });
 
     // User expands form all the way, then changes negotiated to no - form retracts to negotiated
-    test('user expands form all the way, then changes negotiated to no', async () => {
-        render(<PageTwo/>)
+    test("user expands form all the way, then changes negotiated to no", async () => {
+        render(<PageTwo />);
 
-        const negotiatedYes = screen.getByRole('button', {
+        const negotiatedYes = screen.getByRole("button", {
             name: "negotiated_yes",
         });
         userEvent.click(negotiatedYes);
@@ -959,7 +959,7 @@ describe("Page Two form validation", () => {
         const higherRate = screen.queryByText("Did you get a higher rate?");
         expect(higherRate).toBeInTheDocument();
 
-        const increasedYes = screen.getByRole('button', {
+        const increasedYes = screen.getByRole("button", {
             name: "increased_yes",
         });
         userEvent.click(increasedYes);
@@ -972,20 +972,20 @@ describe("Page Two form validation", () => {
         });
         expect(finalDayRate).toBeInTheDocument();
 
-        const negotiatedNo = screen.getByRole('button', {
+        const negotiatedNo = screen.getByRole("button", {
             name: "negotiated_no",
         });
         userEvent.click(negotiatedNo);
         expect(higherRate).not.toBeInTheDocument();
         expect(congratulations).not.toBeInTheDocument();
         expect(finalDayRate).not.toBeInTheDocument();
-    })
+    });
 
     // User expands form all the way, then changes increased to no - form retracts to increased
-    test('user expands form all the way, then changes increased to no', async () => {
-        render(<PageTwo/>)
+    test("user expands form all the way, then changes increased to no", async () => {
+        render(<PageTwo />);
 
-        const negotiatedYes = screen.getByRole('button', {
+        const negotiatedYes = screen.getByRole("button", {
             name: "negotiated_yes",
         });
         userEvent.click(negotiatedYes);
@@ -993,7 +993,7 @@ describe("Page Two form validation", () => {
         const higherRate = screen.queryByText("Did you get a higher rate?");
         expect(higherRate).toBeInTheDocument();
 
-        const increasedYes = screen.getByRole('button', {
+        const increasedYes = screen.getByRole("button", {
             name: "increased_yes",
         });
         userEvent.click(increasedYes);
@@ -1006,20 +1006,20 @@ describe("Page Two form validation", () => {
         });
         expect(finalDayRate).toBeInTheDocument();
 
-        const increasedNo = screen.getByRole('button', {
+        const increasedNo = screen.getByRole("button", {
             name: "increased_no",
         });
         userEvent.click(increasedNo);
         expect(higherRate).toBeInTheDocument();
         expect(congratulations).not.toBeInTheDocument();
         expect(finalDayRate).not.toBeInTheDocument();
-    })
+    });
 
     // User expands form to "did you get...", then changes negotiated to no - form retracts to negotiated
-    test('user expands form to did you get, then changes negotiated to no', async () => {
-        render(<PageTwo/>)
+    test("user expands form to did you get, then changes negotiated to no", async () => {
+        render(<PageTwo />);
 
-        const negotiatedYes = screen.getByRole('button', {
+        const negotiatedYes = screen.getByRole("button", {
             name: "negotiated_yes",
         });
         userEvent.click(negotiatedYes);
@@ -1027,17 +1027,77 @@ describe("Page Two form validation", () => {
         const higherRate = screen.queryByText("Did you get a higher rate?");
         expect(higherRate).toBeInTheDocument();
 
-        const negotiatedNo = screen.getByRole('button', {
+        const negotiatedNo = screen.getByRole("button", {
             name: "negotiated_no",
         });
         userEvent.click(negotiatedNo);
 
         expect(higherRate).not.toBeInTheDocument();
-    })
+    });
 
     // user fills out whole form, then changes negotiated to no
     // this will have to be tested at the Survey or end-to-end test level, since the data from final
     // doesn't exist in the HTML form, but it does persist in RHF and later in LSM (to which these
     // tests have no access)
 
+    test("form re-validates day rate on change", async () => {
+        render(<PageTwo/>)
+
+        const offeredDayRate = screen.getByRole("spinbutton", {name: 'offered_day_rate'})
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        const dayRateError = await screen.findByText(/offered day rate is required/i);
+        expect(dayRateError).toBeInTheDocument();
+
+        userEvent.type(offeredDayRate, "800");
+        await waitFor(() => expect(dayRateError).not.toBeInTheDocument());
+    });
+
+    test("form re-validates guarantee on change", async () => {
+        render(<PageTwo/>)
+
+        const offeredGuarantee = screen.getByRole("spinbutton", {name: 'offered_guarantee'})
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        const guaranteeError = await screen.findByText(/offered guarantee is required/i);
+        expect(guaranteeError).toBeInTheDocument();
+
+        userEvent.type(offeredGuarantee, "10");
+        await waitFor(() => expect(guaranteeError).not.toBeInTheDocument());
+    });
+
+    test("form re-validates hourly rate on change", async () => {
+        render(<PageTwo/>)
+
+        const offeredHourlyRate = screen.getByRole("spinbutton", {name: 'offered_hourly_rate'})
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        const hourlyError = await screen.findByText(/offered hourly rate is required/i);
+        expect(hourlyError).toBeInTheDocument();
+
+        userEvent.type(offeredHourlyRate, "10");
+        await waitFor(() => expect(hourlyError).not.toBeInTheDocument());
+    });
+
+    test("form re-validates job title on change", async () => {
+        render(<PageTwo/>)
+
+        const jobTitle = screen.getByLabelText(/what was your job title on the show?/i)
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        const jobTitleError = await screen.findByText(/job title is required/i);
+        expect(jobTitleError).toBeInTheDocument();
+
+        userEvent.type(jobTitle, "Cam");
+        await selectEvent.select(jobTitle, "Camera Operator");
+        await waitFor(() => expect(jobTitleError).not.toBeInTheDocument());
+    });
 });
