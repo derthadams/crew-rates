@@ -947,10 +947,93 @@ describe("Page Two form validation", () => {
         });
     });
 
-    // User expands form to "did you get...", then changes negotiated to no - form retracts to negotiated
-    
     // User expands form all the way, then changes negotiated to no - form retracts to negotiated
+    test('user expands form all the way, then changes negotiated to no', async () => {
+        render(<PageTwo/>)
+
+        const negotiatedYes = screen.getByRole('button', {
+            name: "negotiated_yes",
+        });
+        userEvent.click(negotiatedYes);
+
+        const higherRate = screen.queryByText("Did you get a higher rate?");
+        expect(higherRate).toBeInTheDocument();
+
+        const increasedYes = screen.getByRole('button', {
+            name: "increased_yes",
+        });
+        userEvent.click(increasedYes);
+
+        const congratulations = screen.queryByText(/congratulations!.*/i);
+        expect(congratulations).toBeInTheDocument();
+
+        const finalDayRate = screen.queryByRole("spinbutton", {
+            name: "final_day_rate",
+        });
+        expect(finalDayRate).toBeInTheDocument();
+
+        const negotiatedNo = screen.getByRole('button', {
+            name: "negotiated_no",
+        });
+        userEvent.click(negotiatedNo);
+        expect(higherRate).not.toBeInTheDocument();
+        expect(congratulations).not.toBeInTheDocument();
+        expect(finalDayRate).not.toBeInTheDocument();
+    })
+
     // User expands form all the way, then changes increased to no - form retracts to increased
+    test('user expands form all the way, then changes increased to no', async () => {
+        render(<PageTwo/>)
+
+        const negotiatedYes = screen.getByRole('button', {
+            name: "negotiated_yes",
+        });
+        userEvent.click(negotiatedYes);
+
+        const higherRate = screen.queryByText("Did you get a higher rate?");
+        expect(higherRate).toBeInTheDocument();
+
+        const increasedYes = screen.getByRole('button', {
+            name: "increased_yes",
+        });
+        userEvent.click(increasedYes);
+
+        const congratulations = screen.queryByText(/congratulations!.*/i);
+        expect(congratulations).toBeInTheDocument();
+
+        const finalDayRate = screen.queryByRole("spinbutton", {
+            name: "final_day_rate",
+        });
+        expect(finalDayRate).toBeInTheDocument();
+
+        const increasedNo = screen.getByRole('button', {
+            name: "increased_no",
+        });
+        userEvent.click(increasedNo);
+        expect(higherRate).toBeInTheDocument();
+        expect(congratulations).not.toBeInTheDocument();
+        expect(finalDayRate).not.toBeInTheDocument();
+    })
+
+    // User expands form to "did you get...", then changes negotiated to no - form retracts to negotiated
+    test('user expands form to did you get, then changes negotiated to no', async () => {
+        render(<PageTwo/>)
+
+        const negotiatedYes = screen.getByRole('button', {
+            name: "negotiated_yes",
+        });
+        userEvent.click(negotiatedYes);
+
+        const higherRate = screen.queryByText("Did you get a higher rate?");
+        expect(higherRate).toBeInTheDocument();
+
+        const negotiatedNo = screen.getByRole('button', {
+            name: "negotiated_no",
+        });
+        userEvent.click(negotiatedNo);
+
+        expect(higherRate).not.toBeInTheDocument();
+    })
 
     // user fills out whole form, then changes negotiated to no
     // this will have to be tested at the Survey or end-to-end test level, since the data from final
