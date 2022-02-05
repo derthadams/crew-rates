@@ -1048,7 +1048,7 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const dayRateError = await screen.findByText(/offered day rate is required/i);
+        const dayRateError = await screen.findByText(/day rate is required/i);
         expect(dayRateError).toBeInTheDocument();
 
         userEvent.type(offeredDayRate, "800");
@@ -1063,7 +1063,7 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const guaranteeError = await screen.findByText(/offered guarantee is required/i);
+        const guaranteeError = await screen.findByText(/guarantee is required/i);
         expect(guaranteeError).toBeInTheDocument();
 
         userEvent.type(offeredGuarantee, "10");
@@ -1078,7 +1078,7 @@ describe("Page Two form validation", () => {
         const nextButton = screen.getByRole("button", { name: /next/i });
         userEvent.click(nextButton);
 
-        const hourlyError = await screen.findByText(/offered hourly rate is required/i);
+        const hourlyError = await screen.findByText(/hourly rate is required/i);
         expect(hourlyError).toBeInTheDocument();
 
         userEvent.type(offeredHourlyRate, "10");
