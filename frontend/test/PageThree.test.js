@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "./test-utils/testing-library-utils";
+import { BRRender as render, screen, waitFor } from "./test-utils/testing-library-utils";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import PageThree from "../src/PageThree";
