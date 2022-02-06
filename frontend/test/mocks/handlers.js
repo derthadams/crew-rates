@@ -49,5 +49,8 @@ export const handlers = [
         if (q === "Cam") {
             return res(ctx.json(cam));
         }
+    }),
+    rest.post("api/add-rate/", (req, res, ctx) => {
+        return res(ctx.status(201))
     })
 ];
