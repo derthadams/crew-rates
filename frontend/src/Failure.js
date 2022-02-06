@@ -9,10 +9,12 @@ function Failure(props) {
     }
 
     return (
-        <div>
-            <h1>Failure</h1>
-            {locationState.state.errors && Object.keys(locationState.state.errors).map((key) =>
-            <p key={key}><span>{key}: </span><span>{locationState.state.errors[key]}</span></p>)}
+        <div className="failure-container">
+            <h1 className="display-1">Oops!</h1>
+            <h2 className="mt-3">Something went wrong on our end.<br/></h2>
+                <p>Please try your request again later.</p>
+            {/*{locationState.state.errors && Object.keys(locationState.state.errors).map((key) =>*/}
+            {/*<p key={key}><span>{key}: </span><span>{locationState.state.errors[key]}</span></p>)}*/}
         </div>
     )
 }
