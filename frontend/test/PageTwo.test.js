@@ -1,6 +1,5 @@
 import {
-    prettyDOM,
-    render,
+    BRRender as render,
     screen,
     waitFor,
 } from "./test-utils/testing-library-utils";
@@ -10,7 +9,6 @@ import userEvent from "@testing-library/user-event";
 
 import PageTwo from "../src/PageTwo";
 import { dataDefault as mockDataDefault } from "../src/dataDefault";
-
 import optionsScript from "./optionsScript";
 
 import { server } from "./mocks/server";
