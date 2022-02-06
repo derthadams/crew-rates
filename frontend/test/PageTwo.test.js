@@ -234,6 +234,47 @@ describe("PageTwo happy path", () => {
             });
         });
     });
+    test("14 hour guarantee", async () => {
+        render(<PageTwo />);
+
+        const form = screen.getByRole("form");
+
+        const jobTitle = screen.getByLabelText(
+                /what was your job title on the show?/i
+        );
+        userEvent.type(jobTitle, "Cam");
+        await selectEvent.select(jobTitle, "Camera Operator");
+
+        const offeredDayRate = screen.getByRole("spinbutton", {
+            name: "offered_day_rate",
+        });
+        userEvent.type(offeredDayRate, "900");
+
+        const offeredGuarantee = screen.getByRole("spinbutton", {
+            name: "offered_guarantee",
+        });
+        userEvent.type(offeredGuarantee, "14");
+
+        // const offeredHourly = screen.getByRole("spinbutton", {name: "offered_hourly_rate"});
+        expect(form).toHaveFormValues({ offered_hourly_rate: 50 });
+
+        const negotiatedNo = screen.getByRole("button", {
+            name: "negotiated_no",
+        });
+        userEvent.click(negotiatedNo);
+
+        const higherRate = screen.queryByText("Did you get a higher rate?");
+        expect(higherRate).not.toBeInTheDocument();
+
+        const nextButton = screen.getByRole("button", { name: /next/i });
+        userEvent.click(nextButton);
+
+        await waitFor(() => {
+            expect(mockedUsedNavigate).toHaveBeenCalledWith(`/3`, {
+                state: { fromForm: true },
+            });
+        });
+    });
 });
 
 describe("Page Two form validation", () => {
