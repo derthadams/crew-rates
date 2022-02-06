@@ -16,6 +16,7 @@ import {NIL as uuid_NIL} from "uuid";
 
 import axios from 'axios';
 import Cookies from 'cookies-js';
+import AddRateHeading from "./AddRateHeading";
 
 const numericDateToLongString = (dateString) => {
     const eight_hours = 28800000
@@ -88,11 +89,7 @@ function PageThree() {
 
     return (
         <div className='my-3'>
-            <h1 className="display-1">Add a rate</h1>
-            <p>Your anonymous rate information will help all crew members
-                negotiate better deals.</p>
-            <h6 className="display-6">Review and Submit</h6>
-            <ProgressBar now={100} label=" Step 3 of 3" className="mx-6 my-3"/>
+            <AddRateHeading subheading={"Review and Submit"} now={100} label={"Step 3 of 3"}/>
 
             <Card>
                 <Card.Body>

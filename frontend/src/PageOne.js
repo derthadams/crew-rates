@@ -21,6 +21,7 @@ import {v4 as uuid_v4} from "uuid";
 
 import "./survey.css"
 import AsyncAPISelect from "./AsyncAPISelect";
+import AddRateHeading from "./AddRateHeading";
 import customStyles from "./CustomSelectStyles";
 import { updateLocationDetails, updateFormData } from "./UpdateFunctions";
 
@@ -93,14 +94,7 @@ function PageOne() {
 
     return (
         <div className="my-3">
-            <h1 className="display-1">Add a rate</h1>
-
-            <p>Your anonymous rate information will help all crew members
-                negotiate better deals.</p>
-            <h6 className="display-6">Show information</h6>
-
-            <ProgressBar now={33} label=" Step 1 of 3" className="mx-6 my-3"/>
-
+            <AddRateHeading subheading={"Show information"} now={33} label={"Step 1 of 3"}/>
             <Form noValidate onSubmit={handleSubmit(onSubmit)} aria-label="add-rate-1">
             <Row className="mt-4">
                 <Col xs={9}>

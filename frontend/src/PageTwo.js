@@ -23,6 +23,7 @@ import "./survey.css";
 import AsyncAPISelect from "./AsyncAPISelect";
 import { updateFormData } from "./UpdateFunctions";
 import RateWidget from "./RateWidget";
+import AddRateHeading from "./AddRateHeading";
 
 function PageTwo() {
     const locationState = useLocation();
@@ -107,13 +108,7 @@ function PageTwo() {
 
     return (
         <div className="my-3">
-            <h1 className="display-1">Add a rate</h1>
-            <p>
-                Your anonymous rate information will help all crew members
-                negotiate better deals.
-            </p>
-            <h6 className="display-6">Rate information</h6>
-            <ProgressBar now={66} label=" Step 2 of 3" className="mx-6 my-3" />
+            <AddRateHeading subheading={"Rate information"} now={66} label={"Step 2 of 3"}/>
             <FormProvider {...methods}>
                 <Form
                     noValidate
