@@ -17,14 +17,15 @@ import {NIL as uuid_NIL} from "uuid";
 import axios from 'axios';
 import Cookies from 'cookies-js';
 
-function PageThree(props) {
+function PageThree() {
     const locationState = useLocation();
-    if( !locationState.state?.fromForm) {
-        return <Navigate to="/" replace state={{fromForm: true}}/>
-    }
     const [submitted, setSubmitted] = useState(false);
     const {state} = useStateMachine();
     let navigate = useNavigate();
+    if( !locationState.state?.fromForm) {
+        return <Navigate to="/" replace state={{fromForm: true}}/>
+    }
+
     const csrftoken = Cookies.get('csrftoken');
     const apiUrls = JSON.parse(document.getElementById('apiUrls').textContent);
 
