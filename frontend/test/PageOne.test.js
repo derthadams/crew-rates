@@ -1,5 +1,5 @@
 import {
-    render,
+    BRRender as render,
     screen,
     waitFor,
 } from "./test-utils/testing-library-utils";
@@ -36,7 +36,7 @@ jest.mock("little-state-machine", () => ({
 
 beforeAll(() => server.listen());
 
-// Pass optionsScript to the document body and create LSM store
+// Pass optionsScript to the document body
 beforeEach(() => {
     document.body.innerHTML = optionsScript;
 });
