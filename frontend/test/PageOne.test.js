@@ -1,5 +1,4 @@
 import {
-    prettyDOM,
     render,
     screen,
     waitFor,
