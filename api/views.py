@@ -33,6 +33,7 @@ class LocationDetailsAPIView(APIView):
             "place_id": self.request.GET.get('q'),
             "sessiontoken": self.request.GET.get('sessiontoken'),
             "key": APIKey,
+            "fields": "formatted_address,address_components,geometry",
             "language": "en-US"
         }
         response = requests.get(DETAILS_URL, params=params)
