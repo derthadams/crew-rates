@@ -11,7 +11,7 @@ function Failure(props) {
     return (
         <div>
             <h1>Failure</h1>
-            {Object.keys(locationState.state.errors).map((key) =>
+            {locationState.state.errors && Object.keys(locationState.state.errors).map((key) =>
             <p key={key}><span>{key}: </span><span>{locationState.state.errors[key]}</span></p>)}
         </div>
     )
