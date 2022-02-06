@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
@@ -11,15 +11,16 @@ import { clearFormData } from "./UpdateFunctions";
 
 function Success() {
     const locationState = useLocation();
-    if( !locationState.state?.fromForm) {
-        return <Navigate to="/" replace state={{fromForm: true}}/>
-    }
     const { actions } = useStateMachine({clearFormData})
     const navigate = useNavigate();
 
     useEffect(() => {
         actions.clearFormData({});
     }, []);
+
+    if( !locationState.state?.fromForm) {
+        return <Navigate to="/" replace state={{fromForm: true}}/>
+    }
 
     const handleAnotherRate = () => {
         navigate(`/`)
