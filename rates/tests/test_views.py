@@ -37,7 +37,7 @@ class RatesViewsTest(TestCase):
         self.client.login(email='john@gmail.com', password='super-secret')
         response = self.client.get(self.add_rate_url)
         self.assertEquals(response.status_code, 200)
-        self.assertContains(response, 'Add a Rate')
+        self.assertContains(response, 'Add a rate')
 
     def test_get_add_rate_view_not_logged_in(self):
         response = self.client.get(self.discover_url)
