@@ -17,6 +17,13 @@ import {NIL as uuid_NIL} from "uuid";
 import axios from 'axios';
 import Cookies from 'cookies-js';
 
+const numericDateToLongString = (dateString) => {
+    const eight_hours = 28800000
+    const date = new Date(dateString);
+    date.setTime(date.getTime() + eight_hours)
+    return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})
+}
+
 function PageThree() {
     const locationState = useLocation();
     const [submitted, setSubmitted] = useState(false);
@@ -151,13 +158,13 @@ function PageThree() {
 
                 <tr>
                     <th>Start date:</th>
-                    <td>{state.formData.start_date}</td>
+                    <td>{numericDateToLongString(state.formData.start_date)}</td>
                 </tr>
 
                 {state.formData.end_date ?
                 <tr>
                     <th>End date:</th>
-                    <td>{state.formData.end_date}</td>
+                    <td>{numericDateToLongString(state.formData.end_date)}</td>
                 </tr> : null}
 
                 <tr>
@@ -168,7 +175,7 @@ function PageThree() {
                 <tr>
                     <th>Offered rate:</th>
                     <td>${state.formData.offered_day_rate}/{state.formData.offered_guarantee}
-                        <span></span>(${state.formData.offered_hourly_rate}/hr)</td>
+                        <span>&nbsp;</span>(${state.formData.offered_hourly_rate}/hr)</td>
                 </tr>
 
                 <tr>
