@@ -11,6 +11,7 @@
 
     {% include 'account/logo.html' %}
     <p>Thanks for accepting your invitation!</p>
+    <p>Please sign up using one of your social accounts or with your email.</p>
 
     <div class="text-center mb-4">
         {% include 'account/provider_list.html' with function="Sign up" process="login"%}
@@ -20,30 +21,39 @@
     </div>
 
     <div>
-        <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+        <form novalidate class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
       {% csrf_token %}
-        {{ form.non_field_errors }}
+
+        {% for error in form.non_field_errors %}
+            <small class="text-danger form-text">{{ error }}</small><br/>
+        {% endfor %}
 
         <div class="form-group text-start">
-          {{ form.email.errors }}
         <label class="form-label" for="id_email">Email</label>
         <input class="form-control" type="email" name="{{ form.email.name }}"
                value="{% if form.email.value %} {{ form.email.value }} {% endif %}"
                required id="id_email" autocomplete="email" readonly>
+            {% for error in form.email.errors %}
+                <small class="text-danger form-text">{{ error }}</small><br/>
+            {% endfor %}
         </div>
 
         <div class="form-group text-start mt-2">
-          {{ form.password1.errors }}
         <label class="form-label" for="id_password1">Password</label>
         <input class="form-control" type="password" name="{{ form.password1.name }}"
                required id="id_password1" autocomplete="new-password">
+            {% for error in form.password1.errors %}
+                <small class="text-danger form-text">{{ error }}</small><br/>
+            {% endfor %}
         </div>
 
         <div class="form-group text-start mt-2">
-          {{ form.password2.errors }}
         <label class="form-label" for="id_password2">Re-type password</label>
         <input class="form-control" type="password" name="{{ form.password2.name }}"
                required id="id_password2" autocomplete="new-password">
+            {% for error in form.password2.errors %}
+                <small class="text-danger form-text">{{ error }}</small><br/>
+            {% endfor %}
         </div>
 
         {% if redirect_field_value %}
