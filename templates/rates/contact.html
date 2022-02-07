@@ -33,7 +33,7 @@
                 <div class="form-group text-start mt-3">
                     <label for="id_message" class="form-label">Message</label>
                     <textarea class="form-control" name="{{ form.message.name }}"
-                              required id="id_message"
+                              required id="id_message" rows="8"
                     >{% if form.message.value %}{{ form.message.value }}{% endif %}</textarea>
                     {% for error in form.message.errors %}
                         <small class="text-danger form-text">{{ error }}</small>
