@@ -4,9 +4,15 @@
 
 Hello {{ name }},
 
-You have been invited to join {{ site_name }}
+You've been invited to join crewrates.org!
 
-If you'd like to join, please go to {{ invite_url }}
+Crew Rates lets you see what other people have gotten paid on recent shows, so that you can negotiate better deals.
+
+You can also give back to the project by anonymously sharing your own rates.
+
+If you'd like to join, please go to {{ invite_url }} to create an account.
+
+Thanks for using crewrates.org!
 
 {% endblocktrans %}
 {% endautoescape %}
