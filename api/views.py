@@ -1,7 +1,9 @@
+import json
 import requests
 
 from django.apps import apps
 from django.db.models import F
+from django.contrib.postgres.search import TrigramSimilarity
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -94,13 +96,47 @@ class NetworksAPIView(APIView):
 
 
 class AddRate(APIView):
+    uuid_null = '00000000-0000-0000-0000-000000000000'
 
     def post(self, request):  # noqa
         data = request.data
         data['user'] = request.user.id
         serializer = RawRateReportSerializer(data=data)
         if serializer.is_valid():
-            serializer.save()
+            job_title_matches = []
+            show_matches = []
+            company_matches = []
+            network_matches = []
+
+            if serializer.validated_data['job_title'] == self.uuid_null:
+                job_title_matches = apps.get_model('rates', 'JobTitle').objects.annotate(
+                    similarity=TrigramSimilarity('title', serializer.validated_data['job_title_name']),
+                ).filter(similarity__gt=0.3).order_by('-similarity')
+
+            if serializer.validated_data['show'] == self.uuid_null:
+                show_matches = apps.get_model('rates', 'Show').objects.annotate(
+                    similarity=TrigramSimilarity('title', serializer.validated_data['show_title']),
+                ).filter(similarity__gt=0.3).order_by('-similarity')
+
+            companies = serializer.validated_data['companies']
+            for company in companies:
+                if company['uuid'] == self.uuid_null:
+                    query_results = list(apps.get_model('rates', 'Company').objects.annotate(
+                        similarity=TrigramSimilarity('name', company['name']),
+                    ).filter(similarity__gt=0.3).order_by('-similarity'))
+                    company_matches.extend(query_results)
+
+            if serializer.validated_data['network'] == self.uuid_null:
+                network_matches = apps.get_model('rates', 'Network').objects.annotate(
+                    similarity=TrigramSimilarity('name', serializer.validated_data['network_name']),
+                ).filter(similarity__gt=0.3).order_by('-similarity')
+
+            serializer.save(
+                job_title_matches=job_title_matches,
+                show_matches=show_matches,
+                company_matches=company_matches,
+                network_matches=network_matches
+            )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
