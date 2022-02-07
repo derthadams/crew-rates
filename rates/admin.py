@@ -151,19 +151,23 @@ def approve_raw_rate_report(modeladmin, request, queryset):
                 company_obj = Company.objects.get(uuid=company['uuid'])
             companies.append(company_obj.pk)
 
-        if raw_report.network == uuid_null:
-            network_obj, created = Network.objects.get_or_create(
-                name=raw_report.network_name)
-        else:
-            network_obj = Network.objects.get(uuid=raw_report.network)
-        network = network_obj.pk
+        network = None
+        if raw_report.network:
+            if raw_report.network == uuid_null:
+                network_obj, created = Network.objects.get_or_create(
+                    name=raw_report.network_name)
+            else:
+                network_obj = Network.objects.get(uuid=raw_report.network)
+            network = network_obj.pk
 
         if raw_report.locations:
             locations_set = set()
             scopes_set = set()
 
             for location in raw_report.locations:
-                location_object, created = make_location_object(location['scopes'][0])
+                location_object, created = make_location_object(location['scopes'][0],
+                                                                location['latitude'],
+                                                                location['longitude'])
                 locations_set.add(location_object.id)
                 scopes_set.add(location_object.id)
 
@@ -235,13 +239,22 @@ def approve_raw_rate_report(modeladmin, request, queryset):
         raw_report.save()
 
 
-def make_location_object(location_dict):
-    return Location.objects.get_or_create(
+def make_location_object(location_dict, latitude=None, longitude=None):
+    location, created = Location.objects.get_or_create(
         display_name=location_dict['display_name'],
         long_name=location_dict['long_name'],
         short_name=location_dict['short_name'],
-        type=location_dict['type']
-    )
+        # latitude=float(latitude) if latitude else None,
+        # longitude=float(longitude) if longitude else None,
+        type=location_dict['type'])
+    if not latitude and not longitude:
+        return location, created
+    if latitude and not location.latitude:
+        location.latitude = latitude
+    if longitude and not location.longitude:
+        location.longitude = longitude
+    location.save()
+    return location, created
 
 
 class RawRateReportAdmin(admin.ModelAdmin):
