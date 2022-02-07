@@ -7,7 +7,9 @@
             <form novalidate method="POST" action="{% url 'contact' %}">
                 {% csrf_token %}
 
-                {{ form.non_field_errors }}
+                {% for error in form.non_field_errors %}
+                    <small class="text-danger form-text">{{ error }}</small>
+                {% endfor %}
                 <div class="form-group text-start mt-5">
                     <label for="id_email" class="form-label">Email</label>
                     <input type="email" class="form-control" name="{{ form.email.name }}"
