@@ -15,6 +15,8 @@ valid_json = {
     "locations": [
         {
             "display_name": "Los Angeles, CA, USA",
+            "latitude": "34.0522342",
+            "longitude": "-118.2436849",
             "scopes": [
                 {
                     "long_name": "Los Angeles",
@@ -72,6 +74,8 @@ valid_json_create = {
     "locations": [
         {
             "display_name": "Los Angeles, CA, USA",
+            "latitude": "34.0522342",
+            "longitude": "-118.2436849",
             "scopes": [
                 {
                     "long_name": "Los Angeles",
