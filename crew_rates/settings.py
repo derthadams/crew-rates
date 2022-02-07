@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'sslserver',
     'corsheaders',
     'rest_framework',
+    'captcha',
 ]
 
 # Required for allauth
@@ -98,7 +99,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates'),
                  os.path.join(BASE_DIR, 'templates', 'allauth'),
-                 os.path.join(BASE_DIR, 'templates', 'admin')],
+                 os.path.join(BASE_DIR, 'templates', 'admin'),
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -248,3 +250,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ]
 }
+
+RECAPTCHA_PRIVATE_KEY = os.environ.get('RATES_RECAPTCHA_PRIVATE_KEY')
+RECAPTCHA_PUBLIC_KEY = os.environ.get('RATES_RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_REQUIRED_SCORE = 0.85
+
