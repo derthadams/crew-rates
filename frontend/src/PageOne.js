@@ -74,6 +74,8 @@ function PageOne() {
                         key: place_id,
                         value: {
                                     display_name: response.data.result.formatted_address,
+                                    latitude: response.data.result.geometry.location.lat,
+                                    longitude: response.data.result.geometry.location.lng,
                                     scopes: scopes
                                 }
                     })
