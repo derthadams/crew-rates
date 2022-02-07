@@ -26,7 +26,7 @@
             {% csrf_token %}
 
             {% for error in form.non_field_errors %}
-                <small class="text-danger form-text">{{ error }}</small>
+                <small class="text-danger form-text">{{ error }}</small><br/>
             {% endfor %}
             <div class="form-group text-start">
                 <label class="form-label" for="id_login">Email</label>
@@ -34,7 +34,7 @@
                        value="{% if form.login.value %} {{ form.login.value }} {% endif %}"
                        required id="id_login" autocomplete="email">
                 {% for error in form.login.errors %}
-                    <small class="text-danger form-text">{{ error }}</small>
+                    <small class="text-danger form-text">{{ error }}</small><br/>
                 {% endfor %}
             </div>
 
@@ -45,7 +45,7 @@
                        required id="id_password"
                        autocomplete="current-password">
                 {% for error in form.password.errors %}
-                    <small class="text-danger form-text">{{ error }}</small>
+                    <small class="text-danger form-text">{{ error }}</small><br/>
                 {% endfor %}
             </div>
 

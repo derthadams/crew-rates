@@ -8,7 +8,7 @@
                 {% csrf_token %}
 
                 {% for error in form.non_field_errors %}
-                    <small class="text-danger form-text">{{ error }}</small>
+                    <small class="text-danger form-text">{{ error }}</small><br/>
                 {% endfor %}
                 <div class="form-group text-start mt-5">
                     <label for="id_email" class="form-label">Email</label>
@@ -17,7 +17,7 @@
                            value="{% if form.email.value %}{{ form.email.value }}{% endif %}"
                            autocomplete="email">
                     {% for error in form.email.errors %}
-                        <small class="text-danger form-text">{{ error }}</small>
+                        <small class="text-danger form-text">{{ error }}</small><br/>
                     {% endfor %}
                 </div>
 
@@ -28,7 +28,7 @@
                            value="{% if form.subject.value %}{{ form.subject.value }}{% endif %}"
                             autocomplete="off">
                     {% for error in form.subject.errors %}
-                        <small class="text-danger form-text">{{ error }}</small>
+                        <small class="text-danger form-text">{{ error }}</small><br/>
                     {% endfor %}
                 </div>
 
@@ -38,7 +38,7 @@
                               required id="id_message" rows="8"
                     >{% if form.message.value %}{{ form.message.value }}{% endif %}</textarea>
                     {% for error in form.message.errors %}
-                        <small class="text-danger form-text">{{ error }}</small>
+                        <small class="text-danger form-text">{{ error }}</small><br/>
                     {% endfor %}
                 </div>
 
