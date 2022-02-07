@@ -239,6 +239,7 @@ def approve_raw_rate_report(modeladmin, request, queryset):
 
         raw_report.approved = True
         raw_report.save()
+        raw_report.delete()
 
 
 def make_location_object(location_dict, latitude=None, longitude=None):
@@ -246,8 +247,6 @@ def make_location_object(location_dict, latitude=None, longitude=None):
         display_name=location_dict['display_name'],
         long_name=location_dict['long_name'],
         short_name=location_dict['short_name'],
-        # latitude=float(latitude) if latitude else None,
-        # longitude=float(longitude) if longitude else None,
         type=location_dict['type'])
     if not latitude and not longitude:
         return location, created
