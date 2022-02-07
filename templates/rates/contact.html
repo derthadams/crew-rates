@@ -1,0 +1,57 @@
+{% extends 'rates/base_contact.html' %}
+
+{% load static %}
+
+{% block content-inner %}
+            <h1 class="display-1">Contact us</h1>
+            <form novalidate method="POST" action="{% url 'contact' %}">
+                {% csrf_token %}
+
+                {{ form.non_field_errors }}
+                <div class="form-group text-start mt-5">
+                    <label for="id_email" class="form-label">Email</label>
+                    <input type="email" class="form-control" name="{{ form.email.name }}"
+                           required id="id_email"
+                           value="{% if form.email.value %}{{ form.email.value }}{% endif %}"
+                           autocomplete="email">
+                    {% for error in form.email.errors %}
+                        <small class="text-danger form-text">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group text-start mt-3">
+                    <label for="id_subject" class="form-label">Subject</label>
+                    <input type="text" class="form-control" name="{{ form.subject.name }}"
+                           required id="id_subject"
+                           value="{% if form.subject.value %}{{ form.subject.value }}{% endif %}"
+                            autocomplete="off">
+                    {% for error in form.subject.errors %}
+                        <small class="text-danger form-text">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                <div class="form-group text-start mt-3">
+                    <label for="id_message" class="form-label">Message</label>
+                    <textarea class="form-control" name="{{ form.message.name }}"
+                              required id="id_message"
+                    >{% if form.message.value %}{{ form.message.value }}{% endif %}</textarea>
+                    {% for error in form.message.errors %}
+                        <small class="text-danger form-text">{{ error }}</small>
+                    {% endfor %}
+                </div>
+
+                {{ form.captcha }}
+
+                <div class="row mt-3">
+                    <div class="col-8"></div>
+                    <div class="col-4">
+                        <div class="form-group d-grid my-2">
+                            <button type="submit" class="btn btn-dark">Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+
+{% endblock %}

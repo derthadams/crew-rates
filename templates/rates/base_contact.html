@@ -1,0 +1,25 @@
+{% extends 'rates/base_global.html' %}
+
+{% load static %}
+
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'rates/css/contact.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+{% endblock %}
+
+{% block title %}
+    <title>Contact</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid p-3" id="content-background">
+        <div class="container p-3" id="content-inner">
+            {% block content-inner %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

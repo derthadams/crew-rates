@@ -8,6 +8,7 @@ body {
 
 #content-inner {
     width: 680px;
+    min-height: 600px;
     background-color: white;
 }
 

@@ -1,0 +1,18 @@
+body {
+    padding-top: 65px;
+}
+
+#content-background {
+    background-color: white;
+}
+
+#content-inner {
+    max-width: 680px;
+    width: 100%;
+    min-height: 600px;
+    background-color: white;
+}
+
+ul {
+    list-style-type: none;
+}
