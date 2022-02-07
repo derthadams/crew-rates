@@ -115,6 +115,8 @@ class Location(models.Model):
     long_name = models.CharField(max_length=128)
     short_name = models.CharField(max_length=128)
     type = models.CharField(max_length=128)
+    latitude = models.FloatField(null=True)
+    longitude = models.FloatField(null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
 
@@ -337,3 +339,5 @@ class Contact(models.Model):
     subject = models.CharField(max_length=512)
     message = models.TextField()
     captcha = ReCaptchaField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    modified_at = models.DateTimeField(auto_now=True)
