@@ -16,7 +16,7 @@
 
     <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.{% endblocktrans %}</p>
 
-    <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+    <form novalidate method="post" action="{% url 'account_confirm_email' confirmation.key %}">
     {% csrf_token %}
         <div class="form-group d-grid">
           <button type="submit" class="btn btn-dark btn-block mt-2">{% trans 'Confirm' %}</button>
