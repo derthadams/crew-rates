@@ -7,110 +7,6 @@ from .models import User, Company, JobTitle, Show, Network, Location, Season, \
 from invitations.forms import InvitationAdminAddForm, InvitationAdminChangeForm
 
 
-class UserAdmin(BaseUserAdmin):
-    fieldsets = (
-        (None, {'fields': ('email', 'password', 'last_login')}),
-        ('Permissions', {'fields': (
-            'is_active', 
-            'is_staff', 
-            'is_superuser',
-            'groups', 
-            'user_permissions',
-        )}),
-    )
-    add_fieldsets = (
-        (
-            None,
-            {
-                'classes': ('wide',),
-                'fields': ('email', 'password1', 'password2')
-            }
-        ),
-    )
-
-    list_display = ('email', 'is_staff', 'last_login')
-    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
-    search_fields = ('email',)
-    ordering = ('email',)
-    filter_horizontal = ('groups', 'user_permissions',)
-
-
-class SeasonCompanyInline(admin.TabularInline):
-    model = Season.companies.through
-    ordering = ('season__title',)
-    readonly_fields = ['season']
-    can_delete = False
-    verbose_name = 'Seasons'
-    extra = 0
-    max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
-
-
-class SeasonInline(admin.TabularInline):
-    model = Season
-    ordering = ('title',)
-    readonly_fields = ['title', 'show', 'number', 'start_date', 'end_date',
-                       'union', 'companies', 'network', 'locations', 'scopes',
-                       'genre']
-    can_delete = False
-    extra = 0
-    max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
-
-
-class RateReportInline(admin.TabularInline):
-    model = RateReport
-    ordering = ('job_title',)
-    fields = ['user', 'job_title', 'offered_hourly', 'offered_guarantee', 'final_hourly',
-              'final_guarantee']
-    readonly_fields = ['user', 'job_title', 'offered_hourly', 'offered_guarantee', 'final_hourly',
-                       'final_guarantee', 'season']
-    can_delete = False
-    extra = 0
-    max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
-
-
-class CompanyAdmin(admin.ModelAdmin):
-    ordering = ['name']
-    search_fields = ['name']
-    inlines = [SeasonCompanyInline]
-    list_display = ('name', 'id',)
-
-
-class ShowAdmin(admin.ModelAdmin):
-    ordering = ['title']
-    search_fields = ['title']
-    inlines = [SeasonInline]
-    list_display = ('title', 'id',)
-
-
-class NetworkAdmin(admin.ModelAdmin):
-    ordering=['name']
-    search_fields = ['name']
-    inlines = [SeasonInline]
-    list_display = ('name', 'id',)
-
-
-class LocationAdmin(admin.ModelAdmin):
-    ordering = ['display_name']
-    search_fields = ['display_name']
-    list_display = ('display_name', 'id',)
-
-
-class SeasonAdmin(admin.ModelAdmin):
-    search_fields = ['title']
-    autocomplete_fields = [
-        'companies',
-        'show',
-        'network',
-        'locations',
-        'scopes'
-    ]
-    inlines = [RateReportInline]
-    list_display = ('title', 'id')
-
-
 @admin.action(description="Approve raw rate report")
 def approve_raw_rate_report(modeladmin, request, queryset):
     uuid_null = '00000000-0000-0000-0000-000000000000'
@@ -129,21 +25,6 @@ def approve_raw_rate_report(modeladmin, request, queryset):
             show_obj = Show.objects.get(uuid=raw_report.show) # noqa
         show = show_obj.pk
 
-        """
-        2021-12-13
-        I'm assuming for now that the companies JSON object looks like this:
-        
-        companies = [
-            {
-                uuid: "0fa1f64b-58d6-4963-914c-b0711c70e051",
-                name: "Magical Elves"
-            },
-            {
-                uuid: None,
-                name: "Some New Company
-            },
-        ]
-        """
         companies = []
         for company in raw_report.companies:
             if company['uuid'] == uuid_null:
@@ -258,9 +139,243 @@ def make_location_object(location_dict, latitude=None, longitude=None):
     return location, created
 
 
+"""
+------------------- INLINE CLASSES -----------------------
+"""
+
+
+class CompanyMatchInline(admin.TabularInline):
+    def company_name(self, instance):
+        return instance.company.name
+
+    def company_uuid(self, instance):
+        return instance.company.uuid
+
+    company_name.short_description = 'Name'
+    company_uuid.short_description = 'UUID'
+
+    model = RawRateReport.company_matches.through
+    fields = ['company_name', 'company_uuid']
+    readonly_fields = ['company_name', 'company_uuid']
+    can_delete = False
+    verbose_name = 'Company matches'
+    verbose_name_plural = 'Company matches'
+    extra = 0
+    max_num = 0
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
+class JobTitleMatchInline(admin.TabularInline):
+    def job_title_title(self, instance):
+        return instance.jobtitle.title
+
+    def job_title_uuid(self, instance):
+        return instance.jobtitle.uuid
+
+    job_title_title.short_description = 'Job Title'
+    job_title_uuid.short_description = 'UUID'
+
+    model = RawRateReport.job_title_matches.through
+    fields = ['job_title_title', 'job_title_uuid']
+    readonly_fields = ['job_title_title', 'job_title_uuid']
+    can_delete = False
+    verbose_name = 'Job title matches'
+    verbose_name_plural = 'Job title matches'
+    extra = 0
+    max_num = 0
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
+class NetworkMatchInline(admin.TabularInline):
+    def network_name(self, instance):
+        return instance.network.name
+
+    def network_uuid(self, instance):
+        return instance.network.uuid
+
+    network_name.short_description = 'Name'
+    network_uuid.short_description = 'UUID'
+
+    model = RawRateReport.network_matches.through
+    fields = ['network_name', 'network_uuid']
+    readonly_fields = ['network_name', 'network_uuid']
+    can_delete = False
+    verbose_name = 'Network matches'
+    verbose_name_plural = 'Network matches'
+    extra = 0
+    max_num = 0
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
+class RateReportInline(admin.TabularInline):
+    model = RateReport
+    ordering = ('job_title',)
+    fields = ['user', 'job_title', 'offered_hourly', 'offered_guarantee', 'final_hourly',
+              'final_guarantee']
+    readonly_fields = ['user', 'job_title', 'offered_hourly', 'offered_guarantee', 'final_hourly',
+                       'final_guarantee', 'season']
+    can_delete = False
+    extra = 0
+    max_num = 0
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
+class SeasonInline(admin.TabularInline):
+    model = Season
+    ordering = ('title',)
+    readonly_fields = ['title', 'show', 'number', 'start_date', 'end_date',
+                       'union', 'companies', 'network', 'locations', 'scopes',
+                       'genre']
+    can_delete = False
+    extra = 0
+    max_num = 0
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
+class SeasonCompanyInline(admin.TabularInline):
+    model = Season.companies.through
+    ordering = ('season__title',)
+    readonly_fields = ['season']
+    can_delete = False
+    verbose_name = 'Seasons'
+    verbose_name_plural = 'Seasons'
+    extra = 0
+    max_num = 0
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
+class ShowMatchInline(admin.TabularInline):
+    def show_title(self, instance):
+        return instance.show.title
+
+    def show_uuid(self, instance):
+        return instance.show.uuid
+
+    show_title.short_description = 'Title'
+    show_uuid.short_description = 'UUID'
+
+    model = RawRateReport.show_matches.through
+    fields = ['show_title', 'show_uuid']
+    readonly_fields = ['show_title', 'show_uuid']
+    can_delete = False
+    verbose_name = 'Show matches'
+    verbose_name_plural = 'Show matches'
+    extra = 0
+    max_num = 0
+    template = 'admin/rates/company/edit_inline/tabular.html'
+
+
+"""
+---------------------- ADMIN CLASSES ---------------------------
+"""
+
+
+class CompanyAdmin(admin.ModelAdmin):
+    ordering = ['name']
+    search_fields = ['name']
+    inlines = [SeasonCompanyInline]
+    list_display = ('name', 'id',)
+
+
+class JobTitleAdmin(admin.ModelAdmin):
+    fields = [
+        'title',
+        'uuid',
+    ]
+    readonly_fields = [
+        'title',
+        'uuid'
+    ]
+
+
+class LocationAdmin(admin.ModelAdmin):
+    ordering = ['display_name']
+    search_fields = ['display_name']
+    list_display = ('display_name', 'id',)
+
+
+class NetworkAdmin(admin.ModelAdmin):
+    ordering = ['name']
+    search_fields = ['name']
+    inlines = [SeasonInline]
+    list_display = ('name', 'id',)
+
+
 class RawRateReportAdmin(admin.ModelAdmin):
     actions = [approve_raw_rate_report]
+    fields = [
+        'user',
+        'show',
+        'show_title',
+        'season_number',
+        'companies',
+        'network',
+        'network_name',
+        'genre',
+        'union',
+        'locations',
+        'start_date',
+        'end_date',
+        'job_title',
+        'job_title_name',
+        'offered_hourly',
+        'offered_guarantee',
+        'negotiated',
+        'increased',
+        'final_hourly',
+        'final_guarantee',
+        'approved',
+    ]
     list_filter = ('approved',)
+    inlines = [JobTitleMatchInline, ShowMatchInline, CompanyMatchInline, NetworkMatchInline]
+
+
+class SeasonAdmin(admin.ModelAdmin):
+    search_fields = ['title']
+    autocomplete_fields = [
+        'companies',
+        'show',
+        'network',
+        'locations',
+        'scopes'
+    ]
+    inlines = [RateReportInline]
+    list_display = ('title', 'id')
+
+
+class ShowAdmin(admin.ModelAdmin):
+    ordering = ['title']
+    search_fields = ['title']
+    inlines = [SeasonInline]
+    list_display = ('title', 'id',)
+
+
+class UserAdmin(BaseUserAdmin):
+    fieldsets = (
+        (None, {'fields': ('email', 'password', 'last_login')}),
+        ('Permissions', {'fields': (
+            'is_active',
+            'is_staff',
+            'is_superuser',
+            'groups',
+            'user_permissions',
+        )}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                'classes': ('wide',),
+                'fields': ('email', 'password1', 'password2')
+            }
+        ),
+    )
+
+    list_display = ('email', 'is_staff', 'last_login')
+    list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
+    search_fields = ('email',)
+    ordering = ('email',)
+    filter_horizontal = ('groups', 'user_permissions',)
 
 
 class RatesInvitationAdminAddForm(InvitationAdminAddForm):
@@ -296,7 +411,7 @@ class RatesInvitationAdminChangeForm(InvitationAdminChangeForm):
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Company, CompanyAdmin)
-admin.site.register(JobTitle)
+admin.site.register(JobTitle, JobTitleAdmin)
 admin.site.register(Show, ShowAdmin)
 admin.site.register(Network, NetworkAdmin)
 admin.site.register(Location, LocationAdmin)
