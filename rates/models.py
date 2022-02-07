@@ -1,5 +1,7 @@
 import uuid
 
+from captcha.fields import ReCaptchaField
+
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         PermissionsMixin)
 from django.contrib.sites.models import Site
@@ -328,3 +330,10 @@ class RatesInvitation(Invitation):
             instance=self,
             invite_url_sent=invite_url,
             inviter=self.inviter)
+
+
+class Contact(models.Model):
+    email = models.EmailField()
+    subject = models.CharField(max_length=512)
+    message = models.TextField()
+    captcha = ReCaptchaField()
