@@ -48,7 +48,7 @@ afterAll(() => server.close());
 describe("Failure page", () => {
     test('Failure page renders', () => {
         render(<Failure />)
-        const failureHeader = screen.getByText(/failure/i)
+        const failureHeader = screen.getByText(/oops!/i)
         expect(failureHeader).toBeInTheDocument();
     })
 })
