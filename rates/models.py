@@ -211,11 +211,23 @@ class RawRateReport(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     show = models.CharField(max_length=36)
     show_title = models.CharField(max_length=128)
+    show_matches = models.ManyToManyField(
+        Show,
+        related_name='show_matches',
+        null=True)
     season_number = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
     companies = models.JSONField(null=True, blank=True)
+    company_matches = models.ManyToManyField(
+        Company,
+        related_name='company_matches',
+        null=True)
     network = models.CharField(max_length=36, null=True)
     network_name = models.CharField(max_length=128, null=True, blank=True)
+    network_matches = models.ManyToManyField(
+        Network,
+        related_name='network_matches',
+        null=True)
     genre = models.CharField(
         max_length=4,
         choices=Season.GENRE_CHOICES,
@@ -232,7 +244,10 @@ class RawRateReport(models.Model):
     end_date = models.DateField(null=True, blank=True)
     job_title = models.CharField(max_length=36)
     job_title_name = models.CharField(max_length=128)
-    # TODO: On form, set localize=False for hourly field
+    job_title_matches = models.ManyToManyField(
+        JobTitle,
+        related_name='job_title_matches',
+        null=True)
     offered_hourly = models.DecimalField(
         decimal_places=4,
         max_digits=9)
