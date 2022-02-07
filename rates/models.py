@@ -236,7 +236,6 @@ class RawRateReport(models.Model):
     union = models.CharField(
         max_length=4,
         choices=Season.UNION_CHOICES,
-        # default=Season.DEFAULT_UNION
         null=True
     )
     locations = models.JSONField(null=True, blank=True)
