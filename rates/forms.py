@@ -1,9 +1,10 @@
 from django.core import exceptions, validators
+from django.core.mail import send_mail
 from django.forms import Form, ModelForm, HiddenInput, DateInput, RadioSelect, \
     Select, SelectMultiple, ModelChoiceField, BooleanField, TextInput, EmailField, CharField, \
     ValidationError
 from django.utils.translation import gettext_lazy as _, pgettext
-from .models import RawRateReport
+from .models import RawRateReport, Contact, User
 from .adapters import get_adapter
 
 from allauth.socialaccount.models import SocialAccount, SocialToken
@@ -11,10 +12,12 @@ from .signals import social_account_removed
 
 from allauth.account.adapter import get_adapter as get_account_adapter
 from allauth.account.forms import PasswordField
-# from allauth.account.app_settings import AppSettings
 from allauth.account import app_settings
 from allauth.account.utils import perform_login
 from allauth.utils import get_username_max_length, set_form_field_order
+from captcha.fields import ReCaptchaField
+from captcha.widgets import ReCaptchaV3, ReCaptchaV2Checkbox
+
 AuthenticationMethod = app_settings.AuthenticationMethod
 
 
@@ -56,6 +59,31 @@ class RawRateReportForm(ModelForm):
             # pass
             self.fields[field].widget.attrs.update({'class': 'form-control',
                                                     'autocomplete': 'off'})
+
+
+class ContactForm(Form):
+    email = EmailField()
+    subject = CharField()
+    message = CharField()
+    captcha = ReCaptchaField(widget=ReCaptchaV3)
+    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
+
+    def save(self):
+        data = self.cleaned_data
+        contact = Contact(email=data['email'], subject=data['subject'], message=data['message'])
+        contact.save()
+
+    def send_email(self):
+        super_users = User.objects.filter(is_superuser=True)
+        emails = map(lambda x: x.email, super_users)
+        send_mail(
+            f'[crewrates.org contact]({self.cleaned_data["email"]}) '
+            f'{self.cleaned_data["subject"]}',
+            f'{self.cleaned_data["message"]}',
+            'alert@crewrates.org',
+            emails,
+            fail_silently=False
+        )
 
 
 class DisconnectForm(Form):
