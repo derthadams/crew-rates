@@ -2,7 +2,7 @@
     width: 100%;
 }
 
-.g-d-c {
+.g-d-c:not(.g-centered) {
     width: 100%
 }
 
