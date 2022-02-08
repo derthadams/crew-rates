@@ -22,6 +22,7 @@ urlpatterns = [
     # Include urls for all modules
     path('', include('rates.urls')),
     path('accounts/', include('allauth.urls')),
+    path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('tos/', views.flatpage, {'url': '/tos/'}, name='tos'),

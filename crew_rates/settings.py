@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'rates.apps.RatesConfig',
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -255,3 +256,4 @@ RECAPTCHA_PRIVATE_KEY = os.environ.get('RATES_RECAPTCHA_PRIVATE_KEY')
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RATES_RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_REQUIRED_SCORE = 0.85
 
+GRAPPELLI_ADMIN_TITLE = "Crew Rates Admin"
