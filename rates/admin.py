@@ -292,7 +292,7 @@ class JobTitleAdmin(admin.ModelAdmin):
 
 
 class LocationAdmin(admin.ModelAdmin):
-    # ordering = ['display_name']
+    ordering = ['display_name']
     search_fields = ['display_name', 'type', 'latitude', 'longitude']
     list_display = ('display_name', 'type', 'latitude', 'longitude', 'id',)
 
