@@ -222,7 +222,7 @@ class RawRateReport(models.Model):
         Company,
         related_name='company_matches',
         null=True)
-    network = models.CharField(max_length=36, null=True)
+    network = models.CharField(max_length=36, null=True, blank=True)
     network_name = models.CharField(max_length=128, null=True, blank=True)
     network_matches = models.ManyToManyField(
         Network,
@@ -231,12 +231,14 @@ class RawRateReport(models.Model):
     genre = models.CharField(
         max_length=4,
         choices=Season.GENRE_CHOICES,
-        null=True
+        null=True,
+        blank=True
     )
     union = models.CharField(
         max_length=4,
         choices=Season.UNION_CHOICES,
-        null=True
+        null=True,
+        blank=True
     )
     locations = models.JSONField(null=True, blank=True)
     start_date = models.DateField()
@@ -252,12 +254,14 @@ class RawRateReport(models.Model):
         max_digits=9)
     offered_guarantee = models.PositiveSmallIntegerField()
     negotiated = models.BooleanField()
-    increased = models.BooleanField(null=True)
+    increased = models.BooleanField(null=True, blank=True)
     final_hourly = models.DecimalField(
         decimal_places=4,
         max_digits=9,
-        null=True)
-    final_guarantee = models.PositiveSmallIntegerField(null=True)
+        null=True,
+        blank=True
+    )
+    final_guarantee = models.PositiveSmallIntegerField(null=True, blank=True)
 
     approved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
