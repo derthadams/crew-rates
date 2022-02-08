@@ -418,8 +418,20 @@ class UserAdmin(BaseUserAdmin):
 
 
 class RatesInvitationAdminAddForm(InvitationAdminAddForm):
-    name = forms.CharField(
-        label=_("Name"),
+    first_name = forms.CharField(
+        label=_("First name"),
+        required=False,
+        widget=forms.TextInput(attrs={"type": "text", "size": "30"})
+    )
+
+    last_name = forms.CharField(
+        label=_("Last name"),
+        required=False,
+        widget=forms.TextInput(attrs={"type": "text", "size": "30"})
+    )
+
+    preferred_name = forms.CharField(
+        label=_("Preferred name"),
         required=False,
         widget=forms.TextInput(attrs={"type": "text", "size": "30"})
     )
@@ -427,8 +439,11 @@ class RatesInvitationAdminAddForm(InvitationAdminAddForm):
     def save(self, *args, **kwargs):
         cleaned_data = super(InvitationAdminAddForm, self).clean()
         email = cleaned_data.get("email")
-        name = cleaned_data.get("name")
-        params = {'email': email, 'name': name}
+        first_name = cleaned_data.get("first_name")
+        last_name = cleaned_data.get('last_name')
+        preferred_name = cleaned_data.get('preferred_name')
+        params = {'email': email, 'first_name': first_name, 'last_name': last_name,
+                  'preferred_name': preferred_name}
         if cleaned_data.get("inviter"):
             params['inviter'] = cleaned_data.get("inviter")
         instance = RatesInvitation.create(**params)
@@ -438,7 +453,7 @@ class RatesInvitationAdminAddForm(InvitationAdminAddForm):
 
     class Meta:
         model = RatesInvitation
-        fields = ("email", "name", "inviter")
+        fields = ("email", "first_name", "last_name", "preferred_name", "inviter")
 
 
 class RatesInvitationAdminChangeForm(InvitationAdminChangeForm):
