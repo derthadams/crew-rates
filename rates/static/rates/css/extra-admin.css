@@ -1,0 +1,32 @@
+.result-list > table {
+    width: 100%;
+}
+
+.g-d-c {
+    width: 100%
+}
+
+.g-d-12 {
+    width: 65%;
+}
+
+.g-d-6 {
+    width: 30%;
+}
+
+.grp-table {
+    width: 100%;
+}
+
+/*.grp-module:not(.grp-submit-row) {*/
+/*    width: 100%;*/
+/*    min-width: 500px!important;*/
+/*}*/
+
+/*.grp-change-form {*/
+/*    min-width: 600px!important;*/
+/*}*/
+
+.vTextField {
+    width: 100% !important;
+}
