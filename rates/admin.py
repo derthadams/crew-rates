@@ -354,29 +354,6 @@ class RawRateReportAdmin(admin.ModelAdmin):
             'fields': ('locations',)
         })
     )
-    # fields = [
-    #     'user',x
-    #     'show',x
-    #     'show_title',x
-    #     'season_number',x
-    #     'companies',x
-    #     'network',x
-    #     'network_name',x
-    #     'genre',x
-    #     'union',x
-    #     'locations',x
-    #     'start_date',x
-    #     'end_date',x
-    #     'job_title',
-    #     'job_title_name',
-    #     'offered_hourly',x
-    #     'offered_guarantee',x
-    #     'negotiated',x
-    #     'increased',x
-    #     'final_hourly',x
-    #     'final_guarantee',x
-    #     'approved',x
-    # ]
 
     formfield_overrides = {
         models.JSONField: {
