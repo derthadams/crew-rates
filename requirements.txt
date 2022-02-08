@@ -9,6 +9,7 @@ defusedxml==0.7.1
 Django==3.2
 django-allauth==0.44.0
 django-cors-headers==3.10.0
+django-grappelli==2.15.5
 django-invitations==1.9.3
 django-recaptcha==2.0.6
 django-sslserver==0.22
