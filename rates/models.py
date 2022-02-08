@@ -317,8 +317,18 @@ class RateReport(models.Model):
 
 
 class RatesInvitation(Invitation):
-    name = models.CharField(
+    first_name = models.CharField(
         max_length=128
+    )
+    last_name = models.CharField(
+        max_length=128,
+        null=True,
+        blank=True
+    )
+    preferred_name = models.CharField(
+        max_length=128,
+        null=True,
+        blank=True
     )
 
     def send_invitation(self, request, **kwargs):
@@ -330,7 +340,9 @@ class RatesInvitation(Invitation):
         ctx.update({
             'invite_url': invite_url,
             'site_name': current_site.name,
-            'name': self.name,
+            'first_name': self.first_name,
+            'last_name': self.last_name,
+            'preferred_name': self.preferred_name,
             'email': self.email,
             'key': self.key,
             'inviter': self.inviter,
