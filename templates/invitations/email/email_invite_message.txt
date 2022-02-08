@@ -1,8 +1,7 @@
 {% load i18n %}
 {% autoescape off %}
-{% blocktrans %}
 
-Hello {{ name }},
+Hello {% if preferred_name %}{{ preferred_name }}{% else %}{{ first_name }}{% endif %},
 
 You've been invited to join crewrates.org!
 
@@ -14,5 +13,4 @@ If you'd like to join, please go to {{ invite_url }} to create an account.
 
 Thanks for using crewrates.org!
 
-{% endblocktrans %}
 {% endautoescape %}
