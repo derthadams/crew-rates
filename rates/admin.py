@@ -1,7 +1,10 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.db import models
+from django.forms import Textarea
 from django.utils.translation import ugettext_lazy as _
+
 from .models import User, Company, JobTitle, Show, Network, Location, Season, \
     RawRateReport, RateReport, RatesInvitation
 from invitations.forms import InvitationAdminAddForm, InvitationAdminChangeForm
@@ -176,8 +179,8 @@ class JobTitleMatchInline(admin.TabularInline):
     job_title_uuid.short_description = 'UUID'
 
     model = RawRateReport.job_title_matches.through
-    fields = ['job_title_title', 'job_title_uuid']
-    readonly_fields = ['job_title_title', 'job_title_uuid']
+    fields = ['job_title_title', 'job_title_uuid', ]
+    readonly_fields = ['job_title_title', 'job_title_uuid', ]
     can_delete = False
     verbose_name = 'Job title matches'
     verbose_name_plural = 'Job title matches'
@@ -326,6 +329,14 @@ class RawRateReportAdmin(admin.ModelAdmin):
         'final_guarantee',
         'approved',
     ]
+
+    formfield_overrides = {
+        models.JSONField: {
+            'widget': Textarea(
+                attrs={'rows': 3, 'cols': 70}
+            )
+        }
+    }
     list_filter = ('approved',)
     inlines = [JobTitleMatchInline, ShowMatchInline, CompanyMatchInline, NetworkMatchInline]
 
@@ -418,4 +429,3 @@ admin.site.register(Location, LocationAdmin)
 admin.site.register(Season, SeasonAdmin)
 admin.site.register(RawRateReport, RawRateReportAdmin)
 admin.site.register(RateReport)
-# admin.site.register(RatesInvitation)
