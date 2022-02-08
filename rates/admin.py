@@ -232,7 +232,7 @@ class SeasonInline(admin.TabularInline):
     can_delete = False
     extra = 0
     max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
+    # template = 'admin/rates/company/edit_inline/tabular.html'
 
 
 class SeasonCompanyInline(admin.TabularInline):
