@@ -26,5 +26,5 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('tos/', views.flatpage, {'url': '/tos/'}, name='tos'),
     path('privacy/', views.flatpage, {'url': '/privacy/'}, name='privacy'),
-    url(r'^invitations/', include('invitations.urls', namespace='invitations')),
+    path('invitations/', include('invitations.urls', namespace='invitations')),
 ]

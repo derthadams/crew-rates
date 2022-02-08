@@ -55,21 +55,21 @@ class TestRatesForms(TestCase):
 
         data = {'account': facebook_account.pk}
         facebook_accounts = SocialAccount.objects.filter(provider='facebook')
-        self.assertEquals(len(facebook_accounts), 1)
+        self.assertEqual(len(facebook_accounts), 1)
         response = self.client.post(self.social_connections_url, data)
         facebook_accounts = SocialAccount.objects.filter(provider='facebook')
-        self.assertEquals(len(facebook_accounts), 0)
+        self.assertEqual(len(facebook_accounts), 0)
 
         data = {'account': google_account.pk}
         google_accounts = SocialAccount.objects.filter(provider='google')
-        self.assertEquals(len(google_accounts), 1)
+        self.assertEqual(len(google_accounts), 1)
         response = self.client.post(self.social_connections_url, data)
         google_accounts = SocialAccount.objects.filter(provider='google')
-        self.assertEquals(len(google_accounts), 0)
+        self.assertEqual(len(google_accounts), 0)
 
         data = {'account': twitter_account.pk}
         twitter_accounts = SocialAccount.objects.filter(provider='twitter')
-        self.assertEquals(len(twitter_accounts), 1)
+        self.assertEqual(len(twitter_accounts), 1)
         response = self.client.post(self.social_connections_url, data)
         twitter_accounts = SocialAccount.objects.filter(provider='twitter')
-        self.assertEquals(len(twitter_accounts), 0)
+        self.assertEqual(len(twitter_accounts), 0)

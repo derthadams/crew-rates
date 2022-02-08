@@ -31,18 +31,18 @@ class APIViewsTest(TestCase):
     def test_no_job_titles(self):
         self.create_user_and_log_in()
         response = self.client.get(self.job_title_url + '?q=camera')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_one_job_title(self):
         self.create_user_and_log_in()
         self.job_title.objects.get_or_create(title='camera operator')
         url = reverse('job-titles')
         response = self.client.get(self.job_title_url + '?q=camera')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 1)
+        self.assertEqual(len(data), 1)
 
     def test_two_job_titles(self):
         self.create_user_and_log_in()
@@ -50,9 +50,9 @@ class APIViewsTest(TestCase):
         self.job_title.objects.get_or_create(title='camera assistant')
         url = reverse('job-titles')
         response = self.client.get(self.job_title_url + '?q=camera')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 2)
+        self.assertEqual(len(data), 2)
 
     def test_job_titles_no_match(self):
         self.create_user_and_log_in()
@@ -60,131 +60,131 @@ class APIViewsTest(TestCase):
         self.job_title.objects.get_or_create(title='steadicam operator')
         url = reverse('job-titles')
         response = self.client.get(self.job_title_url + '?q=camera')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_job_titles_not_logged_in(self):
         self.job_title.objects.get_or_create(title='camera operator')
         url = reverse('job-titles')
         response = self.client.get(self.job_title_url + '?q=camera')
-        self.assertEquals(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
         all_reports = self.raw_rate_report.objects.all()
-        self.assertEquals(len(all_reports), 0)
+        self.assertEqual(len(all_reports), 0)
 
     def test_no_shows(self):
         self.create_user_and_log_in()
         response = self.client.get(self.show_url + '?q=housewives')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_one_show(self):
         self.create_user_and_log_in()
         self.show.objects.get_or_create(title='Real Housewives of Beverly Hills')
         response = self.client.get(self.show_url + '?q=housewives')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 1)
+        self.assertEqual(len(data), 1)
 
     def test_two_shows(self):
         self.create_user_and_log_in()
         self.show.objects.get_or_create(title='Real Housewives of New Jersey')
         self.show.objects.get_or_create(title='Real Housewives of Atlanta')
         response = self.client.get(self.show_url + '?q=housewives')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 2)
+        self.assertEqual(len(data), 2)
 
     def test_shows_no_match(self):
         self.create_user_and_log_in()
         self.show.objects.get_or_create(title='Survivor')
         self.show.objects.get_or_create(title='24 Hours to Hell and Back')
         response = self.client.get(self.show_url + '?q=runway')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_one_show_not_logged_in(self):
         self.show.objects.get_or_create(title='Real Housewives of Beverly Hills')
         response = self.client.get(self.show_url + '?q=housewives')
-        self.assertEquals(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
 
     def test_no_companies(self):
         self.create_user_and_log_in()
         response = self.client.get(self.company_url + '?q=endemol')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_one_company(self):
         self.create_user_and_log_in()
         self.company.objects.get_or_create(name='EndemolShine NorthAmerica')
         response = self.client.get(self.company_url + '?q=endemol')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 1)
+        self.assertEqual(len(data), 1)
 
     def test_two_companies(self):
         self.create_user_and_log_in()
         self.company.objects.get_or_create(name='Magical Elves, LLC')
         self.company.objects.get_or_create(name='Open 4 Business, LLC')
         response = self.client.get(self.company_url + '?q=llc')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 2)
+        self.assertEqual(len(data), 2)
 
     def test_companies_no_match(self):
         self.create_user_and_log_in()
         self.company.objects.get_or_create(name='A. Smith & Co.')
         self.company.objects.get_or_create(name='Fremantle Media')
         response = self.client.get(self.company_url + '?q=burnett')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_one_company_not_logged_in(self):
         self.company.objects.get_or_create(name='EndemolShine NorthAmerica')
         response = self.client.get(self.company_url + '?q=endemol')
-        self.assertEquals(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
 
     def test_no_networks(self):
         self.create_user_and_log_in()
         response = self.client.get(self.network_url + '?q=nbc')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_one_network(self):
         self.create_user_and_log_in()
         self.network.objects.get_or_create(name='Netflix')
         response = self.client.get(self.network_url + '?q=net')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 1)
+        self.assertEqual(len(data), 1)
 
     def test_two_networks(self):
         self.create_user_and_log_in()
         self.network.objects.get_or_create(name='NBC')
         self.network.objects.get_or_create(name='ABC')
         response = self.client.get(self.network_url + '?q=bc')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 2)
+        self.assertEqual(len(data), 2)
 
     def test_networks_no_match(self):
         self.create_user_and_log_in()
         self.network.objects.get_or_create(name='HBO Max')
         self.network.objects.get_or_create(name='Disney+')
         response = self.client.get(self.network_url + '?q=apple')
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
-        self.assertEquals(len(data), 0)
+        self.assertEqual(len(data), 0)
 
     def test_one_network_not_logged_in(self):
         self.network.objects.get_or_create(name='Netflix')
         response = self.client.get(self.network_url + '?q=net')
-        self.assertEquals(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
 
     def test_autocomplete(self):
         self.create_user_and_log_in()
@@ -193,7 +193,7 @@ class APIViewsTest(TestCase):
             'sessiontoken': str(self.sessiontoken)
         }
         response = self.client.get(self.autocomplete_url, params)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Burbank')
 
     def test_details(self):
@@ -203,7 +203,7 @@ class APIViewsTest(TestCase):
             'sessiontoken': str(self.sessiontoken)
         }
         response = self.client.get(self.details_url, params)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'California')
 
     def test_add_rate_post_with_valid_json(self):
@@ -269,9 +269,9 @@ class APIViewsTest(TestCase):
         }
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=ajax_form_dict)
-        self.assertEquals(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
         all_reports = self.raw_rate_report.objects.all()
-        self.assertEquals(len(all_reports), 1)
+        self.assertEqual(len(all_reports), 1)
         # print(all_reports[0])
 
     def test_add_rate_post_with_invalid_json_missing_fields(self):
@@ -335,11 +335,11 @@ class APIViewsTest(TestCase):
         }
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=ajax_form_dict)
-        self.assertEquals(response.status_code, 400)
+        self.assertEqual(response.status_code, 400)
         # print(f"data: {response.data}")
         # print(f"content: {response.content}")
         all_reports = self.raw_rate_report.objects.all()
-        self.assertEquals(len(all_reports), 0)
+        self.assertEqual(len(all_reports), 0)
 
     def test_add_rate_post_not_logged_in(self):
         ajax_form_dict = {
@@ -402,7 +402,7 @@ class APIViewsTest(TestCase):
         }
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=ajax_form_dict)
-        self.assertEquals(response.status_code, 403)
+        self.assertEqual(response.status_code, 403)
         all_reports = self.raw_rate_report.objects.all()
-        self.assertEquals(len(all_reports), 0)
+        self.assertEqual(len(all_reports), 0)
 

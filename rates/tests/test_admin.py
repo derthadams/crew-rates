@@ -30,9 +30,9 @@ class RatesAdminTest(TestCase):
                              'name': 'Betty',
                              'inviter': self.super_user.pk
                          },)
-        self.assertEquals(response.status_code, 302)
+        self.assertEqual(response.status_code, 302)
         invitations = self.rates_invitation.objects.all()
-        self.assertEquals(len(invitations), 1)
+        self.assertEqual(len(invitations), 1)
 
     def test_approve_raw_rate_report_valid_no_create(self):
         self.client.login(email='admin@example.com', password='incredible_secret')
@@ -46,7 +46,7 @@ class RatesAdminTest(TestCase):
                                     name="Bravo")
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=valid_json)
-        self.assertEquals(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
         report = self.raw_rate_report.objects.all()[0]
         data = {'action': 'approve_raw_rate_report', '_selected_action': report.pk}
         change_url = reverse('admin:rates_rawratereport_changelist')
@@ -61,7 +61,7 @@ class RatesAdminTest(TestCase):
         self.client.login(email='admin@example.com', password='incredible_secret')
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=valid_json_create)
-        self.assertEquals(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
         report = self.raw_rate_report.objects.all()[0]
         data = {'action': 'approve_raw_rate_report', '_selected_action': report.pk}
         change_url = reverse('admin:rates_rawratereport_changelist')
@@ -88,7 +88,7 @@ class RatesAdminTest(TestCase):
         self.client.login(email='admin@example.com', password='incredible_secret')
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=valid_json_no_locations)
-        self.assertEquals(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
         report = self.raw_rate_report.objects.all()[0]
         data = {'action': 'approve_raw_rate_report', '_selected_action': report.pk}
         change_url = reverse('admin:rates_rawratereport_changelist')
@@ -113,7 +113,7 @@ class RatesAdminTest(TestCase):
         season.companies.add(company)
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=valid_json)
-        self.assertEquals(response.status_code, 201)
+        self.assertEqual(response.status_code, 201)
         report = self.raw_rate_report.objects.all()[0]
         data = {'action': 'approve_raw_rate_report', '_selected_action': report.pk}
         change_url = reverse('admin:rates_rawratereport_changelist')

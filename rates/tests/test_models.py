@@ -24,43 +24,43 @@ class TestModels(TestCase):
     def test_user_get_absolute_url(self):
         user = self.user_model.objects.create_user(email="john@google.com", password="allmysecrets")
         url = user.get_absolute_url()
-        self.assertEquals(url, f"/users/{user.pk}/")
+        self.assertEqual(url, f"/users/{user.pk}/")
 
     def test_user_string(self):
         user = self.user_model.objects.create_user(email="john@google.com", password="allmysecrets")
         user_str = str(user)
-        self.assertEquals(user_str, "john@google.com")
+        self.assertEqual(user_str, "john@google.com")
 
     def test_company_string(self):
         company = self.company.objects.create(name="Google")
         company_str = str(company)
-        self.assertEquals(company_str, "Google")
+        self.assertEqual(company_str, "Google")
 
     def test_job_title_string(self):
         job_title = self.job_title.objects.create(title="Camera Operator")
         job_title_str = str(job_title)
-        self.assertEquals(job_title_str, "Camera Operator")
+        self.assertEqual(job_title_str, "Camera Operator")
 
     def test_show_string(self):
         show = self.show.objects.create(title="Vertigo")
         show_str = str(show)
-        self.assertEquals(show_str, "Vertigo")
+        self.assertEqual(show_str, "Vertigo")
 
     def test_network_string(self):
         network = self.network.objects.create(name="HBO Max")
         network_str = str(network)
-        self.assertEquals(network_str, "HBO Max")
+        self.assertEqual(network_str, "HBO Max")
 
     def test_location_string(self):
         location = self.location.objects.create(display_name="West Hollywood, CA, US")
         location_str = str(location)
-        self.assertEquals(location_str, "West Hollywood, CA, US")
+        self.assertEqual(location_str, "West Hollywood, CA, US")
 
     def test_season_string(self):
         show = self.show.objects.create(title="Supermarket Sweep")
         season = self.season.objects.create(show=show, number=1)
         season_str = str(season)
-        self.assertEquals(season_str, "Supermarket Sweep (Season 1)")
+        self.assertEqual(season_str, "Supermarket Sweep (Season 1)")
 
     def test_raw_rate_report_string(self):
         user = self.user_model.objects.create_user(email="john@google.com", password="allmysecrets")
@@ -73,7 +73,7 @@ class TestModels(TestCase):
                                                      show_title="Supermarket Sweep",
                                                      season_number=1, start_date="2020-08-07")
         report_str = str(report)
-        self.assertEquals(report_str, "john@google.com: Supermarket Sweep S1, Camera Operator, "
+        self.assertEqual(report_str, "john@google.com: Supermarket Sweep S1, Camera Operator, "
                                       "$63.6363")
 
     def test_rate_report_string(self):
@@ -86,7 +86,7 @@ class TestModels(TestCase):
                                                  offered_hourly=63.6363, offered_guarantee=10,
                                                  negotiated=False)
         report_str = str(report)
-        self.assertEquals(report_str, "john@google.com: Supermarket Sweep (Season 1), "
+        self.assertEqual(report_str, "john@google.com: Supermarket Sweep (Season 1), "
                                       "Camera Operator, $63.6363")
 
     def test_created_updated(self):

@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.db import models
 from django.forms import Textarea
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .models import User, Company, JobTitle, Show, Network, Location, Season, \
     RawRateReport, RateReport, RatesInvitation
