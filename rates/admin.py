@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.db import models
-from django.forms import Textarea
+from django.forms import NullBooleanSelect, Textarea
 from django.utils.translation import gettext_lazy as _
 
 from .models import User, Company, JobTitle, Show, Network, Location, Season, \
@@ -165,7 +165,7 @@ class CompanyMatchInline(admin.TabularInline):
     verbose_name_plural = 'Company matches'
     extra = 0
     max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
+    template = 'grappelli/admin/edit_inline/headless_tabular.html'
 
 
 class JobTitleMatchInline(admin.TabularInline):
@@ -186,7 +186,7 @@ class JobTitleMatchInline(admin.TabularInline):
     verbose_name_plural = 'Job title matches'
     extra = 0
     max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
+    template = 'grappelli/admin/edit_inline/headless_tabular.html'
 
 
 class NetworkMatchInline(admin.TabularInline):
@@ -207,7 +207,7 @@ class NetworkMatchInline(admin.TabularInline):
     verbose_name_plural = 'Network matches'
     extra = 0
     max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
+    template = 'grappelli/admin/edit_inline/headless_tabular.html'
 
 
 class RateReportInline(admin.TabularInline):
@@ -220,7 +220,7 @@ class RateReportInline(admin.TabularInline):
     can_delete = False
     extra = 0
     max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
+    # template = 'admin/rates/company/edit_inline/tabular.html'
 
 
 class SeasonInline(admin.TabularInline):
@@ -244,7 +244,7 @@ class SeasonCompanyInline(admin.TabularInline):
     verbose_name_plural = 'Seasons'
     extra = 0
     max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
+    # template = 'admin/rates/company/edit_inline/tabular.html'
 
 
 class ShowMatchInline(admin.TabularInline):
@@ -265,7 +265,7 @@ class ShowMatchInline(admin.TabularInline):
     verbose_name_plural = 'Show matches'
     extra = 0
     max_num = 0
-    template = 'admin/rates/company/edit_inline/tabular.html'
+    template = 'grappelli/admin/edit_inline/headless_tabular.html'
 
 
 """
@@ -292,9 +292,9 @@ class JobTitleAdmin(admin.ModelAdmin):
 
 
 class LocationAdmin(admin.ModelAdmin):
-    ordering = ['display_name']
-    search_fields = ['display_name']
-    list_display = ('display_name', 'id',)
+    # ordering = ['display_name']
+    search_fields = ['display_name', 'type', 'latitude', 'longitude']
+    list_display = ('display_name', 'type', 'latitude', 'longitude', 'id',)
 
 
 class NetworkAdmin(admin.ModelAdmin):
@@ -306,35 +306,86 @@ class NetworkAdmin(admin.ModelAdmin):
 
 class RawRateReportAdmin(admin.ModelAdmin):
     actions = [approve_raw_rate_report]
-    fields = [
-        'user',
-        'show',
-        'show_title',
-        'season_number',
-        'companies',
-        'network',
-        'network_name',
-        'genre',
-        'union',
-        'locations',
-        'start_date',
-        'end_date',
-        'job_title',
-        'job_title_name',
-        'offered_hourly',
-        'offered_guarantee',
-        'negotiated',
-        'increased',
-        'final_hourly',
-        'final_guarantee',
-        'approved',
-    ]
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'approved'),
+            'classes': ('wide',)
+        }),
+        (None, {
+            'fields': ('job_title', 'job_title_name'),
+        }),
+        (None, {
+            'classes': ('placeholder', 'RawRateReport_job_title_matches-group', 'wide'),
+            'fields': ()
+        }),
+        (None,
+         {
+             'fields': (('offered_hourly', 'offered_guarantee'),
+                        ('negotiated', 'increased',),
+                        ('final_hourly', 'final_guarantee'))
+         }),
+        (None, {
+            'fields': ('show', ('show_title', 'season_number'), ),
+            'classes': ('wide',)
+        }),
+        (None, {
+            'classes': ('placeholder', 'RawRateReport_show_matches-group', 'wide'),
+            'fields': ()
+        }),
+        (None, {
+            'fields': (('genre', 'union'),
+                       ('start_date', 'end_date'))
+        }),
+        (None, {
+            'fields': ('companies',)
+        }),
+        (None, {
+            'classes': ('placeholder', 'RawRateReport_company_matches-group'),
+            'fields': ()
+        }),
+        (None, {
+            'fields': (('network', 'network_name'),)
+        }),
+        (None, {
+            'classes': ('placeholder', 'RawRateReport_network_matches-group'),
+            'fields': ()
+        }),
+        (None, {
+            'fields': ('locations',)
+        })
+    )
+    # fields = [
+    #     'user',x
+    #     'show',x
+    #     'show_title',x
+    #     'season_number',x
+    #     'companies',x
+    #     'network',x
+    #     'network_name',x
+    #     'genre',x
+    #     'union',x
+    #     'locations',x
+    #     'start_date',x
+    #     'end_date',x
+    #     'job_title',
+    #     'job_title_name',
+    #     'offered_hourly',x
+    #     'offered_guarantee',x
+    #     'negotiated',x
+    #     'increased',x
+    #     'final_hourly',x
+    #     'final_guarantee',x
+    #     'approved',x
+    # ]
 
     formfield_overrides = {
         models.JSONField: {
             'widget': Textarea(
                 attrs={'rows': 3, 'cols': 70}
             )
+        },
+        models.BooleanField: {
+            'widget': NullBooleanSelect()
         }
     }
     list_filter = ('approved',)
