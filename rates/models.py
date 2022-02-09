@@ -17,7 +17,7 @@ from invitations.adapters import get_invitations_adapter
 
 class UserManager(BaseUserManager):
 
-    def _create_user(self, email, first_name, last_name, preferred_name, password, is_staff, is_superuser,
+    def _create_user(self, email, password, is_staff, is_superuser, first_name=None, last_name=None, preferred_name=None,
                      **extra_fields):
         if not email:
             raise ValueError('Users must have an email address')
@@ -39,11 +39,15 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, first_name, last_name, preferred_name, password, **extra_fields):
-        return self._create_user(email, first_name, last_name, preferred_name, password, False, False, **extra_fields)
+    def create_user(self, email, password, first_name=None, last_name=None,
+                    preferred_name=None, **extra_fields):
+        return self._create_user(email, password, False, False, first_name, last_name,
+                                 preferred_name,**extra_fields)
 
-    def create_superuser(self, email, first_name, last_name, preferred_name, password, **extra_fields):
-        user = self._create_user(email, first_name, last_name, preferred_name, password, True, True, **extra_fields)
+    def create_superuser(self, email, password, first_name=None, last_name=None,
+                         preferred_name=None, **extra_fields):
+        user = self._create_user(email, password, True, True, first_name, last_name,
+                                 preferred_name,**extra_fields)
         return user
 
 
