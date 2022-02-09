@@ -1,13 +1,16 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver, Signal
-from .models import RawRateReport, User
 from django.core.mail import send_mail
 
 import requests
 from requests_oauthlib import OAuth1
-from pprint import pprint
 
+from allauth.account.signals import user_signed_up
 from allauth.socialaccount.models import SocialApp
+
+from invitations.utils import get_invitation_model
+
+from .models import RawRateReport, User
 
 social_account_removed = Signal()
 
@@ -36,8 +39,8 @@ def new_rate_report_alert(sender, instance, **kwargs):
 @receiver(social_account_removed)
 def send_deauthorization_request(sender, request, socialaccount, socialtoken, **kwargs):
     # Get user's social account uid and their auth token (socialtoken) from the database
-        # For Facebook: send a DELETE request to:
-        # https://graph.facebook.com/{uid}/permissions?access_token={access_token}
+    # For Facebook: send a DELETE request to:
+    # https://graph.facebook.com/{uid}/permissions?access_token={access_token}
     if socialaccount.provider == 'facebook':
         payload = {
             'access_token': socialtoken.token
@@ -55,7 +58,7 @@ def send_deauthorization_request(sender, request, socialaccount, socialtoken, **
         }
         response = requests.post('https://oauth2.googleapis.com/revoke', params=payload,
                                  headers=headers)
-        print(response.status_code)
+        # print(response.status_code)
     elif socialaccount.provider == 'twitter':
         app = SocialApp.objects.get(provider='twitter')
         url = u'https://api.twitter.com/1.1/oauth/invalidate_token'
@@ -65,5 +68,20 @@ def send_deauthorization_request(sender, request, socialaccount, socialtoken, **
             'access_token': socialtoken.token
         }
         response = requests.post(url, auth=header_oauth, params=params)
-        print(response.status_code)
-        print(response.text)
+        # print(response.status_code)
+        # print(response.text)
+
+
+@receiver(user_signed_up)
+def user_signed_up(request, user, **kwargs):
+    print("in user_signed_up")
+    try:
+        invitation = get_invitation_model()
+        invite = invitation.objects.get(email=user.email)
+        user.first_name = invite.first_name
+        user.last_name = invite.last_name
+        user.preferred_name = invite.preferred_name
+        user.save()
+
+    except invitation.DoesNotExist:
+        print("this was not an invited user")
