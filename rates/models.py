@@ -298,6 +298,7 @@ class RawRateReport(models.Model):
 
 
 class RateReport(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -327,6 +328,7 @@ class RateReport(models.Model):
         max_digits=9,
         null=True)
     final_guarantee = models.PositiveSmallIntegerField(null=True)
+    percent_increase = models.PositiveIntegerField(null=True, blank=True)
 
     raw_report = models.ForeignKey(
         RawRateReport,
