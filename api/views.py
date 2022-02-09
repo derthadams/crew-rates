@@ -1,8 +1,8 @@
-import json
 import requests
 
 from django.apps import apps
 from django.db.models import F
+from django.conf import settings
 from django.contrib.postgres.search import TrigramSimilarity
 
 from rest_framework import status
@@ -12,6 +12,8 @@ from rest_framework.views import APIView
 from .api_config import *
 from .serializers import RawRateReportSerializer, JobTitleSerializer, ShowSerializer, \
     CompanySerializer, NetworkSerializer
+
+from rates.admin import _approve_raw_rate_report # noqa
 
 
 class LocationAutocompleteAPIView(APIView):
@@ -107,13 +109,17 @@ class AddRate(APIView):
             show_matches = []
             company_matches = []
             network_matches = []
+            user_created_values = False
 
             if serializer.validated_data['job_title'] == self.uuid_null:
+                user_created_values = True
                 job_title_matches = apps.get_model('rates', 'JobTitle').objects.annotate(
-                    similarity=TrigramSimilarity('title', serializer.validated_data['job_title_name']),
+                    similarity=TrigramSimilarity('title',
+                                                 serializer.validated_data['job_title_name']),
                 ).filter(similarity__gt=0.3).order_by('-similarity')
 
             if serializer.validated_data['show'] == self.uuid_null:
+                user_created_values = True
                 show_matches = apps.get_model('rates', 'Show').objects.annotate(
                     similarity=TrigramSimilarity('title', serializer.validated_data['show_title']),
                 ).filter(similarity__gt=0.3).order_by('-similarity')
@@ -121,22 +127,28 @@ class AddRate(APIView):
             companies = serializer.validated_data['companies']
             for company in companies:
                 if company['uuid'] == self.uuid_null:
+                    user_created_values = True
                     query_results = list(apps.get_model('rates', 'Company').objects.annotate(
                         similarity=TrigramSimilarity('name', company['name']),
                     ).filter(similarity__gt=0.3).order_by('-similarity'))
                     company_matches.extend(query_results)
 
             if serializer.validated_data['network'] == self.uuid_null:
+                user_created_values = True
                 network_matches = apps.get_model('rates', 'Network').objects.annotate(
                     similarity=TrigramSimilarity('name', serializer.validated_data['network_name']),
                 ).filter(similarity__gt=0.3).order_by('-similarity')
 
-            serializer.save(
+            raw_report = serializer.save(
                 job_title_matches=job_title_matches,
                 show_matches=show_matches,
                 company_matches=company_matches,
-                network_matches=network_matches
+                network_matches=network_matches,
+                user_created_values=user_created_values
             )
+
+            if not user_created_values and settings.AUTO_APPROVE_RATE_REPORTS:
+                _approve_raw_rate_report(raw_report)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
