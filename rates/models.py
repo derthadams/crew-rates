@@ -225,7 +225,8 @@ class Season(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        self.title = f'{self.show.title} (Season {str(self.number)})'
+        # self.title = f'{self.show.title} (Season {str(self.number)})'
+        self.title = self.show.title # noqa
         super().save(*args, **kwargs)
 
 
