@@ -1,13 +1,9 @@
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.template import loader
 from django.urls import reverse
-from django.utils.decorators import method_decorator
-from django.views import View
 from django.views.generic.edit import FormView
 
-from .forms import RawRateReportForm
 from .forms import ContactForm
 from .models import Season
 
@@ -15,7 +11,17 @@ from .models import Season
 @login_required
 def discover(request):
     template = loader.get_template('rates/discover.html')
-    context = {}
+    context = {
+        'apiUrls': {
+            'autocomplete': reverse('autocomplete'),
+            'details': reverse('details'),
+            'shows': reverse('shows'),
+            'companies': reverse('companies'),
+            'networks': reverse('networks'),
+            'job-titles': reverse('job-titles'),
+            'add-rate-api': reverse('add-rate-api')
+        }
+    }
     return HttpResponse(template.render(context, request))
 
 
