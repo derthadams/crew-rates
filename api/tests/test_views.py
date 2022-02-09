@@ -208,6 +208,14 @@ class APIViewsTest(TestCase):
 
     def test_add_rate_post_with_valid_json(self):
         self.user_model.objects.create_user(email='john@gmail.com', password='super-secret')
+        self.job_title.objects.create(uuid="5c09a673-d0c7-481f-8500-36c581bd7b4e",
+                                      title="Camera Operator")
+        self.show.objects.create(uuid="dba9eb69-ca1f-4040-8215-95635d3643fd",
+                                 title="Project Greenlight")
+        self.company.objects.create(uuid="caf6966d-a961-4a57-8872-39a4f51ce798",
+                                    name="EndemolShine NorthAmerica")
+        self.network.objects.create(uuid="8eb7ab01-e38a-469c-b792-3d5e7469dc86",
+                                    name="HBO Max")
         self.client.login(email='john@gmail.com', password='super-secret')
         ajax_form_dict = {
             "show": "dba9eb69-ca1f-4040-8215-95635d3643fd",
