@@ -3,7 +3,7 @@ import RateReport from './RateReport'
 import './app.css'
 
 const data = {
-    show_title: "Real Housewives of Beverly Hills",
+    show_title: "Prop Culture",
     season_number: 1,
     company: "Buena Vista Productions",
     network: "Disney+",
