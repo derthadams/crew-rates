@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
     entry: {
         add_rate: path.resolve(__dirname, './frontend/src/add-rate/add-rate.js'),  // path to our input file
+        discover: path.resolve(__dirname, './frontend/src/discover/discover.js'),
         entry_bootstrap: path.resolve(__dirname, './frontend/src/entry-bootstrap/entry-bootstrap.js')
     },
     module: {
