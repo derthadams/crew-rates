@@ -2,8 +2,8 @@ const path = require('path');
 
 module.exports = {
     entry: {
-        add_rate: './frontend/src/add-rate.js',  // path to our input file
-        entry_bootstrap: './frontend/src/entry-bootstrap.js'
+        add_rate: path.resolve(__dirname, './frontend/src/add-rate.js'),  // path to our input file
+        entry_bootstrap: path.resolve(__dirname, './frontend/src/entry-bootstrap.js')
     },
     module: {
         rules: [
