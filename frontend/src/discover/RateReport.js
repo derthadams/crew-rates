@@ -1,6 +1,10 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+
+import "./app.css";
 
 export default function RateReport({
     show_title,
@@ -13,46 +17,63 @@ export default function RateReport({
     day_rate,
     guarantee,
     hourly_rate,
-    increase
+    increase,
 }) {
     return (
-        <div>
-            <Card>
-                <Card.Body>
-                    <div className="d-flex mb-0 p-0">
-                        <h5 className="m-0">{show_title}</h5>
-                        <div className="ms-auto">
-                            {increase &&
-                            <Badge className="me-2" bg={"primary"}>+{increase}%</Badge>}
-                        </div>
-                        <h5 className="m-0">
-                            ${day_rate}/{guarantee}
-                        </h5>
-                    </div>
-
-                    <div className="d-flex">
-                        <div className="me-auto">
-                            <span>Season {season_number}</span>
-                            <span>
-                                <Badge className="ms-2" bg={"dark"}>
-                                    {union_status}
-                                </Badge>
+        <Card className="mb-3" style={{ maxWidth: 648 }}>
+            <Row className="g-0">
+                <Col
+                    className="md-4"
+                    xs={4}
+                    style={{ backgroundColor: "lightgray" }}
+                >
+                    <Card.Body className={"text-end"}>
+                        <div>
+                            <span className={"first-row"}>
+                                ${day_rate}/{guarantee}
                             </span>
                         </div>
-                        <div className="ms-auto">
-                            <span>${hourly_rate}/hr</span>
-                        </div>
-                    </div>
 
-                    <div className="d-flex">
-                        <span className="me-3">{company}</span>
-                        <span>{network}</span>
-                        <div className="ms-auto">
+                        <div>
+                            <span className={"me-2"}>
+                                {increase && (
+                                    <Badge bg={"primary"}>
+                                        &#8679;&nbsp;{increase}%
+                                    </Badge>
+                                )}
+                            </span>
+                            <span className={""}>${hourly_rate}/hr</span>
+                        </div>
+
+                        <div className={"third-row"}>
                             <span>{job_title}</span>
                         </div>
-                    </div>
-                </Card.Body>
-            </Card>
-        </div>
+                    </Card.Body>
+                </Col>
+
+                <Col className="md-8" xs={8}>
+                    <Card.Body>
+                        <div className="show-row">
+                            <span className={"first-row"}>{show_title}</span>
+                        </div>
+
+                        <div>
+                            <span>Season {season_number}</span>
+                            <span className={"ms-3"}>{genre}</span>
+                            <span className={"ms-3"}>
+                                <Badge bg={"dark"}>{union_status}</Badge>
+                            </span>
+                        </div>
+
+                        <div className={"third-row"}>
+                            <span>{company}</span>
+                            <span className={"ms-3"}>
+                                <Badge bg={"secondary"}>{network}</Badge>
+                            </span>
+                        </div>
+                    </Card.Body>
+                </Col>
+            </Row>
+        </Card>
     );
 }

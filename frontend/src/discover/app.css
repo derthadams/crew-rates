@@ -1,3 +1,8 @@
-/*h1 {*/
-/*    color: red;*/
-/*}*/
+.first-row {
+    font-size: 29px;
+}
+
+.third-row {
+    margin-top: 8px;
+    margin-bottom: 12px;
+}
