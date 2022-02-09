@@ -3,12 +3,12 @@ import RateReport from './RateReport'
 import './app.css'
 
 const data = {
-    show_title: "Prop Culture",
+    show_title: "Real Housewives of Beverly Hills",
     season_number: 1,
     company: "Buena Vista Productions",
     network: "Disney+",
     union_status: "IATSE",
-    genre: "Documentary",
+    genre: "Reality",
     job_title: "Camera Operator",
     day_rate: 800,
     guarantee: 10,
@@ -18,8 +18,9 @@ const data = {
 
 export default function App() {
     return (
-            <div>
-                <h1>Discover Page</h1>
+            <div className="my-3">
+                <h1 className={"display-1"}>Discover</h1>
+                <h6 className={"display-6"}>Recent rate reports</h6>
                 <RateReport show_title={data.show_title}
                             season_number={data.season_number}
                             company={data.company}
