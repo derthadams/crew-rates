@@ -10,8 +10,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .api_config import *
-from .serializers import RawRateReportSerializer, JobTitleSerializer, ShowSerializer, \
-    CompanySerializer, NetworkSerializer
+from .serializers import RawRateReportSerializer, RateReportSerializer, JobTitleSerializer, \
+    ShowSerializer, CompanySerializer, NetworkSerializer
 
 from rates.admin import _approve_raw_rate_report # noqa
 
@@ -152,3 +152,18 @@ class AddRate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class RateReportList(APIView):
+
+    def get(self, request): # noqa
+        rate_report = apps.get_model('rates', 'RateReport')
+        results = list(
+            rate_report.objects.all()
+        )
+        serializer = RateReportSerializer(results, many=True)
+        # if serializer.is_valid():
+        data = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
+        # else:
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

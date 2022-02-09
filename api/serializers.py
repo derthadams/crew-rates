@@ -8,6 +8,12 @@ class RawRateReportSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class RateReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = apps.get_model('rates', 'RateReport')
+        fields = '__all__'
+
+
 class JobTitleSerializer(serializers.Serializer): # noqa
     value = serializers.UUIDField()
     label = serializers.CharField(max_length=128)
