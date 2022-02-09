@@ -14,9 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.contrib.flatpages import views
-from django.urls import include, path, re_path
-from django.conf.urls import url
+from django.contrib.flatpages import views as flatpage_views
+from django.urls import include, path
 
 urlpatterns = [
     # Include urls for all modules
@@ -25,7 +24,7 @@ urlpatterns = [
     path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
-    path('tos/', views.flatpage, {'url': '/tos/'}, name='tos'),
-    path('privacy/', views.flatpage, {'url': '/privacy/'}, name='privacy'),
+    path('tos/', flatpage_views.flatpage, {'url': '/tos/'}, name='tos'),
+    path('privacy/', flatpage_views.flatpage, {'url': '/privacy/'}, name='privacy'),
     path('invitations/', include('invitations.urls', namespace='invitations')),
 ]
