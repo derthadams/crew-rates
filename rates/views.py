@@ -13,13 +13,14 @@ def discover(request):
     template = loader.get_template('rates/discover.html')
     context = {
         'apiUrls': {
-            'autocomplete': reverse('autocomplete'),
-            'details': reverse('details'),
-            'shows': reverse('shows'),
-            'companies': reverse('companies'),
-            'networks': reverse('networks'),
-            'job-titles': reverse('job-titles'),
-            'add-rate-api': reverse('add-rate-api')
+            'rate-report-list': reverse('rate-report-list')
+            # 'autocomplete': reverse('autocomplete'),
+            # 'details': reverse('details'),
+            # 'shows': reverse('shows'),
+            # 'companies': reverse('companies'),
+            # 'networks': reverse('networks'),
+            # 'job-titles': reverse('job-titles'),
+            # 'add-rate-api': reverse('add-rate-api')
         }
     }
     return HttpResponse(template.render(context, request))
