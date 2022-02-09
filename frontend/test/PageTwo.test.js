@@ -7,8 +7,8 @@ import selectEvent from "react-select-event";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 
-import PageTwo from "../src/PageTwo";
-import { dataDefault as mockDataDefault } from "../src/dataDefault";
+import PageTwo from "../src/add-rate/PageTwo";
+import { dataDefault as mockDataDefault } from "../src/add-rate/dataDefault";
 import optionsScript from "./optionsScript";
 
 import { server } from "./mocks/server";

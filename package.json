@@ -2,7 +2,7 @@
     "name": "crew-rates",
     "version": "1.0.0",
     "description": "",
-    "main": "frontend/src/add-rate.js",
+    "main": "frontend/src/add-rate/add-rate.js",
     "scripts": {
         "dev": "webpack --watch --config webpack.dev.js",
         "build": "webpack --config webpack.prod.js",

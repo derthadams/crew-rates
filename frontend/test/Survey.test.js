@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import userEvent from "@testing-library/user-event";
 // import { MemoryRouter } from "react-router-dom";
 
-import Survey from '../src/Survey'
+import Survey from '../src/add-rate/Survey'
 import optionsScript from "./optionsScript";
 
 import { server } from "./mocks/server";

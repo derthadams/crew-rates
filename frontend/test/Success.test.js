@@ -6,12 +6,12 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 
 
-import { dataDefault as mockDataDefault } from "../src/dataDefault";
+import { dataDefault as mockDataDefault } from "../src/add-rate/dataDefault";
 
 import optionsScript from "./optionsScript";
 
 import { server } from "./mocks/server";
-import Success from "../src/Success";
+import Success from "../src/add-rate/Success";
 
 
 const mockedUsedNavigate = jest.fn();

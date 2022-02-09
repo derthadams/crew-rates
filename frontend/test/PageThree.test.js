@@ -1,8 +1,8 @@
 import { BRRender as render, screen, waitFor } from "./test-utils/testing-library-utils";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
-import PageThree from "../src/PageThree";
-import { dataDefault as mockDataDefault } from "../src/dataDefault";
+import PageThree from "../src/add-rate/PageThree";
+import { dataDefault as mockDataDefault } from "../src/add-rate/dataDefault";
 import optionsScript from "./optionsScript";
 import { server } from "./mocks/server";
 
