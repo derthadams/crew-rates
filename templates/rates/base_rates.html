@@ -98,6 +98,7 @@
 {% block content %}
     <div class="container-fluid p-3" id="content-background">
         <div class="container p-3" id="content-inner">
+            {% include 'account/message_list.html' %}
             {% block content-inner %}
             {% endblock %}
         </div>
