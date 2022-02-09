@@ -25,19 +25,19 @@ class Migration(migrations.Migration):
             name='preferred_name',
             field=models.CharField(blank=True, max_length=128, null=True),
         ),
-        # migrations.AddField(
-        #     model_name='user',
-        #     name='first_name',
-        #     field=models.CharField(blank=True, max_length=128, null=True),
-        # ),
-        # migrations.AddField(
-        #     model_name='user',
-        #     name='last_name',
-        #     field=models.CharField(blank=True, max_length=128, null=True),
-        # ),
-        # migrations.AddField(
-        #     model_name='user',
-        #     name='preferred_name',
-        #     field=models.CharField(blank=True, max_length=128, null=True),
-        # ),
+        migrations.AddField(
+            model_name='user',
+            name='first_name',
+            field=models.CharField(blank=True, max_length=128, null=True),
+        ),
+        migrations.AddField(
+            model_name='user',
+            name='last_name',
+            field=models.CharField(blank=True, max_length=128, null=True),
+        ),
+        migrations.AddField(
+            model_name='user',
+            name='preferred_name',
+            field=models.CharField(blank=True, max_length=128, null=True),
+        ),
     ]
