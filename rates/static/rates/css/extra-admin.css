@@ -68,7 +68,7 @@ textarea {
     width: 159px!important;
 }
 
-input[type=text]:not(.vDateField) {
+input[type=text]:not(.vDateField):not(.vTimeField) {
     width: 100%!important;
 }
 
