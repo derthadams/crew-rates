@@ -4,12 +4,8 @@ from django.forms import Form, ModelForm, HiddenInput, DateInput, RadioSelect, \
     Select, SelectMultiple, ModelChoiceField, BooleanField, TextInput, EmailField, CharField, \
     ValidationError
 from django.utils.translation import gettext_lazy as _, pgettext
-from .models import RawRateReport, Contact, User
-from .adapters import get_adapter
 
 from allauth.socialaccount.models import SocialAccount, SocialToken
-from .signals import social_account_removed
-
 from allauth.account.adapter import get_adapter as get_account_adapter
 from allauth.account.forms import PasswordField
 from allauth.account import app_settings
@@ -17,6 +13,10 @@ from allauth.account.utils import perform_login
 from allauth.utils import get_username_max_length, set_form_field_order
 from captcha.fields import ReCaptchaField
 from captcha.widgets import ReCaptchaV3, ReCaptchaV2Checkbox
+
+from .adapters import get_adapter
+from .models import RawRateReport, Contact, User
+from .signals import social_account_removed
 
 AuthenticationMethod = app_settings.AuthenticationMethod
 
