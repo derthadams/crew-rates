@@ -17,7 +17,7 @@ from invitations.adapters import get_invitations_adapter
 
 class UserManager(BaseUserManager):
 
-    def _create_user(self, email, password, is_staff, is_superuser,
+    def _create_user(self, email, first_name, last_name, preferred_name, password, is_staff, is_superuser,
                      **extra_fields):
         if not email:
             raise ValueError('Users must have an email address')
@@ -25,6 +25,9 @@ class UserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(
             email=email,
+            first_name=first_name,
+            last_name=last_name,
+            preferred_name=preferred_name,
             is_staff=is_staff,
             is_active=True,
             is_superuser=is_superuser,
@@ -36,16 +39,31 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password, **extra_fields):
-        return self._create_user(email, password, False, False, **extra_fields)
+    def create_user(self, email, first_name, last_name, preferred_name, password, **extra_fields):
+        return self._create_user(email, first_name, last_name, preferred_name, password, False, False, **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):
-        user = self._create_user(email, password, True, True, **extra_fields)
+    def create_superuser(self, email, first_name, last_name, preferred_name, password, **extra_fields):
+        user = self._create_user(email, first_name, last_name, preferred_name, password, True, True, **extra_fields)
         return user
 
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=254, unique=True)
+    first_name = models.CharField(
+        max_length=128,
+        null=True,
+        blank=True
+    )
+    last_name = models.CharField(
+        max_length=128,
+        null=True,
+        blank=True
+    )
+    preferred_name = models.CharField(
+        max_length=128,
+        null=True,
+        blank=True
+    )
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
