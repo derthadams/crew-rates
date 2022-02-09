@@ -10,119 +10,123 @@ from .models import User, Company, JobTitle, Show, Network, Location, Season, \
 from invitations.forms import InvitationAdminAddForm, InvitationAdminChangeForm
 
 
+def _approve_raw_rate_report(raw_report):
+    uuid_null = '00000000-0000-0000-0000-000000000000'
+    if raw_report.job_title == uuid_null:
+        job_title_obj, created = JobTitle.objects.get_or_create( # noqa
+            title=raw_report.job_title_name)
+    else:
+        job_title_obj = JobTitle.objects.get(uuid=raw_report.job_title) # noqa
+    job_title = job_title_obj.pk
+
+    if raw_report.show == uuid_null:
+        show_obj, created = Show.objects.get_or_create( # noqa
+            title=raw_report.show_title)
+    else:
+        show_obj = Show.objects.get(uuid=raw_report.show) # noqa
+    show = show_obj.pk
+
+    companies = []
+    for company in raw_report.companies:
+        if company['uuid'] == uuid_null:
+            company_obj, created = Company.objects.get_or_create(
+                name=company['name'])
+        else:
+            company_obj = Company.objects.get(uuid=company['uuid'])
+        companies.append(company_obj.pk)
+
+    network = None
+    if raw_report.network:
+        if raw_report.network == uuid_null:
+            network_obj, created = Network.objects.get_or_create(
+                name=raw_report.network_name)
+        else:
+            network_obj = Network.objects.get(uuid=raw_report.network)
+        network = network_obj.pk
+
+    if raw_report.locations:
+        locations_set = set()
+        scopes_set = set()
+
+        for location in raw_report.locations:
+            location_object, created = make_location_object(location['scopes'][0],
+                                                            location['latitude'],
+                                                            location['longitude'])
+            locations_set.add(location_object.id)
+            scopes_set.add(location_object.id)
+
+            for i in range(1, len(location['scopes'])):
+                scope_object, created = make_location_object(location['scopes'][i])
+                scopes_set.add(scope_object.id)
+        locations = list(locations_set)
+        scopes = list(scopes_set)
+    else:
+        locations = []
+        scopes = []
+
+    seasons = Season.objects.filter(
+        show__id=show,
+        number=raw_report.season_number
+    )
+    if len(seasons):
+        season = seasons[0]
+
+        if not season.start_date and not season.end_date:
+            season.start_date = raw_report.start_date
+            season.end_date = raw_report.end_date
+
+        if not season.network:
+            season.network_id = network
+
+        season.locations.add(*locations)
+        season.scopes.add(*scopes)
+        season.companies.add(*companies)
+
+        if not season.genre:
+            season.genre = raw_report.genre
+
+        if not season.union and raw_report.union:
+            season.union = True
+
+        season.save()
+
+    else:
+        season = Season.objects.create(
+            show_id=show,
+            number=raw_report.season_number,
+            start_date=raw_report.start_date,
+            end_date=raw_report.end_date,
+            union=raw_report.union,
+            network_id=network,
+            genre=raw_report.genre
+        )
+
+        season.locations.add(*locations)
+        season.scopes.add(*scopes)
+        season.companies.add(*companies)
+
+    RateReport.objects.create(
+        user=raw_report.user,
+        job_title_id=job_title,
+        offered_hourly=raw_report.offered_hourly,
+        offered_guarantee=raw_report.offered_guarantee,
+        negotiated=raw_report.negotiated,
+        increased=raw_report.increased,
+        final_hourly=raw_report.final_hourly,
+        final_guarantee=raw_report.final_guarantee,
+        season=season,
+        union=raw_report.union,
+        raw_report=raw_report
+    )
+
+    raw_report.approved = True
+    raw_report.save()
+
+
 @admin.action(description="Approve raw rate report")
 def approve_raw_rate_report(modeladmin, request, queryset):
-    uuid_null = '00000000-0000-0000-0000-000000000000'
     for raw_report in queryset:
-        if raw_report.job_title == uuid_null:
-            job_title_obj, created = JobTitle.objects.get_or_create( # noqa
-                title=raw_report.job_title_name)
-        else:
-            job_title_obj = JobTitle.objects.get(uuid=raw_report.job_title) # noqa
-        job_title = job_title_obj.pk
-
-        if raw_report.show == uuid_null:
-            show_obj, created = Show.objects.get_or_create( # noqa
-                title=raw_report.show_title)
-        else:
-            show_obj = Show.objects.get(uuid=raw_report.show) # noqa
-        show = show_obj.pk
-
-        companies = []
-        for company in raw_report.companies:
-            if company['uuid'] == uuid_null:
-                company_obj, created = Company.objects.get_or_create(
-                    name=company['name'])
-            else:
-                company_obj = Company.objects.get(uuid=company['uuid'])
-            companies.append(company_obj.pk)
-
-        network = None
-        if raw_report.network:
-            if raw_report.network == uuid_null:
-                network_obj, created = Network.objects.get_or_create(
-                    name=raw_report.network_name)
-            else:
-                network_obj = Network.objects.get(uuid=raw_report.network)
-            network = network_obj.pk
-
-        if raw_report.locations:
-            locations_set = set()
-            scopes_set = set()
-
-            for location in raw_report.locations:
-                location_object, created = make_location_object(location['scopes'][0],
-                                                                location['latitude'],
-                                                                location['longitude'])
-                locations_set.add(location_object.id)
-                scopes_set.add(location_object.id)
-
-                for i in range(1, len(location['scopes'])):
-                    scope_object, created = make_location_object(location['scopes'][i])
-                    scopes_set.add(scope_object.id)
-            locations = list(locations_set)
-            scopes = list(scopes_set)
-        else:
-            locations = []
-            scopes = []
-
-        seasons = Season.objects.filter(
-            show__id=show,
-            number=raw_report.season_number
-        )
-        if len(seasons):
-            season = seasons[0]
-
-            if not season.start_date and not season.end_date:
-                season.start_date = raw_report.start_date
-                season.end_date = raw_report.end_date
-
-            if not season.network:
-                season.network_id = network
-
-            season.locations.add(*locations)
-            season.scopes.add(*scopes)
-            season.companies.add(*companies)
-
-            if not season.genre:
-                season.genre = raw_report.genre
-
-            if not season.union and raw_report.union:
-                season.union = True
-
-            season.save()
-
-        else:
-            season = Season.objects.create(
-                show_id=show,
-                number=raw_report.season_number,
-                start_date=raw_report.start_date,
-                end_date=raw_report.end_date,
-                union=raw_report.union,
-                network_id=network,
-                genre=raw_report.genre
-            )
-
-            season.locations.add(*locations)
-            season.scopes.add(*scopes)
-            season.companies.add(*companies)
-
-        RateReport.objects.create(
-            user=raw_report.user,
-            job_title_id=job_title,
-            offered_hourly=raw_report.offered_hourly,
-            offered_guarantee=raw_report.offered_guarantee,
-            negotiated=raw_report.negotiated,
-            increased=raw_report.increased,
-            final_hourly=raw_report.final_hourly,
-            final_guarantee=raw_report.final_guarantee,
-            season=season,
-            union=raw_report.union,
-            raw_report=raw_report
-        )
-
-        raw_report.approved = True
-        raw_report.save()
+        _approve_raw_rate_report(raw_report)
         raw_report.delete()
 
 
