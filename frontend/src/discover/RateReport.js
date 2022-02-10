@@ -4,7 +4,7 @@ import Badge from "react-bootstrap/Badge";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import convertDateNumeric from "./convertDateNumeric";
-import "./app.css";
+import "./rate-report.css";
 
 export default function RateReport({
     show_title,

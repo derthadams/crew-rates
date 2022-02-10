@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import RateReport from "./RateReport";
-import "./app.css";
 import axios from "axios";
 
 export default function App() {
