@@ -1,7 +1,9 @@
 import requests
 
 from django.apps import apps
-from django.db.models import F
+from django.contrib.postgres.aggregates import ArrayAgg
+from django.db.models import CharField, F, DecimalField
+from django.db.models.functions import Cast
 from django.conf import settings
 from django.contrib.postgres.search import TrigramSimilarity
 
@@ -155,12 +157,30 @@ class AddRate(APIView):
 
 
 class RateReportList(APIView):
+    genre_options = dict(apps.get_model('rates', 'Season').GENRE_CHOICES)
+    union_options = dict(apps.get_model('rates', 'Season').UNION_CHOICES)
 
     def get(self, request): # noqa
         rate_report = apps.get_model('rates', 'RateReport')
-        results = list(
-            rate_report.objects.all()
+
+        results = rate_report.objects.all().values(
+            'uuid',
+            'percent_increase',
+            'season__start_date',
+            'season__end_date',
+            guarantee=F('final_guarantee'),
+            hourly=Cast('final_hourly', output_field=DecimalField(
+                decimal_places=2,
+                max_digits=7)),
+            union_status=F('union'),
+            show_title=F('season__title'),
+            season_number=F('season__number'),
+            genre=F('season__genre'),
+            job_title_name=F('job_title__title'),
+            network=F('season__network__name'),
+            companies=ArrayAgg('season__companies__name')
         )
+
         serializer = RateReportSerializer(results, many=True)
         # if serializer.is_valid():
         data = serializer.data

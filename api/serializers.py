@@ -8,11 +8,25 @@ class RawRateReportSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class RateReportSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = apps.get_model('rates', 'RateReport')
-        fields = '__all__'
-
+class RateReportSerializer(serializers.Serializer): # noqa
+    uuid = serializers.UUIDField()
+    percent_increase = serializers.IntegerField()
+    guarantee = serializers.IntegerField()
+    hourly = serializers.DecimalField(
+        decimal_places=2,
+        max_digits=7
+    )
+    union_status = serializers.CharField()
+    show_title = serializers.CharField()
+    season_number = serializers.IntegerField()
+    genre = serializers.CharField()
+    job_title_name = serializers.CharField()
+    network = serializers.CharField()
+    season__start_date = serializers.DateField()
+    season__end_date = serializers.DateField()
+    companies = serializers.ListField(
+        child=serializers.CharField()
+    )
 
 class JobTitleSerializer(serializers.Serializer): # noqa
     value = serializers.UUIDField()
