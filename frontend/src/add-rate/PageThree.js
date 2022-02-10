@@ -69,8 +69,8 @@ function PageThree() {
             offered_guarantee: formData.offered_guarantee,
             negotiated: formData.negotiated,
             increased: formData.increased,
-            final_hourly: formData.final_hourly_rate || null,
-            final_guarantee: formData.final_guarantee || null
+            final_hourly: formData.final_hourly_rate || formData.offered_hourly_rate,
+            final_guarantee: formData.final_guarantee || formData.offered_guarantee
         }
 
         axios.post(apiUrls['add-rate-api'], data,
