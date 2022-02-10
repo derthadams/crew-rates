@@ -4,7 +4,6 @@ import "./app.css";
 import axios from "axios";
 
 export default function App() {
-
     const [reports, setReports] = useState([]);
     const genre = JSON.parse(
         document.getElementById("genre").textContent
@@ -41,10 +40,11 @@ export default function App() {
                     union_status={unionStatus[report.union_status]}
                     genre={genre[report.genre]}
                     job_title={report.job_title_name}
-                    day_rate={800}
+                    day_rate={report.daily}
                     guarantee={report.guarantee}
                     hourly_rate={report.hourly}
                     increase={report.percent_increase}
+                    start_date={report.season__start_date}
                 />
             ))}
         </div>

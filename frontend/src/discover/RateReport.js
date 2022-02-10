@@ -3,7 +3,7 @@ import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-
+import convertDateNumeric from "./convertDateNumeric";
 import "./app.css";
 
 export default function RateReport({
@@ -18,6 +18,7 @@ export default function RateReport({
     guarantee,
     hourly_rate,
     increase,
+    start_date,
 }) {
     return (
         <Card className="mb-3" style={{ maxWidth: 648 }}>
@@ -59,6 +60,7 @@ export default function RateReport({
 
                         <div>
                             <span>Season {season_number}</span>
+                            <span className={"ms-3"}>{convertDateNumeric(start_date)}</span>
                             <span className={"ms-3"}>{genre}</span>
                             <span className={"ms-3"}>
                                 <Badge bg={"dark"}>{union_status}</Badge>
