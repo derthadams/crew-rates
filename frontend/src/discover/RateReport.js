@@ -36,7 +36,7 @@ export default function RateReport({
                         </div>
 
                         <div>
-                            <span className={"me-2"}>
+                            <span className={"me-1"}>
                                 {increase && (
                                     <Badge bg={"primary"}>
                                         &#8679;&nbsp;{increase}%
@@ -68,8 +68,8 @@ export default function RateReport({
                         </div>
 
                         <div className={"third-row"}>
-                            <span>{company}</span>
-                            <span className={"ms-3"}>
+                            <span className={"me-3"}>{company}</span>
+                            <span>
                                 <Badge bg={"secondary"}>{network}</Badge>
                             </span>
                         </div>
