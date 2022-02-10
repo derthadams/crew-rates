@@ -16,6 +16,8 @@
 
     <div id="root"></div>
 
+    {{ genre|json_script:'genre' }}
+    {{ unionStatus|json_script:'unionStatus' }}
     {{ apiUrls|json_script:'apiUrls'}}
 
 {% endblock %}

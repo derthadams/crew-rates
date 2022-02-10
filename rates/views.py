@@ -12,6 +12,8 @@ from .models import Season
 def discover(request):
     template = loader.get_template('rates/discover.html')
     context = {
+        'genre': dict(Season.GENRE_CHOICES),
+        'unionStatus': dict(Season.UNION_CHOICES),
         'apiUrls': {
             'rate-report-list': reverse('rate-report-list')
             # 'autocomplete': reverse('autocomplete'),
