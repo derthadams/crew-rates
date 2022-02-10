@@ -13,7 +13,7 @@ class RateReportSerializer(serializers.Serializer): # noqa
     percent_increase = serializers.IntegerField()
     guarantee = serializers.IntegerField()
     daily = serializers.DecimalField(
-        decimal_places=2,
+        decimal_places=0,
         max_digits=8
     )
     hourly = serializers.DecimalField(

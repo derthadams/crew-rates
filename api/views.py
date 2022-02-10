@@ -2,7 +2,7 @@ import requests
 
 from django.apps import apps
 from django.contrib.postgres.aggregates import ArrayAgg
-from django.db.models import CharField, F, DecimalField
+from django.db.models import F, DecimalField
 from django.db.models.functions import Cast
 from django.conf import settings
 from django.contrib.postgres.search import TrigramSimilarity
@@ -170,7 +170,7 @@ class RateReportList(APIView):
             'season__end_date',
             guarantee=F('final_guarantee'),
             daily=Cast('final_daily', output_field=DecimalField(
-                decimal_places=2,
+                decimal_places=0,
                 max_digits=8)),
             hourly=Cast('final_hourly', output_field=DecimalField(
                 decimal_places=2,
