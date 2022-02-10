@@ -1,3 +1,5 @@
+from math import ceil
+
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -8,6 +10,10 @@ from django.utils.translation import gettext_lazy as _
 from .models import User, Company, JobTitle, Show, Network, Location, Season, \
     RawRateReport, RateReport, RatesInvitation
 from invitations.forms import InvitationAdminAddForm, InvitationAdminChangeForm
+
+
+def calc_percent_increase(final, offered):
+    return ceil(((final - offered) / offered) * 100)
 
 
 def _approve_raw_rate_report(raw_report):
@@ -105,6 +111,10 @@ def _approve_raw_rate_report(raw_report):
         season.scopes.add(*scopes)
         season.companies.add(*companies)
 
+    percent_increase = None
+    if raw_report.increased:
+        percent_increase = calc_percent_increase(raw_report.final_hourly, raw_report.offered_hourly)
+
     RateReport.objects.create(
         user=raw_report.user,
         job_title_id=job_title,
@@ -116,7 +126,8 @@ def _approve_raw_rate_report(raw_report):
         final_guarantee=raw_report.final_guarantee,
         season=season,
         union=raw_report.union,
-        raw_report=raw_report
+        raw_report=raw_report,
+        percent_increase=percent_increase
     )
 
     raw_report.approved = True
