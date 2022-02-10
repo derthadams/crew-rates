@@ -272,12 +272,20 @@ class RawRateReport(models.Model):
         JobTitle,
         related_name='job_title_matches',
         null=True)
+    offered_daily = models.DecimalField(
+        decimal_places=2,
+        max_digits=8
+    )
     offered_hourly = models.DecimalField(
         decimal_places=4,
         max_digits=9)
     offered_guarantee = models.PositiveSmallIntegerField()
     negotiated = models.BooleanField()
     increased = models.BooleanField(null=True, blank=True)
+    final_daily = models.DecimalField(
+        decimal_places=2,
+        max_digits=8
+    )
     final_hourly = models.DecimalField(
         decimal_places=4,
         max_digits=9,
@@ -317,12 +325,20 @@ class RateReport(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
+    offered_daily = models.DecimalField(
+        decimal_places=2,
+        max_digits=8
+    )
     offered_hourly = models.DecimalField(
         decimal_places=4,
         max_digits=9)
     offered_guarantee = models.PositiveSmallIntegerField()
     negotiated = models.BooleanField()
     increased = models.BooleanField(null=True)
+    final_daily = models.DecimalField(
+        decimal_places=2,
+        max_digits=8
+    )
     final_hourly = models.DecimalField(
         decimal_places=4,
         max_digits=9,
