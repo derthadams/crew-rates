@@ -9,7 +9,6 @@ import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 
 import { useStateMachine } from "little-state-machine";
-import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
 
 import {NIL as uuid_NIL} from "uuid";
@@ -17,13 +16,7 @@ import {NIL as uuid_NIL} from "uuid";
 import axios from 'axios';
 import Cookies from 'cookies-js';
 import AddRateHeading from "./AddRateHeading";
-
-const numericDateToLongString = (dateString) => {
-    const eight_hours = 28800000
-    const date = new Date(dateString);
-    date.setTime(date.getTime() + eight_hours)
-    return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})
-}
+import convertDate from "./convertDate"
 
 function PageThree() {
     const locationState = useLocation();
@@ -157,13 +150,13 @@ function PageThree() {
 
                 <tr>
                     <th>Start date:</th>
-                    <td>{numericDateToLongString(state.formData.start_date)}</td>
+                    <td>{convertDate(state.formData.start_date)}</td>
                 </tr>
 
                 {state.formData.end_date ?
                 <tr>
                     <th>End date:</th>
-                    <td>{numericDateToLongString(state.formData.end_date)}</td>
+                    <td>{convertDate(state.formData.end_date)}</td>
                 </tr> : null}
 
                 <tr>
