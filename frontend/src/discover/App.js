@@ -1,38 +1,52 @@
-import React from 'react';
-import RateReport from './RateReport'
-import './app.css'
-
-const data = {
-    show_title: "Prop Culture",
-    season_number: 1,
-    company: "Buena Vista Productions",
-    network: "Disney+",
-    union_status: "IATSE",
-    genre: "Reality",
-    job_title: "Camera Operator",
-    day_rate: 800,
-    guarantee: 10,
-    hourly_rate: 72.73,
-    increase: 15
-}
+import React, { useState, useEffect } from "react";
+import RateReport from "./RateReport";
+import "./app.css";
+import axios from "axios";
 
 export default function App() {
-    return (
-            <div className="my-3">
-                <h1 className={"display-1"}>Discover</h1>
-                <h6 className={"display-6"}>Recent rate reports</h6>
-                <RateReport show_title={data.show_title}
-                            season_number={data.season_number}
-                            company={data.company}
-                            network={data.network}
-                            union_status={data.union_status}
-                            genre={data.genre}
-                            job_title={data.job_title}
-                            day_rate={data.day_rate}
-                            guarantee={data.guarantee}
-                            hourly_rate={data.hourly_rate}
-                            increase={data.increase}/>
-            </div>
 
-    )
+    const [reports, setReports] = useState([]);
+    const genre = JSON.parse(
+        document.getElementById("genre").textContent
+    );
+    const unionStatus = JSON.parse(
+        document.getElementById("unionStatus").textContent
+    );
+    console.log(unionStatus)
+    const apiUrls = JSON.parse(document.getElementById("apiUrls").textContent);
+
+    const getInitialData = () => {
+        axios.get(apiUrls["rate-report-list"]).then((response) => {
+            const initialData = response.data;
+            console.log(initialData);
+            setReports(initialData);
+        });
+    };
+
+    useEffect(() => {
+        getInitialData();
+    }, []);
+
+    return (
+        <div className="my-3">
+            <h1 className={"display-1"}>Discover</h1>
+            <h6 className={"display-6"}>Recent rate reports</h6>
+            {reports.map((report) => (
+                <RateReport
+                    key={report.uuid}
+                    show_title={report.show_title}
+                    season_number={report.season_number}
+                    company={report.companies && report.companies[0]}
+                    network={report.network}
+                    union_status={unionStatus[report.union_status]}
+                    genre={genre[report.genre]}
+                    job_title={report.job_title_name}
+                    day_rate={800}
+                    guarantee={report.guarantee}
+                    hourly_rate={report.hourly}
+                    increase={report.percent_increase}
+                />
+            ))}
+        </div>
+    );
 }
