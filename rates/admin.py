@@ -118,10 +118,12 @@ def _approve_raw_rate_report(raw_report):
     RateReport.objects.create(
         user=raw_report.user,
         job_title_id=job_title,
+        offered_daily=raw_report.offered_daily,
         offered_hourly=raw_report.offered_hourly,
         offered_guarantee=raw_report.offered_guarantee,
         negotiated=raw_report.negotiated,
         increased=raw_report.increased,
+        final_daily=raw_report.final_daily,
         final_hourly=raw_report.final_hourly,
         final_guarantee=raw_report.final_guarantee,
         season=season,
