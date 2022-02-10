@@ -169,6 +169,9 @@ class RateReportList(APIView):
             'season__start_date',
             'season__end_date',
             guarantee=F('final_guarantee'),
+            daily=Cast('final_daily', output_field=DecimalField(
+                decimal_places=2,
+                max_digits=8)),
             hourly=Cast('final_hourly', output_field=DecimalField(
                 decimal_places=2,
                 max_digits=7)),
