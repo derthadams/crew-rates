@@ -65,10 +65,12 @@ function PageThree() {
             end_date: formData.end_date || null,
             job_title: formData.job_title.value === formData.job_title.label ? uuid_NIL : formData.job_title.value,
             job_title_name: formData.job_title.label,
+            offered_daily: formData.offered_day_rate,
             offered_hourly: formData.offered_hourly_rate,
             offered_guarantee: formData.offered_guarantee,
             negotiated: formData.negotiated,
             increased: formData.increased,
+            final_daily: formData.final_day_rate || formData.offered_day_rate,
             final_hourly: formData.final_hourly_rate || formData.offered_hourly_rate,
             final_guarantee: formData.final_guarantee || formData.offered_guarantee
         }
