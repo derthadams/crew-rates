@@ -284,7 +284,9 @@ class RawRateReport(models.Model):
     increased = models.BooleanField(null=True, blank=True)
     final_daily = models.DecimalField(
         decimal_places=2,
-        max_digits=8
+        max_digits=8,
+        null=True,
+        blank=True
     )
     final_hourly = models.DecimalField(
         decimal_places=4,
@@ -337,7 +339,9 @@ class RateReport(models.Model):
     increased = models.BooleanField(null=True)
     final_daily = models.DecimalField(
         decimal_places=2,
-        max_digits=8
+        max_digits=8,
+        null=True,
+        blank=True
     )
     final_hourly = models.DecimalField(
         decimal_places=4,
