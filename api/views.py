@@ -182,7 +182,7 @@ class RateReportList(APIView):
             job_title_name=F('job_title__title'),
             network=F('season__network__name'),
             companies=ArrayAgg('season__companies__name')
-        )
+        ).order_by('-season__start_date')
 
         serializer = RateReportSerializer(results, many=True)
         # if serializer.is_valid():
