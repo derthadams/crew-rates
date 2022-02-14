@@ -60,7 +60,7 @@ class TestModels(TestCase):
         show = self.show.objects.create(title="Supermarket Sweep")
         season = self.season.objects.create(show=show, number=1)
         season_str = str(season)
-        self.assertEqual(season_str, "Supermarket Sweep (Season 1)")
+        self.assertEqual(season_str, "Supermarket Sweep")
 
     def test_raw_rate_report_string(self):
         user = self.user_model.objects.create_user(email="john@google.com", password="allmysecrets")
@@ -88,7 +88,7 @@ class TestModels(TestCase):
                                                  offered_daily=700,
                                                  negotiated=False)
         report_str = str(report)
-        self.assertEqual(report_str, "john@google.com: Supermarket Sweep (Season 1), "
+        self.assertEqual(report_str, "john@google.com: Supermarket Sweep, "
                                       "Camera Operator, $63.6363")
 
     def test_created_updated(self):
