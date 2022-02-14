@@ -8,8 +8,9 @@
 {% endblock %}
 
 {% block scripts %}
-  {{ block.super }}
-  <script defer src="{% static 'rates/js/react.bundle.js' %}"></script>
+    {{ block.super }}
+    <script defer src="{% static 'rates/js/react.bundle.js' %}"></script>
+    <script defer src="{% static 'rates/js/common.bundle.js' %}"></script>
 {% endblock %}
 
 {% block header %}

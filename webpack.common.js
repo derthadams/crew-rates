@@ -36,6 +36,10 @@ module.exports = {
                     test: /[\\/]node_modules[\\/](bootstrap|@popperjs)[\\/]/,
                     name: 'bootstrap',
                 },
+                common: {
+                    test: /[\\/]frontend[\\/]src[\\/]common[\\/]/,
+                    name: 'common',
+                }
             }
         },
     },

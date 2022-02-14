@@ -16,7 +16,7 @@ import {NIL as uuid_NIL} from "uuid";
 import axios from 'axios';
 import Cookies from 'cookies-js';
 import AddRateHeading from "./AddRateHeading";
-import convertDate from "./convertDate"
+import convertDate from "../common/convertDate"
 
 function PageThree() {
     const locationState = useLocation();
