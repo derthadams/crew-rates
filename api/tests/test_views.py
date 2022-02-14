@@ -270,6 +270,7 @@ class APIViewsTest(TestCase):
             "job_title_name": "Camera Operator",
             "offered_hourly": 50,
             "offered_guarantee": 12,
+            "offered_daily": 700,
             "negotiated": True,
             "increased": True,
             "final_hourly": 72.7273,

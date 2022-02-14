@@ -78,7 +78,7 @@ def send_deauthorization_request(sender, request, socialaccount, socialtoken, **
 
 @receiver(user_signed_up)
 def user_signed_up(request, user, **kwargs):
-    print("in user_signed_up")
+    # print("in user_signed_up")
     try:
         invitation = get_invitation_model()
         invite = invitation.objects.get(email=user.email)
