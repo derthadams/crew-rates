@@ -1,7 +1,7 @@
 export default function convertDateNumeric(dateString) {
-    const eight_hours = 28800000;
     const date = new Date(dateString);
-    date.setTime(date.getTime() + eight_hours);
+    const timezoneOffsetMs = date.getTimezoneOffset() * 60000
+    date.setTime(date.getTime() + timezoneOffsetMs)
 
         return date.toLocaleDateString("en-US", {
             month: "numeric",

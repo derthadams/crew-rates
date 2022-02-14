@@ -1,7 +1,7 @@
 export default function convertDate(dateString, format = "long") {
-    const eight_hours = 28800000;
     const date = new Date(dateString);
-    date.setTime(date.getTime() + eight_hours);
+    const timezoneOffsetMs = date.getTimezoneOffset() * 60000
+    date.setTime(date.getTime() + timezoneOffsetMs)
     if (format === "long") {
         return date.toLocaleDateString("en-US", {
             month: "long",
