@@ -55,7 +55,8 @@ valid_json = {
     "negotiated": True,
     "increased": True,
     "final_hourly": 72.7273,
-    "final_guarantee": 10
+    "final_guarantee": 10,
+    "final_daily": 800
 }
 
 valid_json_create = {

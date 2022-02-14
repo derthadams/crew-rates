@@ -1,4 +1,4 @@
-from math import ceil
+# from math import ceil
 
 from django import forms
 from django.contrib import admin
@@ -12,8 +12,25 @@ from .models import User, Company, JobTitle, Show, Network, Location, Season, \
 from invitations.forms import InvitationAdminAddForm, InvitationAdminChangeForm
 
 
-def calc_percent_increase(final, offered):
-    return ceil(((final - offered) / offered) * 100)
+def calc_delta(final, offered):
+    return round(((final - offered) / offered) * 100)
+
+
+def calc_percent_increase(final_hourly, final_daily, offered_hourly, offered_daily):
+    if final_hourly > offered_hourly and final_daily >= offered_daily:
+        hourly_delta = calc_delta(final_hourly, offered_hourly)
+    else:
+        hourly_delta = 0
+
+    if final_daily > offered_daily and final_hourly >= offered_hourly:
+        daily_delta = calc_delta(final_daily, offered_daily)
+    else:
+        daily_delta = 0
+
+    if hourly_delta == 0 and daily_delta == 0:
+        return None
+    else:
+        return max(hourly_delta, daily_delta)
 
 
 def _approve_raw_rate_report(raw_report):
@@ -113,7 +130,10 @@ def _approve_raw_rate_report(raw_report):
 
     percent_increase = None
     if raw_report.increased:
-        percent_increase = calc_percent_increase(raw_report.final_hourly, raw_report.offered_hourly)
+        percent_increase = calc_percent_increase(raw_report.final_hourly,
+                                                 raw_report.final_daily,
+                                                 raw_report.offered_hourly,
+                                                 raw_report.offered_daily)
 
     RateReport.objects.create(
         user=raw_report.user,

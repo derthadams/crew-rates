@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.apps import apps
 
-from rates.admin import RatesInvitationAdminAddForm  # noqa
+from rates.admin import RatesInvitationAdminAddForm, calc_percent_increase  # noqa
 
 from .sample_data import valid_json, valid_json_create, valid_json_no_locations
 
@@ -123,3 +123,41 @@ class RatesAdminTest(TestCase):
         self.assertEqual(len(seasons), 1)
         locations = self.location.objects.all()
         self.assertEqual(len(locations), 4)
+
+    def test_calculate_increase_better_hourly_and_daily(self):
+        offered_hourly = 54.5454
+        offered_daily = 600
+        final_hourly = 60
+        final_daily = 660
+        increase = calc_percent_increase(final_hourly, final_daily, offered_hourly, offered_daily)
+        self.assertEqual(increase, 10)
+
+    def test_calculate_increase_better_hourly_worse_daily(self):
+        offered_hourly = 54.5454
+        offered_daily = 600
+        final_hourly = 60
+        final_daily = 480
+        increase = calc_percent_increase(final_hourly, final_daily, offered_hourly, offered_daily)
+        self.assertIsNone(increase)
+
+    def test_calculate_increase_worse_hourly_better_daily(self):
+        offered_hourly = 54.5454
+        offered_daily = 600
+        final_hourly = 44.64
+        final_daily = 625
+        increase = calc_percent_increase(final_hourly, final_daily, offered_hourly, offered_daily)
+        self.assertIsNone(increase)
+
+    def test_calculate_increase_same_rate(self):
+        offered_hourly = 80
+        offered_daily = 880
+        final_hourly = 80
+        final_daily = 880
+        increase = calc_percent_increase(final_hourly, final_daily, offered_hourly, offered_daily)
+        self.assertIsNone(increase)
+
+    def test_calculate_increase_worse_hourly_worse_daily(self):
+        offered_hourly = 60
+        offered_daily = 660
+        final_hourly = 54.5454
+        final_daily = 600
