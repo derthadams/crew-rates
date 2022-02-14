@@ -59,10 +59,10 @@ export default function RateReport({
                         </div>
 
                         <div>
-                            <span>Season {season_number}</span>
-                            <span className={"ms-3"}>{convertDateNumeric(start_date)}</span>
-                            <span className={"ms-3"}>{genre}</span>
-                            <span className={"ms-3"}>
+                            <span className={"me-3"}>Season {season_number}</span>
+                            <span className={"me-3"}>{convertDateNumeric(start_date)}</span>
+                            <span className={"me-3"}>{genre}</span>
+                            <span className={"me-3"}>
                                 <Badge bg={"dark"}>{union_status}</Badge>
                             </span>
                         </div>
