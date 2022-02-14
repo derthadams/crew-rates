@@ -161,3 +161,5 @@ class RatesAdminTest(TestCase):
         offered_daily = 660
         final_hourly = 54.5454
         final_daily = 600
+        increase = calc_percent_increase(final_hourly, final_daily, offered_hourly, offered_daily)
+        self.assertIsNone(increase)
