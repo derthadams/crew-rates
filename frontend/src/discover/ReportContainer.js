@@ -12,7 +12,7 @@ export default function ReportContainer({ reports, unionStatus, genre }) {
                         key={report.uuid}
                         show_title={report.show_title}
                         season_number={report.season_number}
-                        company={report.companies && report.companies[0]}
+                        companies={report.companies}
                         network={report.network}
                         union_status={unionStatus[report.union_status]}
                         genre={genre[report.genre]}

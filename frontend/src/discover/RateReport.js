@@ -9,7 +9,7 @@ import "./rate-report.css";
 export default function RateReport({
     show_title,
     season_number,
-    company,
+    companies,
     network,
     union_status,
     genre,
@@ -68,7 +68,10 @@ export default function RateReport({
                         </div>
 
                         <div className={"third-row"}>
-                            <span className={"me-3"}>{company}</span>
+                            {companies.length > 0 &&
+                            <span className={companies.length === 1 && "me-3"}>{companies[0]}</span>}
+                            {companies.length > 1 &&
+                            <span className={"me-3"}>&nbsp;(+{companies.length - 1} more...)</span>}
                             <span>
                                 <Badge bg={"secondary"}>{network}</Badge>
                             </span>
