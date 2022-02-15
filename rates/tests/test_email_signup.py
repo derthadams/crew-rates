@@ -12,11 +12,10 @@ class TestEmailSignup(TestCase):
 
     def test_email_signup_invitation_flow(self):
         key = "s6fg9sd8f76asd9f78a6d9g76s9fd78g9adaf79sd8f7"
-        invite = self.invitation_model.objects.create(first_name="Will", last_name="Atlas",
+        self.invitation_model.objects.create(first_name="Will", last_name="Atlas",
                                                       preferred_name="Billy",
                                                       email="will.atlas@gmail.com",
                                                       key=key, sent=timezone.now())
-        invite.save()
         invitations = self.invitation_model.objects.all()
         self.assertEqual(len(invitations), 1)
         invite_url = reverse('invitations:accept-invite',
