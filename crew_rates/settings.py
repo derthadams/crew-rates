@@ -198,6 +198,7 @@ INVITATIONS_EMAIL_SUBJECT_PREFIX = '[Crew Rates]'
 INVITATIONS_INVITATION_MODEL = 'rates.RatesInvitation'
 INVITATIONS_ADMIN_ADD_FORM = 'rates.admin.RatesInvitationAdminAddForm'
 INVITATIONS_ADMIN_CHANGE_FORM = 'rates.admin.RatesInvitationAdminChangeForm'
+INVITATIONS_ALLOW_JSON_INVITES = True
 
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
