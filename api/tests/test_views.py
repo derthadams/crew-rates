@@ -274,7 +274,8 @@ class APIViewsTest(TestCase):
             "negotiated": True,
             "increased": True,
             "final_hourly": 72.7273,
-            "final_guarantee": 10
+            "final_guarantee": 10,
+            "final_daily": 800
         }
         response = self.client.post(self.add_rate_url, content_type="application/json",
                                     data=ajax_form_dict)
