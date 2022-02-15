@@ -15,7 +15,6 @@ from .sample_user import test_user
 from .config import fb
 
 
-@override_settings(SECURE_SSL_REDIRECT=True)
 class TestFacebookSignup(LiveServerTestCase):
 
     @classmethod
