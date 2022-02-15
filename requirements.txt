@@ -14,7 +14,6 @@ django-cors-headers==3.10.0
 django-grappelli==2.15.5
 django-invitations==1.9.3
 django-recaptcha==2.0.6
-django-secureliveservertestcase==0.2
 django-sslserver==0.22
 djangorestframework==3.13.1
 h11==0.13.0
