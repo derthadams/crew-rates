@@ -88,4 +88,4 @@ def user_signed_up(request, user, **kwargs):
         user.save()
 
     except invitation.DoesNotExist:
-        print("this was not an invited user")
+        print("this may not have been an invited user")

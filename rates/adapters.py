@@ -53,30 +53,30 @@ class DefaultSocialAccountAdapter(object):
         handlers may be active and are executed in undetermined order.
         """
 
-        if sociallogin:
-            print("Social login exists")
-
-            if sociallogin.user:
-                print("Social login user: ", sociallogin.user)
-
-                if sociallogin.user.email:
-                    print("Social login user email: ", sociallogin.user.email)
-
-                else:
-                    print("No email")
-
-                if sociallogin.user.id:
-                    print("Social login user id: ", sociallogin.user.id)
-                else:
-                    print("No id")
-            else:
-                print("No user")
-            if sociallogin.account.uid:
-                print("Social account uid: ", sociallogin.account.uid)
-            else:
-                print("No social account uid")
-        else:
-            print("No social login")
+        # if sociallogin:
+        #     print("Social login exists")
+        #
+        #     if sociallogin.user:
+        #         print("Social login user: ", sociallogin.user)
+        #
+        #         if sociallogin.user.email:
+        #             print("Social login user email: ", sociallogin.user.email)
+        #
+        #         else:
+        #             print("No email")
+        #
+        #         if sociallogin.user.id:
+        #             print("Social login user id: ", sociallogin.user.id)
+        #         else:
+        #             print("No id")
+        #     else:
+        #         print("No user")
+        #     if sociallogin.account.uid:
+        #         print("Social account uid: ", sociallogin.account.uid)
+        #     else:
+        #         print("No social account uid")
+        # else:
+        #     print("No social login")
 
         # if sociallogin.user.id:
         #     existing_uid = SocialAccount.objects.filter(

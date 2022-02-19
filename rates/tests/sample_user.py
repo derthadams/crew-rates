@@ -3,5 +3,6 @@ test_user = {
     "last_name": "Carrieroberg",
     "preferred_name": "Algdjfagehfgj",
     "email": "xxohmaedtu_1634702945@tfbnw.net",
-    "password": "maiden4702-pulsars"
+    "password": "maiden4702-pulsars",
+    "cr_password": "Margi4[overpowered"
 }
