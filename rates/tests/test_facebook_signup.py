@@ -1,6 +1,6 @@
 from django.apps import apps
 from django.contrib.sites.models import Site
-from django.test import LiveServerTestCase, override_settings
+from django.test import LiveServerTestCase
 from django.urls import reverse
 from django.utils import timezone
 
@@ -8,8 +8,8 @@ from allauth.socialaccount.models import SocialApp, SocialAccount, SocialToken
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.chrome.webdriver import WebDriver
+# from selenium.webdriver.common.keys import Keys
 
 from .sample_user import test_user
 from .config import fb
@@ -50,13 +50,13 @@ class TestFacebookSignup(LiveServerTestCase):
 
         invite_url = reverse('invitations:accept-invite',
                              kwargs={'key': key})
-        print(self.live_server_url)
+        # print(self.live_server_url)
         self.selenium.get('%s%s' % (self.live_server_url, invite_url))
-        print(self.selenium.title)
+        # print(self.selenium.title)
         self.assertEqual(self.selenium.title, "Signup")
 
         sign_up_with_fb = self.selenium.find_element_by_link_text("Sign up with Facebook")
-        print(f"Sign up with fb href: {sign_up_with_fb.get_attribute('href')}")
+        # print(f"Sign up with fb href: {sign_up_with_fb.get_attribute('href')}")
         sign_up_with_fb.click()
 
         self.assertIn("Log into Facebook", self.selenium.title)
