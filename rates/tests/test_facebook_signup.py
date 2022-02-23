@@ -7,12 +7,10 @@ from django.test import LiveServerTestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from allauth.socialaccount.models import SocialApp, SocialAccount, SocialToken
+from allauth.socialaccount.models import SocialApp
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-# from selenium.webdriver.chrome.webdriver import WebDriver
-# from selenium.webdriver.common.keys import Keys
 
 from .sample_user import test_user
 from .config import fb
@@ -42,10 +40,10 @@ class TestFacebookSignup(LiveServerTestCase):
         facebook.sites.add(self.site)
 
         key = "s6fg9sd8f76asd9f78a6d9g76s9fd78g9adaf79sd8f7"
-        self.invitation_model.objects.create(first_name=test_user["first_name"],
+        self.invitation_model.objects.create(first_name=test_user["first_name"], # noqa
                                              last_name=test_user["last_name"],
                                              preferred_name=test_user["preferred_name"],
-                                             email=test_user["preferred_name"],
+                                             email=test_user["email"],
                                              key=key, sent=timezone.now())
 
         invitations = self.invitation_model.objects.all()
