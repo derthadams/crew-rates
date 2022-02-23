@@ -1,4 +1,5 @@
 config.py
+sample_user.py
 .idea/
 venv/
 *.log
