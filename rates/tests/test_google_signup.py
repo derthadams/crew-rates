@@ -24,7 +24,7 @@ class TestGoogleSignup(LiveServerTestCase):
         super().setUpClass() # noqa
 
         chrome_options = Options()
-        # chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--headless")
         cls.selenium = webdriver.Chrome(chrome_options=chrome_options)
         cls.selenium.implicitly_wait(10)
         cls.invitation_model = apps.get_model('rates', 'RatesInvitation')
@@ -59,31 +59,37 @@ class TestGoogleSignup(LiveServerTestCase):
         sign_up_with_go.click()
 
         self.assertIn("Sign in - Google Accounts", self.selenium.title)
-        email = self.selenium.find_element_by_id("identifierId")
+        email = self.selenium.find_element_by_id("Email")
         email.send_keys(google_user["email"])
-        next_button = self.selenium.find_element_by_xpath(
-            "//span[contains(text(), 'Next')]/parent::button")
+        next_button = self.selenium.find_element_by_id("next")
         next_button.click()
 
-        self.assertIn("Welcome", self.selenium.page_source)
-        password = self.selenium.find_element_by_name("password")
+        self.assertIn("Enter your password", self.selenium.page_source)
+        password = self.selenium.find_element_by_id("password")
         password.send_keys(google_user['password'])
-        password_next = self.selenium.find_element_by_id("passwordNext")
-        password_next.click()
+        submit = self.selenium.find_element_by_id("submit")
+        submit.click()
 
-        go_oauth_redirect = self.selenium.current_url
-        self.selenium.get("http:" + go_oauth_redirect[6:])
+        self.assertIn("crewrates.org</a> wants to access your Google Account",
+                      self.selenium.page_source)
 
-        self.assertIn("Welcome", self.selenium.page_source)
-
-        # if "Welcome" in self.selenium.page_source:
-        #     password = self.selenium.find_element_by_name("password")
-        #     password.send_keys(google_user['password'])
-        #     password_next = self.selenium.find_element_by_id("passwordNext")
-        #     password_next.click()
+        # ---------------------------------------------------------------------------
+        # At this point, clicking Allow starts a loop where the same approval page is
+        # repeatedly reloaded after every click of the Allow button
+        # ---------------------------------------------------------------------------
+        
+        # allow = self.selenium.find_element_by_id("submit_approve_access")
+        # allow.click()
         #
-        #     if "Something went wrong" in self.selenium.page_source:
-        #         time.sleep(1)
-        #         next_button = self.selenium.find_element_by_xpath(
-        #             "//button[1]")
-        #         next_button.click()  # Leads to 400 error page
+        # allow = self.selenium.find_element_by_id("submit_approve_access")
+        # allow.click()
+
+        # go_oauth_redirect = self.selenium.current_url
+        # print(go_oauth_redirect)
+        #
+        # allow = self.selenium.find_element_by_id("submit_approve_access")
+        # allow.click()
+        #
+        # go_oauth_redirect = self.selenium.current_url
+        # print(go_oauth_redirect)
+
