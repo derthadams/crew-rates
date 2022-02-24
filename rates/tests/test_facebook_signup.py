@@ -12,7 +12,7 @@ from allauth.socialaccount.models import SocialApp
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from .sample_user import test_user
+from .sample_user import facebook_user
 from .config import fb
 
 
@@ -40,10 +40,10 @@ class TestFacebookSignup(LiveServerTestCase):
         facebook.sites.add(self.site)
 
         key = "s6fg9sd8f76asd9f78a6d9g76s9fd78g9adaf79sd8f7"
-        self.invitation_model.objects.create(first_name=test_user["first_name"], # noqa
-                                             last_name=test_user["last_name"],
-                                             preferred_name=test_user["preferred_name"],
-                                             email=test_user["email"],
+        self.invitation_model.objects.create(first_name=facebook_user["first_name"],  # noqa
+                                             last_name=facebook_user["last_name"],
+                                             preferred_name=facebook_user["preferred_name"],
+                                             email=facebook_user["email"],
                                              key=key, sent=timezone.now())
 
         invitations = self.invitation_model.objects.all()
@@ -59,10 +59,10 @@ class TestFacebookSignup(LiveServerTestCase):
 
         self.assertIn("Log into Facebook", self.selenium.title)
         email = self.selenium.find_element_by_id("email")
-        email.send_keys(test_user["email"])
+        email.send_keys(facebook_user["email"])
 
         password = self.selenium.find_element_by_id("pass")
-        password.send_keys(test_user["password"])
+        password.send_keys(facebook_user["password"])
 
         self.assertIn("Log Into Facebook", self.selenium.page_source)
 
@@ -101,9 +101,9 @@ class TestFacebookSignup(LiveServerTestCase):
 
         self.selenium.get('%s%s' % (self.live_server_url, '/accounts/password/set/')) # noqa
         password1 = self.selenium.find_element_by_id("id_password1")
-        password1.send_keys(test_user["cr_password"])
+        password1.send_keys(facebook_user["cr_password"])
         password2 = self.selenium.find_element_by_id("id_password2")
-        password2.send_keys(test_user["cr_password"])
+        password2.send_keys(facebook_user["cr_password"])
         set_password = self.selenium.find_element_by_xpath(
             "//button[contains(text(), 'Set password')]")
         set_password.click()
