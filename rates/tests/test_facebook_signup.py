@@ -21,7 +21,7 @@ class TestFacebookSignup(LiveServerTestCase):
     @classmethod
     def setUp(cls):
         cls.port = 8090
-        super().setUpClass()
+        super().setUpClass() # noqa
 
         chrome_options = Options()
         chrome_options.add_argument("--headless")
