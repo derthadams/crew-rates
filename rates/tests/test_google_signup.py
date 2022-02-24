@@ -1,8 +1,5 @@
-import time
-
 from django.apps import apps
 from django.contrib.sites.models import Site
-from django.core import mail
 from django.test import LiveServerTestCase
 from django.urls import reverse
 from django.utils import timezone
