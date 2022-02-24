@@ -99,12 +99,13 @@ class TestFacebookSignup(LiveServerTestCase):
         fb_oauth_redirect = self.selenium.current_url
         self.selenium.get("http:" + fb_oauth_redirect[6:])
 
-        self.selenium.get('%s%s' % (self.live_server_url, '/accounts/password/set/'))
+        self.selenium.get('%s%s' % (self.live_server_url, '/accounts/password/set/')) # noqa
         password1 = self.selenium.find_element_by_id("id_password1")
         password1.send_keys(test_user["cr_password"])
         password2 = self.selenium.find_element_by_id("id_password2")
         password2.send_keys(test_user["cr_password"])
-        set_password = self.selenium.find_element_by_xpath("//button[contains(text(), 'Set password')]")
+        set_password = self.selenium.find_element_by_xpath(
+            "//button[contains(text(), 'Set password')]")
         set_password.click()
 
         self.selenium.get('%s%s' % (self.live_server_url, '/accounts/social/connections/'))
