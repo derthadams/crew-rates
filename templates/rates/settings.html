@@ -1,0 +1,73 @@
+{% extends "rates/base_rates.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block styles %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'rates/css/account-form.css' %}">
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script defer src="{% static 'rates/js/settings.js' %}"></script>
+{% endblock %}
+
+{% block head_title %}{% trans "Settings" %}{% endblock %}
+
+{% block content %}
+    <div class="form-accounts mt-5">
+        <h2>{% trans "Settings" %}</h2>
+
+        {% include "account/message_list.html" %}
+
+        <div class="d-grid text-start mt-5">
+            <h4>Delete Your Account</h4>
+            <p>If you no longer want to use your Crew Rates account, you can permanently
+                delete it.</p>
+            <button class="btn btn-dark btn-block"
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">
+                Delete Your Account</button>
+        </div>
+
+        <form novalidate method="POST" action="{% url 'settings' %}" class="">
+            {% csrf_token %}
+            {% for error in form.non_field_errors %}
+                <small class="text-danger form-text">{{ error }}</small>
+            {% endfor %}
+
+            <div class="modal modal-fade" id="deleteModal" tabindex="-1"
+                 aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Confirmation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-start">
+                            <p>Account deletion is final. You will no longer have access to the site
+                                and your account information will be permanently deleted.</p>
+                            <div class="form-group">
+                                <label class="form-label" for="id_delete_field">
+                                    Type "DELETE" to confirm
+                                </label>
+                                <input class="form-control" type="text"
+                                       name="{{ form.delete_field.name }}"
+                                       required id="id_delete_field">
+                            </div>
+                        </div>
+                        <div class="modal-footer text-center">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button disabled type="submit" class="btn btn-danger"
+                                    id="delete-confirm">Delete Account</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+
+
+    </div>
+{% endblock %}
