@@ -67,14 +67,18 @@ def settings(request):
 
         if form.is_valid():
             if form.cleaned_data['delete_field'] == "DELETE":
-                user_to_delete = User.objects.get(username=request.user)
+                user_to_delete = User.objects.get(email=request.user)
                 if user_to_delete is not None:
-                    user_to_delete.delete()
+                    print(f"user {user_to_delete.pk} deleted")
+                    # user_to_delete.delete()
                     logout(request)
-                    messages.info(request, "Your account was successfully deleted.")
+                    messages.info(request, "We're sorry to see you go! "
+                                           "Your account has been deleted.")
+                    messages.info(request,
+                                  "If you ever want to rejoin, please request a new invitation.")
                     return redirect(reverse("account_login"))
                 else:
-                    messages.info(request, "There was an error in deleting your account.")
+                    messages.error(request, "There was an error in deleting your account.")
     else:
         form = DeleteUser()
     context = {'form': form}
