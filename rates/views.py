@@ -1,11 +1,14 @@
+from django.contrib import messages
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.views.generic.edit import FormView
 
-from .forms import ContactForm
-from .models import Season
+from .forms import ContactForm, DeleteUser
+from .models import Season, User
 
 
 @login_required
@@ -55,6 +58,27 @@ def add_rate(request, path=''):
         }
     }
     return HttpResponse(template.render(context, request))
+
+
+@login_required
+def settings(request):
+    if request.method == 'POST':
+        form = DeleteUser(request.POST)
+
+        if form.is_valid():
+            if form.cleaned_data['delete_field'] == "DELETE":
+                user_to_delete = User.objects.get(username=request.user)
+                if user_to_delete is not None:
+                    user_to_delete.delete()
+                    logout(request)
+                    messages.info(request, "Your account was successfully deleted.")
+                    return redirect(reverse("account_login"))
+                else:
+                    messages.info(request, "There was an error in deleting your account.")
+    else:
+        form = DeleteUser()
+    context = {'form': form}
+    return render(request, 'settings.html', context)
 
 
 class ContactFormView(FormView):
