@@ -238,3 +238,10 @@ class LoginForm(Form):
         else:
             request.session.set_expiry(0)
         return ret
+
+
+class DeleteUser(Form):
+    delete_field = CharField()
+
+    def __init__(self, *args, **kwargs):
+        super(DeleteUser, self).__init__(*args, **kwargs)
