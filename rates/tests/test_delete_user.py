@@ -1,6 +1,9 @@
+from django.contrib.sites.models import Site
 from django.test import TestCase
 from django.urls import reverse
 from django.apps import apps
+
+from allauth.socialaccount.models import SocialApp, SocialAccount, SocialToken
 
 from .sample_data import valid_json
 
@@ -21,11 +24,26 @@ class DeleteUserTest(TestCase):
         self.location = apps.get_model('rates', 'Location')
 
     def test_delete_user(self):
-        self.user_model.objects.create_user(email='will@gmail.com',
+        user = self.user_model.objects.create_user(email='will@gmail.com',
                                             first_name='William',
                                             last_name="Atlas",
                                             preferred_name="Will",
                                             password="super-secret")
+        user_pk = user.pk
+
+        facebook = SocialApp.objects.create(provider='facebook', name='Facebook', # noqa
+                                            client_id='764542658215942',
+                                            secret='1fe92ff9f8417ab754d86474accf111e')
+        site = Site.objects.all()[0]
+        facebook.sites.add(site)
+
+        facebook_account = SocialAccount.objects.create(provider='facebook', user_id=user.pk)
+        facebook_account_pk = facebook_account.pk
+
+        SocialToken.objects.create(account_id=facebook_account.pk,
+                                   app_id=facebook.pk, token='heresmyrandomtoken',
+                                   token_secret='heresmyrandomsecret')
+
         self.client.login(email="will@gmail.com", password="super-secret")
         self.job_title.objects.create(uuid="5c09a673-d0c7-481f-8500-36c581bd7b4e",
                                       title="Camera Operator")
@@ -55,3 +73,7 @@ class DeleteUserTest(TestCase):
 
         self.assertRaises(self.user_model.DoesNotExist, self.user_model.objects.get,
                           email="will@gmail.com")
+
+        self.assertRaises(SocialAccount.DoesNotExist, SocialAccount.objects.get, user_id=user_pk)
+        self.assertRaises(SocialToken.DoesNotExist, SocialToken.objects.get,
+                          account_id=facebook_account_pk)
