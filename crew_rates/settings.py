@@ -261,7 +261,7 @@ STATIC_URL = '/static/'
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'frontend/static'),
+    os.path.join(BASE_DIR, 'frontend', 'static'),
     # os.path.join(BASE_DIR, 'rates/static'),
 ]
 
