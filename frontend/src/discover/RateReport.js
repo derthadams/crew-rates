@@ -69,7 +69,7 @@ export default function RateReport({
 
                         <div className={"third-row"}>
                             {companies.length > 0 &&
-                            <span className={companies.length === 1 && "me-3"}>{companies[0].name}</span>}
+                            <span className={`${companies.length === 1 ? "me-3" : ""}`}>{companies[0].name}</span>}
                             {companies.length > 1 &&
                             <span className={"me-3"}>&nbsp;(+{companies.length - 1} more...)</span>}
                             <span>
