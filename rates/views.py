@@ -1,3 +1,5 @@
+from allauth.socialaccount.models import SocialAccount, SocialToken
+
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -9,6 +11,7 @@ from django.views.generic.edit import FormView
 
 from .forms import ContactForm, DeleteUser
 from .models import Season, User
+from .signals import social_account_removed
 
 
 @login_required
@@ -58,19 +61,28 @@ def settings(request):
     if request.method == 'POST':
         form = DeleteUser(request.POST)
 
-        if form.is_valid():
-            if form.cleaned_data['delete_field'] == "DELETE":
-                user_to_delete = User.objects.get(email=request.user)
-                if user_to_delete is not None:
-                    user_to_delete.delete()
-                    logout(request)
-                    messages.info(request, "We're sorry to see you go! "
-                                           "Your account has been deleted.")
-                    messages.info(request,
-                                  "If you ever want to rejoin, please request a new invitation.")
-                    return redirect(reverse("account_login"))
-                else:
-                    messages.error(request, "There was an error in deleting your account.")
+        if form.is_valid() and form.cleaned_data['delete_field'] == "DELETE":
+            user_to_delete = User.objects.get(email=request.user)
+            if user_to_delete is not None:
+                social_accounts = SocialAccount.objects.filter(user_id=user_to_delete.pk)
+                if social_accounts:
+                    for account in social_accounts:
+                        social_token = SocialToken.objects.filter(account_id=account.pk)
+                        if social_token:
+                            social_account_removed.send(
+                                sender=SocialAccount, request=request, socialaccount=account,
+                                socialtoken=social_token[0]
+                            )
+                user_to_delete.delete()
+                logout(request)
+                messages.info(request, "We're sorry to see you go! "
+                                       "Your account has been deleted.")
+                messages.info(request,
+                              "If you want to return, you're always welcome to "
+                              "request a new invitation.")
+                return redirect(reverse("account_login"))
+            else:
+                messages.error(request, "There was an error in deleting your account.")
     else:
         form = DeleteUser()
     context = {'form': form}
