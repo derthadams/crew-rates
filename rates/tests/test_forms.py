@@ -20,7 +20,7 @@ class TestRatesForms(TestCase):
                                                    password='all3my7secrets')
         email = EmailAddress.objects.create(email='john@google.com', verified=True, primary=True,
                                             user_id=user.pk)
-        facebook = SocialApp.objects.create(provider='facebook', name='Facebook',
+        facebook = SocialApp.objects.create(provider='facebook', name='Facebook', # noqa
                                             client_id='764542658215942',
                                             secret='1fe92ff9f8417ab754d86474accf111e')
         google = SocialApp.objects.create(provider='google', name='Google',
