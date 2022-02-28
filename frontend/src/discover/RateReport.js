@@ -73,7 +73,8 @@ export default function RateReport({
                             {companies.length > 1 &&
                             <span className={"me-3"}>&nbsp;(+{companies.length - 1} more...)</span>}
                             <span>
-                                <Badge bg={"secondary"}>{network}</Badge>
+                                {/*<Badge bg={"secondary"}>{network}</Badge>*/}
+                                {network}
                             </span>
                         </div>
                     </Card.Body>
