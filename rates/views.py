@@ -62,8 +62,7 @@ def settings(request):
             if form.cleaned_data['delete_field'] == "DELETE":
                 user_to_delete = User.objects.get(email=request.user)
                 if user_to_delete is not None:
-                    print(f"user {user_to_delete.pk} deleted")
-                    # user_to_delete.delete()
+                    user_to_delete.delete()
                     logout(request)
                     messages.info(request, "We're sorry to see you go! "
                                            "Your account has been deleted.")
