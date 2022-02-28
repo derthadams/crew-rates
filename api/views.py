@@ -1,9 +1,11 @@
+import json
 import requests
+from uuid import UUID
 
 from django.apps import apps
-from django.contrib.postgres.aggregates import ArrayAgg
+from django.contrib.postgres.aggregates import JSONBAgg
 from django.db.models import F, DecimalField
-from django.db.models.functions import Cast
+from django.db.models.functions import Cast, JSONObject
 from django.conf import settings
 from django.contrib.postgres.search import TrigramSimilarity
 
@@ -177,12 +179,17 @@ class RateReportList(APIView):
                 max_digits=7)),
             union_status=F('union'),
             show_title=F('season__title'),
+            show_uuid=F('season__show__uuid'),
             season_number=F('season__number'),
             genre=F('season__genre'),
             job_title_name=F('job_title__title'),
+            job_title_uuid=F('job_title__uuid'),
             network=F('season__network__name'),
-            companies=ArrayAgg('season__companies__name')
+            network_uuid=F('season__network__uuid'),
+            companies=JSONBAgg(JSONObject(name='season__companies__name',
+                                          uuid='season__companies__uuid'))
         ).order_by('-season__start_date')
+        # companies=ArrayAgg('season__companies__name')
 
         serializer = RateReportSerializer(results, many=True)
         # if serializer.is_valid():

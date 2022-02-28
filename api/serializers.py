@@ -29,7 +29,7 @@ class RateReportSerializer(serializers.Serializer): # noqa
     season__start_date = serializers.DateField()
     season__end_date = serializers.DateField()
     companies = serializers.ListField(
-        child=serializers.CharField()
+        child=serializers.JSONField()
     )
 
 class JobTitleSerializer(serializers.Serializer): # noqa
