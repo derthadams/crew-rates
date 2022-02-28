@@ -1,0 +1,44 @@
+"""
+Production Django settings for crew_rates project.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/3.2/topics/settings/
+
+For the full list of settings and their values, see
+https://docs.djangoproject.com/en/3.2/ref/settings/
+"""
+
+from .base import *
+
+DEBUG = False
+
+ALLOWED_HOSTS = ['.crewrates.org']
+
+INSTALLED_APPS = [
+    'rates.apps.RatesConfig',
+    'api.apps.ApiConfig',
+    'grappelli',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.flatpages',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
+    'invitations',
+    'rest_framework',
+    'captcha',
+]
+
+SITE_ID = 4
+
+STATIC_HOST = get_env_variable('RATES_STATIC_HOST')
+STATIC_URL = os.path.join(STATIC_HOST, 'static/')
+

@@ -1,0 +1,41 @@
+"""
+Local Django settings for crew_rates project.
+
+For more information on this file, see
+https://docs.djangoproject.com/en/3.2/topics/settings/
+
+For the full list of settings and their values, see
+https://docs.djangoproject.com/en/3.2/ref/settings/
+"""
+
+from .base import * # noqa
+
+DEBUG = True
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+INSTALLED_APPS = [
+    'rates.apps.RatesConfig',
+    'api.apps.ApiConfig',
+    'grappelli',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.flatpages',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
+    'invitations',
+    'sslserver',
+    'rest_framework',
+    'captcha',
+]
+
+SITE_ID = 1
