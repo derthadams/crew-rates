@@ -58,7 +58,7 @@ export default function RateReport({
                             <span className={"first-row"}>{show_title}</span>
                         </div>
 
-                        <div>
+                        <div className={""}>
                             <span className={"me-3"}>Season {season_number}</span>
                             <span className={"me-3"}>{convertDate(start_date, "numeric")}</span>
                             <span className={"me-3"}>{genre}</span>
@@ -73,8 +73,8 @@ export default function RateReport({
                             {companies.length > 1 &&
                             <span className={"me-3"}>&nbsp;(+{companies.length - 1} more...)</span>}
                             <span>
-                                {/*<Badge bg={"secondary"}>{network}</Badge>*/}
-                                {network}
+                                <Badge bg={"secondary"}>{network}</Badge>
+                                {/*{network}*/}
                             </span>
                         </div>
                     </Card.Body>
