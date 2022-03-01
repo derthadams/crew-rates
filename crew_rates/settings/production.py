@@ -12,7 +12,7 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['.crewrates.org']
+ALLOWED_HOSTS = ['crew-rates-env.us-west-1.elasticbeanstalk.com', '.crewrates.org']
 
 INSTALLED_APPS = [
     'rates.apps.RatesConfig',
@@ -42,3 +42,13 @@ SITE_ID = 4
 STATIC_HOST = get_env_variable('RATES_STATIC_HOST')
 STATIC_URL = os.path.join(STATIC_HOST, 'static/')
 
+DATABASES = {
+    'default': {
+        'ENGINE': get_env_variable('RATES_PROD_DATABASE_ENGINE'),
+        'NAME': get_env_variable('RATES_PROD_DATABASE_NAME'),
+        'USER': get_env_variable('RATES_PROD_DATABASE_USER'),
+        'PASSWORD': get_env_variable('RATES_PROD_DATABASE_PASSWORD'),
+        'HOST': get_env_variable('RATES_PROD_DATABASE_HOST'),
+        'PORT': get_env_variable('RATES_PROD_DATABASE_PORT')
+    }
+}
