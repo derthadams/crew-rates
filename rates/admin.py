@@ -323,7 +323,6 @@ class JobTitleAdmin(admin.ModelAdmin):
         'uuid',
     ]
     readonly_fields = [
-        'title',
         'uuid'
     ]
 
