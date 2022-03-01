@@ -39,8 +39,8 @@ INSTALLED_APPS = [
 
 SITE_ID = 2
 
-STATIC_HOST = get_env_variable('RATES_STATIC_HOST')
-STATIC_URL = os.path.join(STATIC_HOST, 'static/')
+# STATIC_HOST = get_env_variable('RATES_STATIC_HOST')
+# STATIC_URL = os.path.join(STATIC_HOST, 'static/')
 
 DATABASES = {
     'default': {
