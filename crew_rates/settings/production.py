@@ -12,7 +12,7 @@ from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['crew-rates-env.us-west-1.elasticbeanstalk.com', '.crewrates.org']
+ALLOWED_HOSTS = ['.crewrates.org']
 
 EC2_PRIVATE_IP = None
 try:
