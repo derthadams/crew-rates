@@ -65,17 +65,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'crew_rates.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': get_env_variable('RATES_DATABASE_ENGINE'),
-        'NAME': get_env_variable('RATES_DATABASE_NAME'),
-        'USER': get_env_variable('RATES_DATABASE_USER'),
-        'PASSWORD': get_env_variable('RATES_DATABASE_PASSWORD'),
-        'HOST': get_env_variable('RATES_DATABASE_HOST'),
-        'PORT': get_env_variable('RATES_DATABASE_PORT')
-    }
-}
-
 # Custom auth user model - subclasses AbstractUser
 AUTH_USER_MODEL = 'rates.User'
 
