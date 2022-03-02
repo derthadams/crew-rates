@@ -28,7 +28,7 @@ def discover(request):
 
 
 @login_required
-def add_rate(request):
+def add_rate(request, path=""):
     template = loader.get_template('rates/add-rate.html')
     context = {
         'genreOptions': [
