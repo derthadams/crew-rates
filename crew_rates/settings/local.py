@@ -40,13 +40,24 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': get_env_variable('RATES_PROD_DATABASE_ENGINE'),
+#         'NAME': get_env_variable('RATES_PROD_DATABASE_NAME'),
+#         'USER': get_env_variable('RATES_PROD_DATABASE_USER'),
+#         'PASSWORD': get_env_variable('RATES_PROD_DATABASE_PASSWORD'),
+#         'HOST': get_env_variable('RATES_PROD_DATABASE_HOST'),
+#         'PORT': get_env_variable('RATES_PROD_DATABASE_PORT')
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': get_env_variable('RATES_PROD_DATABASE_ENGINE'),
-        'NAME': get_env_variable('RATES_PROD_DATABASE_NAME'),
-        'USER': get_env_variable('RATES_PROD_DATABASE_USER'),
-        'PASSWORD': get_env_variable('RATES_PROD_DATABASE_PASSWORD'),
-        'HOST': get_env_variable('RATES_PROD_DATABASE_HOST'),
-        'PORT': get_env_variable('RATES_PROD_DATABASE_PORT')
+        'ENGINE': get_env_variable('RATES_DATABASE_ENGINE'),
+        'NAME': get_env_variable('RATES_DATABASE_NAME'),
+        'USER': get_env_variable('RATES_DATABASE_USER'),
+        'PASSWORD': get_env_variable('RATES_DATABASE_PASSWORD'),
+        'HOST': get_env_variable('RATES_DATABASE_HOST'),
+        'PORT': get_env_variable('RATES_DATABASE_PORT')
     }
 }
