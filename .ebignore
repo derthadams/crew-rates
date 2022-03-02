@@ -1,0 +1,22 @@
+config.py
+sample_user.py
+.idea/
+venv/
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+db.sqlite3-journal
+media
+/static
+/api/api_config.py
+.coverage
+coverage/
+htmlcov/
+node_modules/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
