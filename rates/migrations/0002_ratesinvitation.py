@@ -7,15 +7,11 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('invitations', '0003_auto_20151126_1523'),
         ('rates', '0001_initial'),
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='invitations.invitation',
-            name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
-        ),
         migrations.CreateModel(
             name='RatesInvitation',
             fields=[
