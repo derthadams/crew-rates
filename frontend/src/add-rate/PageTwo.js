@@ -174,12 +174,12 @@ function PageTwo() {
                     <RateWidget name="offered" />
 
                     <Row className="mb-2">
-                        <Col xs={9}>
+                        <Col xs={8} sm={9}>
                             <Form.Label className="required-label">
                                 Did you try to negotiate a higher rate?
                             </Form.Label>
                         </Col>
-                        <Col xs={3}>
+                        <Col xs={4} sm={3}>
                             <Controller
                                 name="negotiated"
                                 control={methods.control}
@@ -227,12 +227,12 @@ function PageTwo() {
 
                     {negotiated || methods.getValues("negotiated") ? (
                         <Row className="mb-2">
-                            <Col xs={9}>
+                            <Col xs={8} sm={9}>
                                 <Form.Label className="required-label">
                                     Did you get a higher rate?
                                 </Form.Label>
                             </Col>
-                            <Col xs={3}>
+                            <Col xs={4} sm={3}>
                                 <Controller
                                     name="increased"
                                     control={methods.control}
@@ -296,7 +296,7 @@ function PageTwo() {
                     )}
 
                     <Row className="mt-3">
-                        <Col xs={3}>
+                        <Col xs={4} sm={3}>
                             <Row className="mx-0">
                                 <Button
                                     size="sm"
@@ -314,8 +314,8 @@ function PageTwo() {
                                 </Button>
                             </Row>
                         </Col>
-                        <Col xs={6}></Col>
-                        <Col xs={3}>
+                        <Col xs={4} sm={6}></Col>
+                        <Col xs={4} sm={3}>
                             <Row className="mx-0">
                                 <Button
                                     type="submit"

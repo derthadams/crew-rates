@@ -99,7 +99,7 @@ function PageOne() {
             <AddRateHeading subheading={"Show information"} now={33} label={"Step 1 of 3"}/>
             <Form noValidate onSubmit={handleSubmit(onSubmit)} aria-label="add-rate-1">
             <Row className="mt-4">
-                <Col xs={9}>
+                <Col xs={8} sm={9}>
                     <Form.Group className="mb-3" controlId="showTitle">
                         <Form.Label className="required-label"
                                     id="show-label">
@@ -132,7 +132,7 @@ function PageOne() {
                         />
                     </Form.Group>
                 </Col>
-                <Col xs={3}>
+                <Col xs={4} sm={3}>
                     <Form.Group className="mb-3" controlId="seasonNum">
                         <Form.Label className="required-label">Season</Form.Label>
                         <Controller
@@ -362,9 +362,9 @@ function PageOne() {
                 {/*selectValue is always a list, even if the select element is not multiple*/}
 
             <Row className="mt-3">
-                <Col xs={9}>
+                <Col xs={8} sm={9}>
                 </Col>
-                <Col xs={3}>
+                <Col xs={4} sm={3}>
                     <Row className="mx-0">
                         <Button type="submit" size="sm">Next</Button>
                     </Row>
