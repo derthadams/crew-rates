@@ -4,31 +4,23 @@ a.no-underline:focus {
     text-decoration: none;
 }
 
-/*body {*/
-/*    padding-top: 65px;*/
-/*}*/
+.nav-link {
+    color: rgba(0, 0, 0, .55)!important;
+}
 
-/*#content-background {*/
-/*    background-color: #e8e8e8;*/
-/*}*/
+.nav-link:focus {
+    color: rgba(0, 0, 0, .7)!important;
+}
 
-/*#content-inner {*/
-/*    width: 680px;*/
-/*    background-color: white;*/
-/*}*/
+.nav-link:hover {
+    color: rgba(0, 0, 0, .7)!important;
+}
 
-/*@media (max-width: 768px) {*/
-/*    #content-inner {*/
-/*        width: 100%;*/
-/*    }*/
-/*}*/
+.nav-link.disabled {
+    color: rgba(0, 0, 0, .3)!important;
+}
 
-/*.inline {*/
-/*  display: inline;*/
-/*}*/
-
-/*.link-button {*/
-/*  background: none;*/
-/*  border: none;*/
-/*  text-decoration: underline;*/
-/*}*/
+.show > .nav-link,
+.nav-link.active {
+    color: rgba(0, 0, 0, 1)!important;
+}

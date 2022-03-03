@@ -15,84 +15,60 @@
 
 {% block header %}
     <header>
-        <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-        <div class="container-fluid">
-            <span class="navbar-brand ms-2">
-              <a class="no-underline" href="/">
-              <img src="{% static 'rates/img/cr_square_logo.svg' %}"
-                 width='40'
-                 height='40'
-                 class="d-inline-block align-top"
-                 alt="">
-              </a>
-              <a href="/" class="no-underline">
-              <img src="{% static 'rates/img/cr_text_logo.svg' %}"
-                height="25"
-                class="d-inline-block align-center ms-2"
-                alt="crewrates">
-              </a>
-            </span>
+        <nav class="navbar fixed-top navbar-light bg-light ps-3">
+        <span class="navbar-brand">
+          <a class="no-underline" href="/">
+          <img src="{% static 'rates/img/cr_square_logo.svg' %}"
+               width='40'
+               height='40'
+               class="d-inline-block align-top"
+               alt="">
+          </a>
+          <a href="/" class="no-underline d-none d-sm-inline px-sm-3">
+            <img src="{% static 'rates/img/cr_text_logo.svg' %}"
+                 height="25"
+                 class="d-inline-block align-middle"
+                 alt="crewrates">
+          </a>
+        </span>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav" aria-controls="navbarNav"
-                    aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
+            {% url 'discover' as url %}
+            <a class="nav-link {% if request.path == url %} active {% endif %}" href="/">Discover</a>
+            {% url 'add-rate' as url %}
+            <a class="nav-link {% if request.path == url %} active {% endif %}" href="/add-rate">Add a rate</a>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-                {% url 'discover' as url %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.path == url %} active {% endif %}"
-                       href="/">Discover</a>
-                </li>
-                {% url 'add-rate' as url %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.path == url %} active {% endif %}"
-                       href="/add-rate">Add a rate</a>
-                </li>
-{#                <li class="nav-item">#}
-{#                    <a class="nav-link" href="#">Contribute</a>#}
-{#                </li>#}
-            </ul>
-            <ul class="navbar-nav">
-                {% url 'account_email' as email %}
-                {% url 'account_change_password' as passwd %}
-                {% url 'account_set_password' as paset %}
-                {% url 'socialaccount_connections' as social %}
-                {% url 'settings' as settings %}
-                <li class="nav-item dropdown">
-                  <a class="nav-link
-                    {%if request.path == email or request.path == passwd or request.path == paset or request.path == social or request.path == settings%}
-                    active {% endif %}" href="#" id="navbarDropdownMenuLink"
-                    role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Account
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-end"
-                       aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="/accounts/email">Email</a>
-                    <a class="dropdown-item" href="/accounts/password/change">Password</a>
-                    <a class="dropdown-item" href="/accounts/social/connections">Social accounts</a>
-                    <a class="dropdown-item" href="/settings">Settings</a>
-                    <div class="dropdown-divider"></div>
-                    <form method="post" action="{% url 'account_logout' %}" class="dropdown-item px-3">
-                      {% csrf_token %}
-                      {% if redirect_field_value %}
-                        <input type="hidden"
-                               name="{{ redirect_field_name }}"
-                               value="{{ redirect_field_value }}">
-                      {% endif %}
-                      <button type="submit"
-                              name="{{ redirect_field_name }}"
-                              value="{{ redirect_field_value }}"
-                              class="btn ps-0 pe-0 my-n1 btn-block text-left">Sign out
-                      </button>
-                    </form>
-                  </div>
-                </li>
-            </ul>
-        </div>
-        </div>
+            {% url 'account_email' as email %}
+            {% url 'account_change_password' as passwd %}
+            {% url 'account_set_password' as paset %}
+            {% url 'socialaccount_connections' as social %}
+            {% url 'settings' as settings %}
+
+            <div class="nav-item dropdown ms-auto">
+                <a class="nav-link pe-3
+          {%if request.path == email or request.path == passwd or request.path == paset or request.path == social or request.path == settings%}
+          active {% endif %}" data-bs-toggle="dropdown" href="#" role="button"
+                   aria-expanded="false">Account</a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="/accounts/email">Email</a></li>
+                    <li><a class="dropdown-item" href="/accounts/password/change">Password</a></li>
+                    <li><a class="dropdown-item" href="/accounts/social/connections">Social accounts</a></li>
+                    <li><a class="dropdown-item" href="/settings">Settings</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><form method="post" action="{% url 'account_logout' %}" class="dropdown-item px-3">
+                        {% csrf_token %}
+                        {% if redirect_field_value %}
+                            <input type="hidden"
+                                   name="{{ redirect_field_name }}"
+                                   value="{{ redirect_field_value }}">
+                        {% endif %}
+                        <button type="submit"
+                                name="{{ redirect_field_name }}"
+                                value="{{ redirect_field_value }}"
+                                class="btn ps-0 pe-0 my-n1 btn-block text-left">Sign out
+                        </button>
+                    </form></li>
+                </ul>
+            </div>
         </nav>
     </header>
 {% endblock %}
