@@ -14,6 +14,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['.crewrates.org']
 
+# Get current EC2 instance private IP address and add to allowed hosts
+# so that Elastic Beanstalk health checks get a response from Django
 EC2_PRIVATE_IP = None
 try:
     security_token = requests.put(
