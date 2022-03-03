@@ -17,24 +17,22 @@
 
 {% block header %}
     <header>
-        <nav class="navbar navbar-expand-lg fixed-top navbar-light bg-light">
-            <div class="container-fluid">
-                <span class="navbar-brand ms-2">
-                    <a class="no-underline" href="/">
-                        <img src="{% static 'rates/img/cr_square_logo.svg' %}"
-                           width='40'
-                           height='40'
-                           class="d-inline-block align-top"
-                           alt="">
-                    </a>
-                    <a href="/" class="no-underline">
-                        <img src="{% static 'rates/img/cr_text_logo.svg' %}"
-                           height="25"
-                           class="d-inline-block align-center ms-2"
-                           alt="crewrates">
-                    </a>
-                </span>
-            </div>
+        <nav class="navbar fixed-top navbar-light bg-light ps-3">
+            <span class="navbar-brand">
+                <a class="no-underline" href="/">
+                <img src="{% static 'rates/img/cr_square_logo.svg' %}"
+                   width='40'
+                   height='40'
+                   class="d-inline-block align-top"
+                   alt="">
+                </a>
+                <a href="/" class="no-underline d-none d-sm-inline px-sm-3">
+                <img src="{% static 'rates/img/cr_text_logo.svg' %}"
+                     height="25"
+                     class="d-inline-block align-middle"
+                     alt="crewrates">
+                </a>
+            </span>
         </nav>
     </header>
 {% endblock %}
