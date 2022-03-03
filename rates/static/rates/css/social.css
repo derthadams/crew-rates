@@ -19,7 +19,7 @@
     border: 1px solid red;
 }
 
-hr {
+hr.or {
     overflow: visible;
     text-align: center;
     margin: auto;
