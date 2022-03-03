@@ -187,6 +187,7 @@ function PageOne() {
                                          fieldState: { invalid }}) =>
                                 <Form.Control
                                     {...field}
+                                    className={"date-picker"}
                                     type="date"
                                     isInvalid={invalid}
                                 />}
@@ -219,6 +220,7 @@ function PageOne() {
                                          fieldState: { invalid }}) =>
                                 <Form.Control
                                     {...field}
+                                    className={"date-picker"}
                                     type="date"
                                     isInvalid={invalid}
                                 />}

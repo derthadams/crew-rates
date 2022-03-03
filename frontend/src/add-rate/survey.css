@@ -43,3 +43,11 @@ input::-webkit-inner-spin-button {
 .btn-group-justified .btn-group .dropdown-menu {
     left: auto;
 }
+
+.date-picker {
+    -webkit-appearance: none;
+}
+
+::-webkit-date-and-time-value {
+    text-align: left;
+}
