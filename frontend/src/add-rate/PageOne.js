@@ -29,7 +29,8 @@ function PageOne() {
     const { actions, state } = useStateMachine({ updateLocationDetails, updateFormData });
     const { control, handleSubmit, formState: { errors }, getValues } = useForm(
         {
-            defaultValues: state.formData
+            defaultValues: state.formData,
+            shouldFocusError: false,
         }
     );
     let navigate = useNavigate();
@@ -190,6 +191,15 @@ function PageOne() {
                                     className={"date-picker"}
                                     type="date"
                                     isInvalid={invalid}
+                                    onChange={(event) => {
+                                        setTimeout(() => {
+                                            event.nativeEvent.target.defaultValue="";
+                                        }, 100)
+                                        field.onChange(event.target.value);
+                                    }}
+                                    onFocus={(event) => {
+                                        event.nativeEvent.target.defaultValue="";
+                                    }}
                                 />}
                         />
                         <ErrorMessage
@@ -223,6 +233,15 @@ function PageOne() {
                                     className={"date-picker"}
                                     type="date"
                                     isInvalid={invalid}
+                                    onChange={(event) => {
+                                        setTimeout(() => {
+                                            event.nativeEvent.target.defaultValue="";
+                                        }, 100)
+                                        field.onChange(event.target.value);
+                                    }}
+                                    onFocus={(event) => {
+                                        event.nativeEvent.target.defaultValue="";
+                                    }}
                                 />}
                         />
                         <ErrorMessage
