@@ -9,6 +9,10 @@ import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 
 import { useStateMachine } from "little-state-machine";
+import { clearFormData } from "./UpdateFunctions";
+
+import {useForm} from "react-hook-form";
+
 import Button from "react-bootstrap/Button";
 
 import {NIL as uuid_NIL} from "uuid";
@@ -17,11 +21,13 @@ import axios from 'axios';
 import Cookies from 'cookies-js';
 import AddRateHeading from "./AddRateHeading";
 import convertDate from "../common/convertDate"
+import {dataDefault} from "./dataDefault";
 
 function PageThree() {
     const locationState = useLocation();
     const [submitted, setSubmitted] = useState(false);
-    const {state} = useStateMachine();
+    const {actions, state} = useStateMachine({ clearFormData });
+    const {reset} = useForm();
     let navigate = useNavigate();
     if( !locationState.state?.fromForm) {
         return <Navigate to="/" replace state={{fromForm: true}}/>
@@ -201,13 +207,26 @@ function PageThree() {
                 </tbody>
             </Table>
             <Row className="mt-3">
-                <Col xs={4} sm={6}>
-                </Col>
                 <Col xs={4} sm={3}>
                     <Row className="mx-1">
                         <Button
-                            size="sm"
-                            onClick={()=>{navigate(`/`, {state: {fromForm: true}});}}>Edit</Button>
+                                size="sm"
+                                onClick={()=>{navigate(`/`, {state: {fromForm: true}});}}>Edit</Button>
+                    </Row>
+                </Col>
+                <Col xs={4} sm={3}>
+                    <Row className={"mx-0"}>
+                        <Button
+                                variant={"outline-danger"}
+                                size={"sm"}
+                                onClick={() => {
+                                    actions.clearFormData({})
+                                    reset(dataDefault.formData);
+                                    navigate(`/`, {state: {fromForm: true}});
+                                }}
+                        >
+                            Cancel
+                        </Button>
                     </Row>
                 </Col>
                 <Col xs={4} sm={3}>

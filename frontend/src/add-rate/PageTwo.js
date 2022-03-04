@@ -20,13 +20,14 @@ import ToggleButton from "react-bootstrap/ToggleButton";
 
 import "./survey.css";
 import AsyncAPISelect from "./AsyncAPISelect";
-import { updateFormData } from "./UpdateFunctions";
+import { updateFormData, clearFormData } from "./UpdateFunctions";
 import RateWidget from "./RateWidget";
 import AddRateHeading from "./AddRateHeading";
+import {dataDefault} from "./dataDefault";
 
 function PageTwo() {
     const locationState = useLocation();
-    const { actions, state } = useStateMachine({ updateFormData });
+    const { actions, state } = useStateMachine({ updateFormData, clearFormData });
     const methods = useForm({
         defaultValues: state.formData,
     });
@@ -294,7 +295,7 @@ function PageTwo() {
                         <div></div>
                     )}
 
-                    <Row className="mt-3">
+                    <Row className="mt-3 justify-content-between">
                         <Col xs={4} sm={3}>
                             <Row className="mx-0">
                                 <Button
@@ -313,7 +314,20 @@ function PageTwo() {
                                 </Button>
                             </Row>
                         </Col>
-                        <Col xs={4} sm={6}></Col>
+                        <Col xs={4} sm={3}>
+                            <Row className={"mx-0"}>
+                                <Button
+                                        variant={"outline-danger"}
+                                        size={"sm"}
+                                        onClick={() => {
+                                            actions.clearFormData({})
+                                            methods.reset(dataDefault.formData);
+                                        }}
+                                >
+                                    Clear
+                                </Button>
+                            </Row>
+                        </Col>
                         <Col xs={4} sm={3}>
                             <Row className="mx-0">
                                 <Button

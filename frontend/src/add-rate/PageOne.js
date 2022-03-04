@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useNavigate } from "react-router-dom";
 
@@ -22,11 +22,13 @@ import "./survey.css"
 import AsyncAPISelect from "./AsyncAPISelect";
 import AddRateHeading from "./AddRateHeading";
 import customStyles from "./CustomSelectStyles";
-import { updateLocationDetails, updateFormData } from "./UpdateFunctions";
+import { updateLocationDetails, updateFormData, clearFormData} from "./UpdateFunctions";
+import {dataDefault} from "./dataDefault";
 
 function PageOne() {
-    const { actions, state } = useStateMachine({ updateLocationDetails, updateFormData });
-    const { control, handleSubmit, formState: { errors }, getValues } = useForm(
+    const { actions, state } = useStateMachine(
+            { updateLocationDetails, updateFormData, clearFormData });
+    const { control, handleSubmit, formState: { errors }, getValues, reset } = useForm(
         {
             defaultValues: state.formData,
             shouldFocusError: false,
@@ -382,7 +384,21 @@ function PageOne() {
                 {/*selectValue is always a list, even if the select element is not multiple*/}
 
             <Row className="mt-3">
-                <Col xs={8} sm={9}>
+                <Col xs={4} sm={6}>
+                </Col>
+                <Col xs={4} sm={3}>
+                    <Row className={"mx-0"}>
+                        <Button
+                            variant={"outline-danger"}
+                            size={"sm"}
+                            onClick={() => {
+                                actions.clearFormData({})
+                                reset(dataDefault.formData);
+                            }}
+                        >
+                            Clear
+                        </Button>
+                    </Row>
                 </Col>
                 <Col xs={4} sm={3}>
                     <Row className="mx-0">
