@@ -208,7 +208,7 @@ function PageThree() {
             </Table>
             <Row className="mt-3">
                 <Col xs={4} sm={3}>
-                    <Row className="mx-1">
+                    <Row className="mx-0">
                         <Button
                                 size="sm"
                                 onClick={()=>{navigate(`/`, {state: {fromForm: true}});}}>Edit</Button>
@@ -230,7 +230,7 @@ function PageThree() {
                     </Row>
                 </Col>
                 <Col xs={4} sm={3}>
-                    <Row className="mx-1">
+                    <Row className="mx-0">
                         {submitted ?
                             (<Button
                                 size="sm"
@@ -243,9 +243,8 @@ function PageThree() {
                                     role="status"
                                     aria-hidden="true"
                                 />
-                                <span>&nbsp;&nbsp;Sending...</span>
+                                {/*<span>&nbsp;&nbsp;Sending...</span>*/}
                             </Button>) :
-
                             (<Button
                                 size="sm"
                                 variant="success"
