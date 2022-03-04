@@ -4,7 +4,7 @@ import AsyncSelect from "react-select/async";
 import axios from 'axios'
 import customStyles from "./CustomSelectStyles";
 
-const MINIMUM_QUERY_LENGTH = 3
+const MINIMUM_QUERY_LENGTH = 2
 
 class AsyncAPISelect extends React.Component {
     constructor(props) {
