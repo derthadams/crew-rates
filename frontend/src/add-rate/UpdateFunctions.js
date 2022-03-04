@@ -1,4 +1,4 @@
-import { dataDefault } from "./Survey";
+import { dataDefault } from "./dataDefault";
 
 export function updateLocationDetails(state, payload) {
     return {
