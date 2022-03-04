@@ -14,7 +14,6 @@ import { useStateMachine } from "little-state-machine";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import ProgressBar from "react-bootstrap/ProgressBar";
 import Button from "react-bootstrap/Button";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
@@ -107,8 +106,8 @@ function PageTwo() {
     };
 
     return (
-        <div className="my-3">
-            <AddRateHeading subheading={"Rate information"} now={66} label={"Step 2 of 3"}/>
+        <div className="">
+            <AddRateHeading step={2}/>
             <FormProvider {...methods}>
                 <Form
                     noValidate

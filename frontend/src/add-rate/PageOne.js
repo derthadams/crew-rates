@@ -10,7 +10,6 @@ import { useStateMachine } from "little-state-machine";
 import Form from "react-bootstrap/Form"
 import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
-import ProgressBar from "react-bootstrap/ProgressBar"
 import Button from "react-bootstrap/Button"
 
 import Select from 'react-select'
@@ -96,10 +95,10 @@ function PageOne() {
     };
 
     return (
-        <div className="my-3">
-            <AddRateHeading subheading={"Show information"} now={33} label={"Step 1 of 3"}/>
+        <div className="">
+            <AddRateHeading step={1}/>
             <Form noValidate onSubmit={handleSubmit(onSubmit)} aria-label="add-rate-1">
-            <Row className="mt-4">
+            <Row className="">
                 <Col xs={8} sm={9}>
                     <Form.Group className="mb-3" controlId="showTitle">
                         <Form.Label className="required-label"

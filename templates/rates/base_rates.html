@@ -35,7 +35,7 @@
             {% url 'discover' as url %}
             <a class="nav-link {% if request.path == url %} active {% endif %}" href="/">Discover</a>
             {% url 'add-rate' as url %}
-            <a class="nav-link {% if request.path == url %} active {% endif %}" href="/add-rate">Add a rate</a>
+            <a class="nav-link {% if url in request.path %} active {% endif %}" href="/add-rate">Add a rate</a>
 
             {% url 'account_email' as email %}
             {% url 'account_change_password' as passwd %}
@@ -75,7 +75,7 @@
 
 {% block content %}
     <div class="container-fluid py-sm-3 px-0" id="content-background">
-        <div class="container p-3" id="content-inner">
+        <div class="container px-3 py-2 p-sm-3" id="content-inner">
             {% include 'account/message_list.html' %}
             {% block content-inner %}
             {% endblock %}

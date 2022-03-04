@@ -83,15 +83,15 @@ function PageThree() {
     }
 
     return (
-        <div className='my-3'>
-            <AddRateHeading subheading={"Review and Submit"} now={100} label={"Step 3 of 3"}/>
+        <div className=''>
+            <AddRateHeading step={3}/>
 
-            <Card>
-                <Card.Body>
-                    Please review the information you entered.<br/>
-                    Select Edit to make changes, or Submit if everything looks good!
-                </Card.Body>
-            </Card>
+            {/*<Card>*/}
+            {/*    <Card.Body>*/}
+            {/*        Please review the information you entered.<br/>*/}
+            {/*        Select Edit to make changes, or Submit if everything looks good!*/}
+            {/*    </Card.Body>*/}
+            {/*</Card>*/}
             <Table borderless>
                 <tbody>
                 <tr>
