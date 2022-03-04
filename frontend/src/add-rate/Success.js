@@ -32,8 +32,8 @@ function Success() {
             <p>We appreciate you giving back to the community by submitting your rate report.</p>
             <p>Your report will appear on the site within 48 hours.</p>
             <Row className="mt-5">
-                <Col className="col-4"> </Col>
-                <Col className="col-4">
+                <Col className="col-3 col-sm-4"> </Col>
+                <Col className="col-6 col-sm-4">
                     <Row>
                         <Button
                             variant="primary"
@@ -41,7 +41,7 @@ function Success() {
                         >Add Another Rate</Button>
                     </Row>
                 </Col>
-                <Col className="col-4"> </Col>
+                <Col className="col-3 col-sm-4"> </Col>
             </Row>
         </div>
     )
