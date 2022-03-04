@@ -9,7 +9,7 @@ const MINIMUM_QUERY_LENGTH = 3
 class AsyncAPISelect extends React.Component {
     constructor(props) {
         super(props);
-    };
+    }
 
     getParams = (sessionTokenExists, inputValue) => {
         let params = {};
@@ -47,6 +47,7 @@ class AsyncAPISelect extends React.Component {
                     noOptionsMessage={this.noOptions}
                     isMulti={this.props.isMulti}
                     onChange={this.props.onChange}
+                    value={this.props.value}
                 />
                 :
                 <AsyncSelect
@@ -59,6 +60,7 @@ class AsyncAPISelect extends React.Component {
                     noOptionsMessage={this.noOptions}
                     isMulti={this.props.isMulti}
                     onChange={this.props.onChange}
+                    value={this.props.value}
                 />
         )
     }
