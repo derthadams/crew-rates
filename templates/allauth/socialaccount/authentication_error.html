@@ -2,13 +2,13 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Social Network Sign in Failure" %}{% endblock %}
+{% block head_title %}{% trans "Social Network Sign in Error" %}{% endblock %}
 
 {% block form-accounts %}
     {% include 'account/logo.html' %}
     {% include 'account/message_list.html' %}
 
-    <h1>{% trans "Social Network Sign in Failure" %}</h1>
+    <h1>{% trans "Social Network Sign in Error" %}</h1>
 
     <p>{% trans "An error occurred while attempting to sign in via your social network account." %}</p>
 {% endblock %}
