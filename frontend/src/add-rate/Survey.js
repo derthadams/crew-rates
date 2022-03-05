@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
 
 import { StateMachineProvider, createStore } from "little-state-machine";
 import { DevTool } from 'little-state-machine-devtools';
@@ -19,7 +19,8 @@ function Survey() {
     return (
         <StateMachineProvider>
             {process.env.NODE_ENV !== 'production' && <DevTool/>}
-            <BrowserRouter basename="/add-rate">
+            {/*<BrowserRouter basename="/add-rate">*/}
+            <MemoryRouter>
                 <Routes>
                     <Route path="/" element={<PageOne/>} />
                     <Route path="/2" element={<PageTwo/>} />
@@ -27,7 +28,8 @@ function Survey() {
                     <Route path="/success" element={<Success/>}/>
                     <Route path="/404" element={<Failure/>}/>
                 </Routes>
-            </BrowserRouter>
+            </MemoryRouter>
+            {/*</BrowserRouter>*/}
         </StateMachineProvider>
     );
 }
