@@ -159,11 +159,12 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = get_env_variable('RATES_EMAIL_HOST')
 EMAIL_HOST_USER = get_env_variable('RATES_EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = get_env_variable('RATES_EMAIL_HOST_PASSWORD')
 EMAIL_PORT = get_env_variable('RATES_EMAIL_PORT')
-USE_TLS = get_env_variable('RATES_USE_TLS')
+EMAIL_USE_TLS = get_env_variable('RATES_USE_TLS')
 
 DEFAULT_FROM_EMAIL = "no-reply@crewrates.org"
 
