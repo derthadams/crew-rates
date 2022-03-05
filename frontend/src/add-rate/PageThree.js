@@ -206,7 +206,7 @@ function PageThree() {
 
                 </tbody>
             </Table>
-            <Row className="mt-3">
+            <Row className="mt-3 justify-content-between">
                 <Col xs={4} sm={3}>
                     <Row className="mx-0">
                         <Button
