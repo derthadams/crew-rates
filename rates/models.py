@@ -413,6 +413,7 @@ class RatesInvitation(Invitation):
 
 class Contact(models.Model):
     email = models.EmailField()
+    name = models.CharField(max_length=512)
     subject = models.CharField(max_length=512)
     message = models.TextField()
     captcha = ReCaptchaField()

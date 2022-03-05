@@ -63,24 +63,25 @@ class RawRateReportForm(ModelForm):
 
 class ContactForm(Form):
     email = EmailField()
+    name = CharField()
     subject = CharField()
     message = CharField()
     captcha = ReCaptchaField(widget=ReCaptchaV3)
-    # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox)
 
     def save(self):
         data = self.cleaned_data
-        contact = Contact(email=data['email'], subject=data['subject'], message=data['message'])
+        contact = Contact(email=data['email'], name=data['name'], subject=data['subject'],
+                          message=data['message'])
         contact.save()
 
     def send_email(self):
         super_users = User.objects.filter(is_superuser=True)
         emails = map(lambda x: x.email, super_users)
         send_mail(
-            f'[crewrates.org contact]({self.cleaned_data["email"]}) '
+            f'[{self.cleaned_data["name"]}, {self.cleaned_data["email"]}] '
             f'{self.cleaned_data["subject"]}',
             f'{self.cleaned_data["message"]}',
-            'alert@crewrates.org',
+            'contact@crewrates.org',
             emails,
             fail_silently=False
         )
