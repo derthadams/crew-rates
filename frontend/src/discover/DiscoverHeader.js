@@ -11,10 +11,10 @@ import "./discover-header.css";
 
 export default function DiscoverHeader ({ genreOptions, unionOptions }) {
     return (
-        <div className={"sticky-top"}>
+        <div className={"sticky-top header-wrapper"}>
             <div className={"bg-light pt-1 pb-2"}>
-                <div className="px-2">
-                    <Row>
+                <div className="">
+                    <Row className={"discover-nav-row"}>
                         <Col md={6}>
                             <Select
                                 placeholder={"Filter by show, company, network, job title"}
