@@ -1,8 +1,8 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
+
 import Badge from "react-bootstrap/Badge";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup"
 import convertDate from "../common/convertDate"
 import "./rate-report.css";
 
@@ -21,65 +21,83 @@ export default function RateReport({
     start_date,
 }) {
     return (
-        <Card className="mb-3" style={{ maxWidth: 648 }}>
-            <Row className="g-0">
-                <Col
-                    className="md-4"
-                    xs={4}
-                    style={{ backgroundColor: "lightgray" }}
-                >
-                    <Card.Body className={"text-end"}>
-                        <div>
-                            <span className={"first-row"}>
-                                ${day_rate}/{guarantee}
-                            </span>
-                        </div>
+        <Card className={"mb-1"}>
+            <Card.Header>
+                <div className="d-flex">
+                    <span>
+                        <Card.Title className={"me-3"}>
+                            {show_title}&nbsp;S{season_number}
+                        </Card.Title>
+                    </span>
 
-                        <div>
-                            <span className={"me-1"}>
+                    {union_status &&
+                    <span className="ms-auto">
+                        <Badge bg={"dark"} className={"me-1"}>
+                            {union_status}
+                        </Badge>
+                    </span>}
+                </div>
+
+                <div className="d-flex">
+                    {/*{companies.length > 0 &&*/}
+                    {/*    <span className={`${companies.length === 1 ? "me-2" : ""}`}>*/}
+                    {/*        {companies[0].name}*/}
+                    {/*    </span>}*/}
+                    {/*{companies.length > 1 &&*/}
+                    {/*    <span className={"me-2"}>*/}
+                    {/*        /!*&nbsp;(+{companies.length - 1})*!/*/}
+                    {/*        &nbsp;...*/}
+                    {/*    </span>}*/}
+                    {companies.length > 0 &&
+                        <span>{companies[0].name}</span>
+                    }
+                    <span className="ms-auto">
+                        {convertDate(start_date, "numeric")}
+                    </span>
+                </div>
+
+                {companies.length > 1 &&
+                    <div>
+                        {companies.slice(1,).map((company) => (
+                            <span key={company.uuid}>{company.name}</span>
+                        ))}
+                    </div>}
+
+                <div className="d-flex">
+                    {network &&
+                    <span className={"me-2"}>
+                            <Badge bg={"secondary"}>
+                                {network}
+                            </Badge>
+                        </span>}
+                    {genre &&
+                    <span className={"ms-auto"}>
+                            {genre}
+                        </span>}
+                </div>
+            </Card.Header>
+
+            <Card.Body className={"p-0"}>
+                <ListGroup variant={"flush"}>
+                    <ListGroup.Item>
+                        <div className="d-flex">
+                            <span>{job_title}</span>
+                            <span className={"ms-auto"}>
                                 {increase && (
-                                    <Badge bg={"primary"}>
-                                        &#8679;&nbsp;{increase}%
+                                    <Badge bg={"primary"} className={"me-1"}>
+                                     &#8679;&nbsp;{increase}%
                                     </Badge>
                                 )}
-                            </span>
-                            <span className={""}>${hourly_rate}/hr</span>
-                        </div>
-
-                        <div className={"third-row"}>
-                            <span>{job_title}</span>
-                        </div>
-                    </Card.Body>
-                </Col>
-
-                <Col className="md-8" xs={8}>
-                    <Card.Body>
-                        <div className="show-row">
-                            <span className={"first-row"}>{show_title}</span>
-                        </div>
-
-                        <div className={""}>
-                            <span className={"me-3"}>Season {season_number}</span>
-                            <span className={"me-3"}>{convertDate(start_date, "numeric")}</span>
-                            <span className={"me-3"}>{genre}</span>
-                            <span className={"me-3"}>
-                                <Badge bg={"dark"}>{union_status}</Badge>
+                                <strong>
+                                    ${day_rate}/{guarantee}&nbsp;
+                                </strong>
+                                    (${hourly_rate}/hr)
                             </span>
                         </div>
+                    </ListGroup.Item>
+                </ListGroup>
+            </Card.Body>
 
-                        <div className={"third-row"}>
-                            {companies.length > 0 &&
-                            <span className={`${companies.length === 1 ? "me-3" : ""}`}>{companies[0].name}</span>}
-                            {companies.length > 1 &&
-                            <span className={"me-3"}>&nbsp;(+{companies.length - 1} more...)</span>}
-                            <span>
-                                <Badge bg={"secondary"}>{network}</Badge>
-                                {/*{network}*/}
-                            </span>
-                        </div>
-                    </Card.Body>
-                </Col>
-            </Row>
         </Card>
     );
 }

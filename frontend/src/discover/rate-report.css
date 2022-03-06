@@ -1,8 +1,4 @@
-.first-row {
-    font-size: 24px;
-}
-
-.third-row {
-    margin-top: 8px;
-    margin-bottom: 12px;
+.list-group-item:last-child {
+    border-bottom-right-radius: 3px!important;
+    border-bottom-left-radius: 3px!important;
 }
