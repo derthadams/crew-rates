@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import DiscoverHeader from "./DiscoverHeader";
 import ReportContainer from "./ReportContainer";
 import axios from "axios";
 
@@ -26,8 +27,8 @@ export default function App() {
     }, []);
 
     return (
-        <div className="my-3">
-            <h1 className={"display-1"}>Discover</h1>
+        <div>
+            <DiscoverHeader/>
             <ReportContainer reports={reports}
                              genre={genre}
                              unionStatus={unionStatus} />
