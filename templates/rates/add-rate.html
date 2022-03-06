@@ -13,11 +13,11 @@
 {% endblock %}
 
 {% block content-inner %}
+    <div class="container px-3 py-2 p-sm-3" id="content-inner">
+        <div id="root"></div>
 
-  <div id="root"></div>
-
-  {{ genreOptions|json_script:'genreOptions' }}
-  {{ unionOptions|json_script:'unionOptions' }}
-  {{ apiUrls|json_script:'apiUrls'}}
-
+        {{ genreOptions|json_script:'genreOptions' }}
+        {{ unionOptions|json_script:'unionOptions' }}
+        {{ apiUrls|json_script:'apiUrls'}}
+    </div>
 {% endblock %}

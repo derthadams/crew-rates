@@ -74,11 +74,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid py-sm-3 px-0" id="content-background">
-        <div class="container px-3 py-2 p-sm-3" id="content-inner">
-            {% include 'account/message_list.html' %}
-            {% block content-inner %}
-            {% endblock %}
-        </div>
+    <div class="container-fluid px-0" id="content-background">
+        {% include 'account/message_list.html' %}
+        {% block content-inner %}
+        {% endblock %}
     </div>
 {% endblock %}
