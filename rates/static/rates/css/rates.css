@@ -7,7 +7,7 @@ body {
 }
 
 #content-inner {
-    width: 680px;
+    max-width: 680px;
     min-height: 700px;
     background-color: white;
 }
