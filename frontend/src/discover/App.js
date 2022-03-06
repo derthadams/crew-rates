@@ -11,7 +11,12 @@ export default function App() {
     const unionStatus = JSON.parse(
         document.getElementById("unionStatus").textContent
     );
-    console.log(unionStatus)
+    const genreOptions = JSON.parse(
+        document.getElementById("genreOptions").textContent
+    );
+    const unionOptions = JSON.parse(
+        document.getElementById("unionOptions").textContent
+    )
     const apiUrls = JSON.parse(document.getElementById("apiUrls").textContent);
 
     const getInitialData = () => {
@@ -28,7 +33,8 @@ export default function App() {
 
     return (
         <div>
-            <DiscoverHeader/>
+            <DiscoverHeader genreOptions={genreOptions}
+                            unionOptions={unionOptions}/>
             <ReportContainer reports={reports}
                              genre={genre}
                              unionStatus={unionStatus} />

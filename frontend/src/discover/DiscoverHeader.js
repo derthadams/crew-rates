@@ -9,7 +9,7 @@ import Select from "react-select";
 
 import "./discover-header.css";
 
-export default function DiscoverHeader () {
+export default function DiscoverHeader ({ genreOptions, unionOptions }) {
     return (
         <div className={"sticky-top"}>
             <div className={"bg-light pt-1 pb-2"}>
@@ -27,21 +27,38 @@ export default function DiscoverHeader () {
                                     name={"date-range"}
                                     id={"date-range"}
                                 >
-                                    <option value="1">Default</option>
+                                    <option value="6" selected>6 months</option>
+                                    <option value="12">12 months</option>
+                                    <option value="24">2 years</option>
+                                    <option value="AA">All</option>
                                 </Form.Select>
                                 <Form.Select
                                     size={"sm"}
                                     name={"union-status"}
                                     id={"union-status"}
                                 >
-                                    <option value="1">Default</option>
+                                    <option value="AA">
+                                        Union: All
+                                    </option>
+                                    {unionOptions.map((unionOption) => (
+                                        <option value={unionOption.value}>
+                                            {unionOption.label}
+                                        </option>
+                                    ))}
                                 </Form.Select>
                                 <Form.Select
                                     size={"sm"}
                                     name={"genre-select"}
                                     id={"genre-select"}
                                 >
-                                    <option value="1">Default</option>
+                                    <option value="AA">
+                                        Genre: All
+                                    </option>
+                                    {genreOptions.map((genreOption) => (
+                                            <option value={genreOption.value}>
+                                                {genreOption.label}
+                                            </option>
+                                    ))}
                                 </Form.Select>
                             </InputGroup>
                         </Col>
