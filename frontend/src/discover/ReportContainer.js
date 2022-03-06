@@ -4,9 +4,8 @@ import RateReport from "./RateReport";
 
 export default function ReportContainer({ reports, unionStatus, genre }) {
     return (
-        <div>
-            <h6 className={"display-6"}>Recent rate reports</h6>
-            <div className="report-container">
+        <div className={"report-container d-flex py-1"}>
+            <div id={"content-inner"}>
                 {reports.map((report) => (
                     <RateReport
                         key={report.uuid}

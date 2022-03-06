@@ -1,4 +1,8 @@
 .report-container {
-    height: 600px;
-    overflow-y: auto;
+    justify-content: center;
+}
+
+#content-inner {
+    background-color: #e8e8e8;
+    width: 100%;
 }
