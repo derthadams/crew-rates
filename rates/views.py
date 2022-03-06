@@ -13,6 +13,17 @@ from .forms import ContactForm, DeleteUser
 from .models import Season, User
 from .signals import social_account_removed
 
+genreOptions = [{
+        'value': value,
+        'label': label
+    } for value, label in Season.GENRE_CHOICES]
+
+unionOptions = [{
+        'value': value,
+        'label': label
+    } for value, label in Season.UNION_CHOICES
+]
+
 
 @login_required
 def discover(request):
@@ -20,6 +31,8 @@ def discover(request):
     context = {
         'genre': dict(Season.GENRE_CHOICES),
         'unionStatus': dict(Season.UNION_CHOICES),
+        'genreOptions': genreOptions,
+        'unionOptions': unionOptions,
         'apiUrls': {
             'rate-report-list': reverse('rate-report-list')
         }
@@ -31,18 +44,8 @@ def discover(request):
 def add_rate(request, path=""):
     template = loader.get_template('rates/add-rate.html')
     context = {
-        'genreOptions': [
-            {
-                'value': value,
-                'label': label
-            } for value, label in Season.GENRE_CHOICES
-        ],
-        'unionOptions': [
-            {
-                'value': value,
-                'label': label
-            } for value, label in Season.UNION_CHOICES
-        ],
+        'genreOptions': genreOptions,
+        'unionOptions': unionOptions,
         'apiUrls': {
             'autocomplete': reverse('autocomplete'),
             'details': reverse('details'),
