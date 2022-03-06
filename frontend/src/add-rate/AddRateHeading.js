@@ -2,7 +2,7 @@ import React from "react";
 
 export default function AddRateHeading({ step }) {
     return (
-        <div className={"mb-3 mt-2"}>
+        <div className={"mb-3 mt-3"}>
             <div className={"d-none d-sm-block"}>
             <h3 className="display-3">Add a rate</h3>
             <p>
