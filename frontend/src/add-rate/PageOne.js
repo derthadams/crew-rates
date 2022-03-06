@@ -2,19 +2,19 @@ import React, { useEffect } from 'react';
 
 import { useNavigate } from "react-router-dom";
 
-import { useForm, Controller } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 
 import { useStateMachine } from "little-state-machine";
 
-import Form from "react-bootstrap/Form"
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col"
-import Button from "react-bootstrap/Button"
+import Form from "react-bootstrap/Form";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
-import Select from 'react-select'
+import Select from 'react-select';
 
-import axios from 'axios'
+import axios from 'axios';
 
 import {v4 as uuid_v4} from "uuid";
 
