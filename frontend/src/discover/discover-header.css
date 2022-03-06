@@ -6,3 +6,7 @@
     margin-right: 0;
     margin-left: 0;
 }
+
+.form-select {
+    -webkit-appearance: none;
+}
