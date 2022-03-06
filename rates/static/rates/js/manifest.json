@@ -1,0 +1,12 @@
+{
+    "name": "Crew Rates",
+    "short_name": "Crew Rates",
+    "start_url": "https://crewrates.org",
+    "display": "standalone",
+    "icons": [{
+        "src": "/static/rates/img/touch-icon-iphone-retina.png",
+        "sizes": "180x180",
+        "type": "image/png"
+    }],
+    "orientation": "portrait",
+}
