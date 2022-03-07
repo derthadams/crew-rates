@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 import json
 import requests
 from uuid import UUID
@@ -164,8 +165,26 @@ class RateReportList(APIView):
 
     def get(self, request): # noqa
         rate_report = apps.get_model('rates', 'RateReport')
+        date_range = request.GET.get('date_range', '')
+        if date_range.isnumeric():
+            date_range = int(date_range)
+        union_select = request.GET.get('union_select', '')
+        genre_select = request.GET.get('genre_select', '')
 
-        results = rate_report.objects.all().values(
+        results = rate_report.objects.all()
+
+        if date_range:
+            duration = timedelta(days=(30 * date_range))
+            date_limit = date.today() - duration
+            results = results.filter(season__start_date__gte=date_limit)
+
+        if union_select != 'AA':
+            results = results.filter(union__exact=union_select)
+
+        if genre_select != 'AA':
+            results = results.filter(season__genre__exact=genre_select)
+
+        results = results.values(
             'uuid',
             'percent_increase',
             'season__start_date',
