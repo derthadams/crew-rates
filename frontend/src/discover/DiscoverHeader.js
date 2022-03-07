@@ -35,7 +35,7 @@ export default function DiscoverHeader ({ genreOptions, unionOptions,
                                     <option value="6">6 months</option>
                                     <option value="12">12 months</option>
                                     <option value="24">2 years</option>
-                                    <option value="0">All</option>
+                                    <option value="0">Dates: All</option>
                                 </Form.Select>
                                 <Form.Select
                                     size={"sm"}
