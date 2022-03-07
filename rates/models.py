@@ -225,8 +225,7 @@ class Season(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        # self.title = f'{self.show.title} (Season {str(self.number)})'
-        self.title = self.show.title # noqa
+        self.title = f'{self.show.title} S{str(self.number)}' # noqa
         super().save(*args, **kwargs)
 
 
@@ -363,7 +362,7 @@ class RateReport(models.Model):
 
     def __str__(self):
         hourly = self.final_hourly if self.final_hourly else self.offered_hourly
-        return f'{self.user}: {self.season}, {self.job_title}, ${hourly}'
+        return f'{self.user}: {self.season}, {self.job_title}, ${hourly}' # noqa
 
 
 class RatesInvitation(Invitation):
