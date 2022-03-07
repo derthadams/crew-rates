@@ -314,7 +314,7 @@ class CompanyAdmin(admin.ModelAdmin):
     ordering = ['name']
     search_fields = ['name']
     inlines = [SeasonCompanyInline]
-    list_display = ('name', 'id',)
+    list_display = ('name', 'created_at', 'id',)
 
 
 class JobTitleAdmin(admin.ModelAdmin):
@@ -342,7 +342,7 @@ class NetworkAdmin(admin.ModelAdmin):
 
 class RateReportAdmin(admin.ModelAdmin):
     search_fields = ['season__title', 'job_title__title']
-    list_display = ('season', 'job_title', 'created_at')
+    list_display = ('season', 'job_title', 'final_hourly', 'final_guarantee', 'created_at')
 
 
 class RawRateReportAdmin(admin.ModelAdmin):
@@ -406,6 +406,8 @@ class RawRateReportAdmin(admin.ModelAdmin):
             'widget': NullBooleanSelect()
         }
     }
+    list_display = ('user', 'show_title', 'season_number', 'job_title_name', 'final_hourly',
+                    'final_guarantee', 'created_at')
     list_filter = ('approved',)
     inlines = [JobTitleMatchInline, ShowMatchInline, CompanyMatchInline, NetworkMatchInline]
 
