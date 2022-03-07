@@ -320,7 +320,8 @@ class RateReport(models.Model):
     union = models.CharField(
         max_length=4,
         choices=Season.UNION_CHOICES,
-        null=True
+        null=True,
+        blank=True
     )
     job_title = models.ForeignKey(
         JobTitle,
@@ -346,7 +347,9 @@ class RateReport(models.Model):
     final_hourly = models.DecimalField(
         decimal_places=4,
         max_digits=9,
-        null=True)
+        null=True,
+        blank=True
+    )
     final_guarantee = models.PositiveSmallIntegerField(null=True)
     percent_increase = models.PositiveIntegerField(null=True, blank=True)
 
