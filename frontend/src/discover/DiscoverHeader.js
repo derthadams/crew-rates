@@ -9,7 +9,10 @@ import Select from "react-select";
 
 import "./discover-header.css";
 
-export default function DiscoverHeader ({ genreOptions, unionOptions }) {
+export default function DiscoverHeader ({ genreOptions, unionOptions,
+                                            dateRange, handleDateChange,
+                                            unionSelect, handleUnionChange,
+                                            genreSelect, handleGenreChange}) {
     return (
         <div className={"sticky-top header-wrapper"}>
             <div className={"bg-light pt-1 pb-2"}>
@@ -26,16 +29,20 @@ export default function DiscoverHeader ({ genreOptions, unionOptions }) {
                                     size={"sm"}
                                     name={"date-range"}
                                     id={"date-range"}
+                                    value={dateRange}
+                                    onChange={handleDateChange}
                                 >
-                                    <option value="6" selected>6 months</option>
+                                    <option value="6">6 months</option>
                                     <option value="12">12 months</option>
                                     <option value="24">2 years</option>
-                                    <option value="AA">All</option>
+                                    <option value="0">All</option>
                                 </Form.Select>
                                 <Form.Select
                                     size={"sm"}
                                     name={"union-status"}
                                     id={"union-status"}
+                                    value={unionSelect}
+                                    onChange={handleUnionChange}
                                 >
                                     <option value="AA">
                                         Union: All
@@ -50,6 +57,8 @@ export default function DiscoverHeader ({ genreOptions, unionOptions }) {
                                     size={"sm"}
                                     name={"genre-select"}
                                     id={"genre-select"}
+                                    value={genreSelect}
+                                    onChange={handleGenreChange}
                                 >
                                     <option value="AA">
                                         Genre: All

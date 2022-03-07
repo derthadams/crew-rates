@@ -5,6 +5,22 @@ import axios from "axios";
 
 export default function App() {
     const [reports, setReports] = useState([]);
+    const [dateRange, setDateRange] = useState(0);
+    const [unionSelect, setUnionSelect] = useState('AA');
+    const [genreSelect, setGenreSelect] = useState('AA');
+
+    const handleDateChange = (event) => {
+        setDateRange(parseInt(event.target.value));
+    }
+
+    const handleUnionChange = (event) => {
+        setUnionSelect(event.target.value);
+    }
+
+    const handleGenreChange = (event) => {
+        setGenreSelect(event.target.value);
+    }
+
     const genre = JSON.parse(
         document.getElementById("genre").textContent
     );
@@ -20,7 +36,13 @@ export default function App() {
     const apiUrls = JSON.parse(document.getElementById("apiUrls").textContent);
 
     const getInitialData = () => {
-        axios.get(apiUrls["rate-report-list"]).then((response) => {
+        axios.get(apiUrls["rate-report-list"], {
+            params: {
+                date_range: dateRange,
+                union_select: unionSelect,
+                genre_select: genreSelect
+            }
+        }).then((response) => {
             const initialData = response.data;
             console.log(initialData);
             setReports(initialData);
@@ -29,12 +51,18 @@ export default function App() {
 
     useEffect(() => {
         getInitialData();
-    }, []);
+    }, [dateRange, unionSelect, genreSelect]);
 
     return (
         <div>
             <DiscoverHeader genreOptions={genreOptions}
-                            unionOptions={unionOptions}/>
+                            unionOptions={unionOptions}
+                            dateRange={dateRange}
+                            handleDateChange={handleDateChange}
+                            unionSelect={unionSelect}
+                            handleUnionChange={handleUnionChange}
+                            genreSelect={genreSelect}
+                            handleGenreChange={handleGenreChange}/>
             <ReportContainer reports={reports}
                              genre={genre}
                              unionStatus={unionStatus} />
