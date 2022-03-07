@@ -340,6 +340,11 @@ class NetworkAdmin(admin.ModelAdmin):
     list_display = ('name', 'id',)
 
 
+class RateReportAdmin(admin.ModelAdmin):
+    search_fields = ['season__title', 'job_title__title']
+    list_display = ('season', 'job_title', 'created_at')
+
+
 class RawRateReportAdmin(admin.ModelAdmin):
     actions = [approve_raw_rate_report]
     fieldsets = (
@@ -507,4 +512,4 @@ admin.site.register(Network, NetworkAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Season, SeasonAdmin)
 admin.site.register(RawRateReport, RawRateReportAdmin)
-admin.site.register(RateReport)
+admin.site.register(RateReport, RateReportAdmin)
