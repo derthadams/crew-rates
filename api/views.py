@@ -179,7 +179,7 @@ class RateReportList(APIView):
             results = results.filter(season__start_date__gte=date_limit)
 
         if union_select != 'AA':
-            results = results.filter(union__exact=union_select)
+            results = results.filter(season__union__exact=union_select)
 
         if genre_select != 'AA':
             results = results.filter(season__genre__exact=genre_select)
@@ -196,7 +196,7 @@ class RateReportList(APIView):
             hourly=Cast('final_hourly', output_field=DecimalField(
                 decimal_places=2,
                 max_digits=7)),
-            union_status=F('union'),
+            union_status=F('season__union'),
             show_title=F('season__title'),
             show_uuid=F('season__show__uuid'),
             season_number=F('season__number'),
