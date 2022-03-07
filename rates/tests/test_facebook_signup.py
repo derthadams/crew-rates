@@ -3,7 +3,7 @@ import re
 from django.apps import apps
 from django.contrib.sites.models import Site
 from django.core import mail
-from django.test import LiveServerTestCase
+from django.test import LiveServerTestCase, tag
 from django.urls import reverse
 from django.utils import timezone
 
@@ -16,6 +16,7 @@ from .sample_user import facebook_user
 from .config import fb
 
 
+@tag('selenium')
 class TestFacebookSignup(LiveServerTestCase):
 
     @classmethod

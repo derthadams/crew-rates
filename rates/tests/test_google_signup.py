@@ -1,6 +1,6 @@
 from django.apps import apps
 from django.contrib.sites.models import Site
-from django.test import LiveServerTestCase
+from django.test import LiveServerTestCase, tag
 from django.urls import reverse
 from django.utils import timezone
 
@@ -13,6 +13,7 @@ from .sample_user import google_user
 from .config import go
 
 
+@tag('selenium')
 class TestGoogleSignup(LiveServerTestCase):
 
     @classmethod

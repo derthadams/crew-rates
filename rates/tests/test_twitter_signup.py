@@ -2,7 +2,7 @@ from time import sleep
 
 from django.apps import apps
 from django.contrib.sites.models import Site
-from django.test import LiveServerTestCase
+from django.test import LiveServerTestCase, tag
 from django.test.utils import override_settings
 from django.urls import reverse
 from django.utils import timezone
@@ -16,6 +16,7 @@ from .sample_user import twitter_user
 from .config import fb, tw
 
 
+@tag('selenium')
 @override_settings(DEBUG=True)
 class TestGoogleSignup(LiveServerTestCase):
 
