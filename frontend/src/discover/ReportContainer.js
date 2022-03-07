@@ -6,6 +6,10 @@ export default function ReportContainer({ reports, unionStatus, genre }) {
     return (
         <div className={"report-container d-flex py-1"}>
             <div id={"content-inner"}>
+                {reports.length === 0 &&
+                    <div className={"text-center mt-5"}>
+                        <h3>No results</h3>
+                    </div>}
                 {reports.map((report) => (
                     <RateReport
                         key={report.uuid}
