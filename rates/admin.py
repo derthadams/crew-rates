@@ -415,7 +415,7 @@ class SeasonAdmin(admin.ModelAdmin):
         'scopes'
     ]
     inlines = [RateReportInline]
-    list_display = ('title', 'id')
+    list_display = ('title', 'number', 'id')
 
 
 class ShowAdmin(admin.ModelAdmin):
