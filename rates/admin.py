@@ -128,7 +128,7 @@ def _approve_raw_rate_report(raw_report):
         season.scopes.add(*scopes)
         season.companies.add(*companies)
 
-    percent_increase = None
+    percent_increase = 0
     if raw_report.increased:
         percent_increase = calc_percent_increase(raw_report.final_hourly,
                                                  raw_report.final_daily,
