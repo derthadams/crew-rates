@@ -206,7 +206,8 @@ class RateReportList(APIView):
             network=F('season__network__name'),
             network_uuid=F('season__network__uuid'),
             companies=JSONBAgg(JSONObject(name='season__companies__name',
-                                          uuid='season__companies__uuid'))
+                                          uuid='season__companies__uuid'),
+                               ordering='season__companies__name')
         ).order_by('-season__start_date')
         # companies=ArrayAgg('season__companies__name')
 
