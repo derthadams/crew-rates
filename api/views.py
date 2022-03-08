@@ -160,8 +160,8 @@ class AddRate(APIView):
 
 
 class RateReportList(APIView):
-    genre_options = dict(apps.get_model('rates', 'Season').GENRE_CHOICES)
-    union_options = dict(apps.get_model('rates', 'Season').UNION_CHOICES)
+    # genre_options = dict(apps.get_model('rates', 'Season').GENRE_CHOICES)
+    # union_options = dict(apps.get_model('rates', 'Season').UNION_CHOICES)
 
     def get(self, request): # noqa
         rate_report = apps.get_model('rates', 'RateReport')
