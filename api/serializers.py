@@ -1,3 +1,5 @@
+import json
+
 from django.apps import apps
 from rest_framework import serializers
 
@@ -31,6 +33,30 @@ class RateReportSerializer(serializers.Serializer): # noqa
     companies = serializers.ListField(
         child=serializers.JSONField()
     )
+
+
+class JSONLoadsField(serializers.Field): # noqa
+
+    def to_representation(self, value):
+        return json.loads(value)
+
+    def to_internal_value(self, data):
+        return json.loads(data)
+
+
+class SeasonSerializer(serializers.Serializer): # noqa
+    start_date = serializers.DateField()
+    end_date = serializers.DateField()
+    season_title = serializers.CharField()
+    union_status = serializers.CharField()
+    genre = serializers.CharField()
+    show_title = serializers.CharField()
+    show_uuid = serializers.UUIDField()
+    network_name = serializers.CharField()
+    network_uuid = serializers.UUIDField()
+    company_list = JSONLoadsField()
+    job_reports = JSONLoadsField()
+
 
 class JobTitleSerializer(serializers.Serializer): # noqa
     value = serializers.UUIDField()

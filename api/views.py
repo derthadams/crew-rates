@@ -16,9 +16,10 @@ from rest_framework.views import APIView
 
 from .api_config import *
 from .serializers import RawRateReportSerializer, RateReportSerializer, JobTitleSerializer, \
-    ShowSerializer, CompanySerializer, NetworkSerializer
+    ShowSerializer, CompanySerializer, NetworkSerializer, SeasonSerializer
 
 from rates.admin import _approve_raw_rate_report # noqa
+from .sql import season_list
 
 
 class LocationAutocompleteAPIView(APIView):
@@ -217,3 +218,29 @@ class RateReportList(APIView):
         return Response(data, status=status.HTTP_200_OK)
         # else:
         #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SeasonList(APIView):
+
+    def get(self, request): # noqa
+        season_model = apps.get_model('rates', 'Season')
+        date_range = request.GET.get('date_range', '')
+        if date_range.isnumeric():
+            date_range = int(date_range)
+        union_select = request.GET.get('union_select', '')
+        genre_select = request.GET.get('genre_select', '')
+
+        date_flag = '1' if date_range > 0 else '0'
+        union_flag = '1' if union_select != 'AA' else '0'
+        genre_flag = '1' if genre_select != 'AA' else '0'
+
+        duration = timedelta(days=(30 * date_range))
+        date_limit = date.today() - duration
+        results = season_model.objects.raw(season_list, [date_flag, date_flag, date_limit,
+                                                         union_flag, union_flag, union_select,
+                                                         genre_flag, genre_flag, genre_select])
+        for result in results:
+            print(type(result.job_reports), type(result.company_list))
+        serializer = SeasonSerializer(results, many=True)
+        data = serializer.data
+        return Response(data, status=status.HTTP_200_OK)
