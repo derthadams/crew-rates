@@ -45,6 +45,7 @@ class JSONLoadsField(serializers.Field): # noqa
 
 
 class SeasonSerializer(serializers.Serializer): # noqa
+    uuid = serializers.UUIDField()
     start_date = serializers.DateField()
     end_date = serializers.DateField()
     season_title = serializers.CharField()

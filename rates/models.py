@@ -147,6 +147,7 @@ class Location(models.Model):
 
 
 class Season(models.Model):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False) # noqa
     title = models.CharField(max_length=128, blank=True)
     show = models.ForeignKey(
         Show,

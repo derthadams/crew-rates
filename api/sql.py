@@ -1,5 +1,5 @@
 season_list = """
-    SELECT 1 as id, sq.start_date as start_date, sq.end_date as end_date, 
+    SELECT 1 as id, sq.uuid as uuid, sq.start_date as start_date, sq.end_date as end_date, 
         sq.title as season_title, sq.union_status as union_status, sq.genre as genre,
         sq.show_title as show_title, sq.show_uuid as show_uuid, sq.network_name as network_name, 
         sq.network_uuid as network_uuid, 
@@ -7,7 +7,7 @@ season_list = """
             'name', sq.company_name,
             'uuid', sq.company_uuid)) as company_list,
             JSONB_AGG(DISTINCT sq.job_report) as job_reports 
-    FROM (SELECT rates_season.start_date as start_date, rates_season.end_date as end_date, 
+    FROM (SELECT rates_season.uuid as uuid, rates_season.start_date as start_date, rates_season.end_date as end_date, 
                     rates_season.title as title, rates_season.union as union_status, 
                     rates_season.genre as genre, rates_show.title as show_title, 
                     rates_show.uuid as show_uuid, rates_network.name as network_name,
@@ -33,8 +33,8 @@ season_list = """
             WHERE (%s = 0 OR (%s = 1 AND rates_season.start_date >= %s)) 
                 AND (%s = 0 OR (%s = 1 AND rates_season.union = %s)) 
                 AND (%s = 0 OR(%s = 1 AND rates_season.genre = %s))
-GROUP BY rates_season.start_date, rates_season.end_date, rates_season.title, rates_season.union, 
+GROUP BY rates_season.uuid, rates_season.start_date, rates_season.end_date, rates_season.title, rates_season.union, 
             rates_season.genre, rates_jobtitle.id, rates_show.title, rates_show.uuid, 
             rates_network.name, rates_network.uuid, rates_company.name, rates_company.uuid) as sq
-GROUP BY sq.start_date, sq.end_date, sq.title, sq.union_status, sq.genre, sq.show_title, sq.show_uuid, 
+GROUP BY sq.uuid, sq.start_date, sq.end_date, sq.title, sq.union_status, sq.genre, sq.show_title, sq.show_uuid, 
             sq.network_name, sq.network_uuid;"""
