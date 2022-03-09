@@ -239,8 +239,6 @@ class SeasonList(APIView):
         results = season_model.objects.raw(season_list, [date_flag, date_flag, date_limit,
                                                          union_flag, union_flag, union_select,
                                                          genre_flag, genre_flag, genre_select])
-        for result in results:
-            print(type(result.job_reports), type(result.company_list))
         serializer = SeasonSerializer(results, many=True)
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)
