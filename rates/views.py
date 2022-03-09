@@ -34,7 +34,8 @@ def discover(request):
         'genreOptions': genreOptions,
         'unionOptions': unionOptions,
         'apiUrls': {
-            'rate-report-list': reverse('rate-report-list')
+            'rate-report-list': reverse('rate-report-list'),
+            'season-list': reverse('season-list')
         }
     }
     return HttpResponse(template.render(context, request))
