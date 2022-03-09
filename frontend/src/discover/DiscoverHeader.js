@@ -48,7 +48,7 @@ export default function DiscoverHeader ({ genreOptions, unionOptions,
                                         Union: All
                                     </option>
                                     {unionOptions.map((unionOption) => (
-                                        <option value={unionOption.value}>
+                                        <option key={unionOption.value} value={unionOption.value}>
                                             {unionOption.label}
                                         </option>
                                     ))}
@@ -64,7 +64,8 @@ export default function DiscoverHeader ({ genreOptions, unionOptions,
                                         Genre: All
                                     </option>
                                     {genreOptions.map((genreOption) => (
-                                            <option value={genreOption.value}>
+                                            <option key={genreOption.value}
+                                                    value={genreOption.value}>
                                                 {genreOption.label}
                                             </option>
                                     ))}

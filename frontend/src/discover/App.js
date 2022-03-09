@@ -36,7 +36,7 @@ export default function App() {
     const apiUrls = JSON.parse(document.getElementById("apiUrls").textContent);
 
     const getInitialData = () => {
-        axios.get(apiUrls["rate-report-list"], {
+        axios.get(apiUrls["season-list"], {
             params: {
                 date_range: dateRange,
                 union_select: unionSelect,
@@ -44,7 +44,6 @@ export default function App() {
             }
         }).then((response) => {
             const initialData = response.data;
-            console.log(initialData);
             setReports(initialData);
         });
     };

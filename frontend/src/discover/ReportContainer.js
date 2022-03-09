@@ -13,17 +13,13 @@ export default function ReportContainer({ reports, unionStatus, genre }) {
                 {reports.map((report) => (
                     <RateReport
                         key={report.uuid}
-                        season_title={report.show_title}
-                        companies={report.companies}
-                        network={report.network}
+                        start_date={report.start_date}
+                        season_title={report.season_title}
                         union_status={unionStatus[report.union_status]}
                         genre={genre[report.genre]}
-                        job_title={report.job_title_name}
-                        day_rate={report.daily}
-                        guarantee={report.guarantee}
-                        hourly_rate={report.hourly}
-                        increase={report.percent_increase}
-                        start_date={report.season__start_date}
+                        network_name={report.network_name}
+                        company_list={report.company_list}
+                        job_reports={report.job_reports}
                     />
                 ))}
             </div>

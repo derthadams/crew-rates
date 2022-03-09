@@ -7,17 +7,13 @@ import convertDate from "../common/convertDate"
 import "./rate-report.css";
 
 export default function RateReport({
+    start_date,
     season_title,
-    companies,
-    network,
     union_status,
     genre,
-    job_title,
-    day_rate,
-    guarantee,
-    hourly_rate,
-    increase,
-    start_date,
+    network_name,
+    company_list,
+    job_reports
 }) {
     return (
         <Card className={"mb-1"}>
@@ -50,26 +46,26 @@ export default function RateReport({
                     {/*        /!*&nbsp;(+{companies.length - 1})*!/*/}
                     {/*        &nbsp;...*/}
                     {/*    </span>}*/}
-                    {companies.length > 0 &&
-                        <span>{companies[0].name}</span>
+                    {company_list.length > 0 &&
+                        <span>{company_list[0].name}</span>
                     }
                     <span className="ms-auto">
                         {convertDate(start_date, "numeric")}
                     </span>
                 </div>
-                {companies.length > 1 &&
+                {company_list.length > 1 &&
                     <div>
-                        {companies.slice(1,).map((company) => (
+                        {company_list.slice(1,).map((company) => (
                             <span key={company.uuid}>{company.name}</span>
                         ))}
                     </div>}
 
                 {/*Network and Genre*/}
                 <div className="d-flex">
-                    {network &&
+                    {network_name &&
                     <span className={"me-2"}>
                             <Badge bg={"secondary"}>
-                                {network}
+                                {network_name}
                             </Badge>
                         </span>}
                     {genre &&
@@ -83,23 +79,25 @@ export default function RateReport({
                 <ListGroup variant={"flush"}>
 
                     {/*Job Report*/}
-                    <ListGroup.Item>
-                        <div className="d-flex">
-                            <span>{job_title}</span>
-                            <span className={"ms-auto"}>
-                                {increase > 0 && (
-                                    <Badge bg={"primary"} className={"me-1"}>
-                                     &#8679;&nbsp;{increase}%
-                                    </Badge>
-                                )}
-                                <strong>
-                                    ${day_rate}/{guarantee}&nbsp;
-                                </strong>
-                                    (${hourly_rate}/hr)
-                            </span>
-                        </div>
-                    </ListGroup.Item>
 
+                    {job_reports.map((report) => (
+                        <ListGroup.Item key={report.job_title.uuid}>
+                            <div className="d-flex">
+                                <span>{report.job_title.title}</span>
+                                <span className={"ms-auto"}>
+                                    {report.reports[0].increase > 0 && (
+                                    <Badge bg={"primary"} className={"me-1"}>
+                                        &#8679;&nbsp;{report.reports[0].increase}%
+                                    </Badge>
+                                    )}
+                                    <strong>
+                                        ${report.reports[0].daily}/{report.reports[0].guarantee}&nbsp;
+                                    </strong>
+                                        (${report.reports[0].hourly.toFixed(2)}/hr)
+                                </span>
+                            </div>
+                        </ListGroup.Item>
+                    ))}
                 </ListGroup>
             </Card.Body>
 
