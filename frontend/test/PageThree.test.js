@@ -52,14 +52,11 @@ describe("PageThree tests", () => {
             })
         );
     });
-    test("Submit button text changes and causes redirect to Success page", async () => {
+    test("Submit button causes redirect to Success page", async () => {
         render(<PageThree />);
 
         const submitButton = screen.getByRole("button", { name: /submit/i });
         userEvent.click(submitButton);
-
-        const sending = await screen.findByText(/sending.../i);
-        expect(sending).toBeInTheDocument();
 
         await waitFor(() =>
             expect(mockedUsedNavigate).toHaveBeenCalledWith(`/success`, {
