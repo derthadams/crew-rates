@@ -14,7 +14,11 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from rates.models import Season # noqa
+
 from .api_config import *
+from .postgres import ArraySubquery
+from .queries import job_report_sq
 from .serializers import RawRateReportSerializer, RateReportSerializer, JobTitleSerializer, \
     ShowSerializer, CompanySerializer, NetworkSerializer, SeasonSerializer
 
@@ -223,22 +227,43 @@ class RateReportList(APIView):
 class SeasonList(APIView):
 
     def get(self, request): # noqa
-        season_model = apps.get_model('rates', 'Season')
         date_range = request.GET.get('date_range', '')
         if date_range.isnumeric():
             date_range = int(date_range)
         union_select = request.GET.get('union_select', '')
         genre_select = request.GET.get('genre_select', '')
 
-        date_flag = '1' if date_range > 0 else '0'
-        union_flag = '1' if union_select != 'AA' else '0'
-        genre_flag = '1' if genre_select != 'AA' else '0'
+        results = Season.objects.all()
 
-        duration = timedelta(days=(30 * date_range))
-        date_limit = date.today() - duration
-        results = season_model.objects.raw(season_list, [date_flag, date_flag, date_limit,
-                                                         union_flag, union_flag, union_select,
-                                                         genre_flag, genre_flag, genre_select])
+        if date_range:
+            duration = timedelta(days=(30 * date_range))
+            date_limit = date.today() - duration
+            results = results.filter(start_date__gte=date_limit)
+
+        if union_select != 'AA':
+            results = results.filter(union__exact=union_select)
+
+        if genre_select != 'AA':
+            results = results.filter(genre__exact=genre_select)
+
+        results = (results.annotate(job_reports=ArraySubquery(job_report_sq.values('job_report')))
+                          .values('uuid',
+                                  'start_date',
+                                  'end_date',
+                                  'genre',
+                                  'job_reports',
+                                  season_title=F('title'),
+                                  union_status=F('union'),
+                                  show_title=F('show__title'),
+                                  show_uuid=F('show__uuid'),
+                                  network_name=F('network__name'),
+                                  network_uuid=F('network__uuid'),
+                                  company_list=JSONBAgg(JSONObject(name='companies__name',
+                                                                   uuid='companies__uuid'),
+                                                        ordering='companies__name')
+                                  ).order_by('-start_date')
+                   )
+
         serializer = SeasonSerializer(results, many=True)
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)

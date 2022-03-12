@@ -55,8 +55,12 @@ class SeasonSerializer(serializers.Serializer): # noqa
     show_uuid = serializers.UUIDField()
     network_name = serializers.CharField()
     network_uuid = serializers.UUIDField()
-    company_list = JSONLoadsField()
-    job_reports = JSONLoadsField()
+    company_list = serializers.ListField(
+        child=serializers.JSONField()
+    )
+    job_reports = serializers.ListField(
+        child=serializers.JSONField()
+    )
 
 
 class JobTitleSerializer(serializers.Serializer): # noqa

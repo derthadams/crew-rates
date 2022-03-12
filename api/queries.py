@@ -1,9 +1,10 @@
 from django.contrib.postgres.aggregates import JSONBAgg
-from django.contrib.postgres.expressions import ArraySubquery # noqa
 from django.db.models import F, OuterRef
 from django.db.models.functions import JSONObject
 
 from rates.models import Season # noqa
+
+from .postgres import ArraySubquery
 
 """
 Do filtering by:
@@ -29,7 +30,8 @@ job_report_sq = (Season.objects
                                     daily='ratereport__final_daily',
                                     hourly='ratereport__final_hourly',
                                     guarantee='ratereport__final_guarantee',
-                                    increase='ratereport__percent_increase')))))
+                                    increase='ratereport__percent_increase'),
+                                                ordering='ratereport__final_hourly'))))
 
 season_summary = (Season.objects
                         .annotate(job_reports=ArraySubquery(job_report_sq.values('job_report')))
@@ -46,4 +48,6 @@ season_summary = (Season.objects
                                 network_uuid=F('network__uuid'),
                                 company_list=JSONBAgg(JSONObject(name='companies__name',
                                                                  uuid='companies__uuid'),
-                                                      ordering='companies__name')))
+                                                      ordering='companies__name')
+                                ).order_by('-start_date')
+                  )
