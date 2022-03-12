@@ -1,12 +1,10 @@
 from datetime import date, timedelta
-import json
 import requests
-from uuid import UUID
 
 from django.apps import apps
 from django.contrib.postgres.aggregates import JSONBAgg
-from django.db.models import F, DecimalField
-from django.db.models.functions import Cast, JSONObject
+from django.db.models import F
+from django.db.models.functions import JSONObject
 from django.conf import settings
 from django.contrib.postgres.search import TrigramSimilarity
 
@@ -19,11 +17,10 @@ from rates.models import Season # noqa
 from .api_config import *
 from .postgres import ArraySubquery
 from .queries import job_report_sq
-from .serializers import RawRateReportSerializer, RateReportSerializer, JobTitleSerializer, \
+from .serializers import RawRateReportSerializer, JobTitleSerializer, \
     ShowSerializer, CompanySerializer, NetworkSerializer, SeasonSerializer
 
 from rates.admin import _approve_raw_rate_report # noqa
-from .sql import season_list
 
 
 class LocationAutocompleteAPIView(APIView):
@@ -162,66 +159,6 @@ class AddRate(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class RateReportList(APIView):
-    # genre_options = dict(apps.get_model('rates', 'Season').GENRE_CHOICES)
-    # union_options = dict(apps.get_model('rates', 'Season').UNION_CHOICES)
-
-    def get(self, request): # noqa
-        rate_report = apps.get_model('rates', 'RateReport')
-        date_range = request.GET.get('date_range', '')
-        if date_range.isnumeric():
-            date_range = int(date_range)
-        union_select = request.GET.get('union_select', '')
-        genre_select = request.GET.get('genre_select', '')
-
-        results = rate_report.objects.all()
-
-        if date_range:
-            duration = timedelta(days=(30 * date_range))
-            date_limit = date.today() - duration
-            results = results.filter(season__start_date__gte=date_limit)
-
-        if union_select != 'AA':
-            results = results.filter(season__union__exact=union_select)
-
-        if genre_select != 'AA':
-            results = results.filter(season__genre__exact=genre_select)
-
-        results = results.values(
-            'uuid',
-            'percent_increase',
-            'season__start_date',
-            'season__end_date',
-            guarantee=F('final_guarantee'),
-            daily=Cast('final_daily', output_field=DecimalField(
-                decimal_places=0,
-                max_digits=8)),
-            hourly=Cast('final_hourly', output_field=DecimalField(
-                decimal_places=2,
-                max_digits=7)),
-            union_status=F('season__union'),
-            show_title=F('season__title'),
-            show_uuid=F('season__show__uuid'),
-            season_number=F('season__number'),
-            genre=F('season__genre'),
-            job_title_name=F('job_title__title'),
-            job_title_uuid=F('job_title__uuid'),
-            network=F('season__network__name'),
-            network_uuid=F('season__network__uuid'),
-            companies=JSONBAgg(JSONObject(name='season__companies__name',
-                                          uuid='season__companies__uuid'),
-                               ordering='season__companies__name')
-        ).order_by('-season__start_date')
-        # companies=ArrayAgg('season__companies__name')
-
-        serializer = RateReportSerializer(results, many=True)
-        # if serializer.is_valid():
-        data = serializer.data
-        return Response(data, status=status.HTTP_200_OK)
-        # else:
-        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SeasonList(APIView):
