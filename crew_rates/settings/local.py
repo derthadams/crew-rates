@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'sslserver',
     'rest_framework',
     'captcha',
+    'debug_toolbar',
 ]
 
 SITE_ID = 1

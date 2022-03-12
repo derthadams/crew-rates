@@ -32,6 +32,7 @@ LOGIN_REDIRECT_URL = '/'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -184,3 +185,8 @@ RECAPTCHA_REQUIRED_SCORE = 0.85
 GRAPPELLI_ADMIN_TITLE = "Crew Rates Admin"
 
 AUTO_APPROVE_RATE_REPORTS = True
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+    'localhost'
+]

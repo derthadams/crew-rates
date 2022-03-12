@@ -27,4 +27,5 @@ urlpatterns = [
     path('tos/', flatpage_views.flatpage, {'url': '/tos/'}, name='tos'),
     path('privacy/', flatpage_views.flatpage, {'url': '/privacy/'}, name='privacy'),
     path('invitations/', include('invitations.urls', namespace='invitations')),
+    path('__debug__', include('debug_toolbar.urls')),
 ]
