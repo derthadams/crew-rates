@@ -3,7 +3,7 @@ import requests
 
 from django.apps import apps
 from django.contrib.postgres.aggregates import JSONBAgg
-from django.db.models import F
+from django.db.models import Exists, F, OuterRef, Value
 from django.db.models.functions import JSONObject
 from django.conf import settings
 from django.contrib.postgres.search import TrigramSimilarity
@@ -12,13 +12,13 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from rates.models import Season # noqa
+from rates.models import Company, JobTitle, Network, RateReport, Season, Show # noqa
 
 from .api_config import *
 from .postgres import ArraySubquery
 from .queries import job_report_sq
 from .serializers import RawRateReportSerializer, JobTitleSerializer, \
-    ShowSerializer, CompanySerializer, NetworkSerializer, SeasonSerializer
+    ShowSerializer, CompanySerializer, NetworkSerializer, SeasonSerializer, FilterSearchSerializer
 
 from rates.admin import _approve_raw_rate_report # noqa
 
@@ -204,3 +204,42 @@ class SeasonList(APIView):
         serializer = SeasonSerializer(results, many=True)
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)
+
+
+class FilterSearchView(APIView):
+
+    def get(self, request): # noqa
+        q = request.GET.get('q', '')
+        if q:
+            show_matches = (Show.objects.filter(title__icontains=q).filter(Exists(
+                RateReport.objects.filter(season__show=OuterRef('pk'))))
+                            .aggregate(options=JSONBAgg(JSONObject(
+                                                label='title', type=Value('Show'), value='uuid'),
+                                                ordering='title')))
+
+            company_matches = (Company.objects.filter(name__icontains=q).filter(Exists(
+                RateReport.objects.filter(season__companies=OuterRef('pk'))))
+                                  .aggregate(options=JSONBAgg(JSONObject(
+                                            label='name', type=Value('Company'), value='uuid'),
+                                            ordering='name')))
+
+            network_matches = (Network.objects.filter(name__icontains=q).filter(Exists(
+                RateReport.objects.filter(season__network=OuterRef('pk'))))
+                               .aggregate(options=JSONBAgg(JSONObject(
+                                         label='name', type=Value('Network'), value='uuid'),
+                                         ordering='name')))
+
+            job_title_matches = (JobTitle.objects.filter(title__icontains=q).filter(Exists(
+                RateReport.objects.filter(job_title=OuterRef('pk'))))
+                                  .aggregate(options=JSONBAgg(JSONObject(
+                                            label='title', type=Value('Job Title'), value='uuid'),
+                                            ordering='title')))
+
+            all_matches = (show_matches['options'] + company_matches['options'] +
+                           network_matches['options'] + job_title_matches['options'])
+            all_matches.sort(key=lambda option: option['label'])
+
+            data = FilterSearchSerializer(all_matches, many=True).data
+            return Response(data, status=status.HTTP_200_OK)
+        else:
+            return Response([], status=status.HTTP_200_OK)

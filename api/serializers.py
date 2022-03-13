@@ -41,6 +41,13 @@ class CompanySerializer(serializers.Serializer):  # noqa
     value = serializers.UUIDField()
     label = serializers.CharField(max_length=128)
 
+
 class NetworkSerializer(serializers.Serializer):  # noqa
     value = serializers.UUIDField()
     label = serializers.CharField(max_length=128)
+
+
+class FilterSearchSerializer(serializers.Serializer): # noqa
+    value = serializers.UUIDField()
+    label = serializers.CharField()
+    type = serializers.CharField()
