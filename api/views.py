@@ -169,6 +169,8 @@ class SeasonList(APIView):
             date_range = int(date_range)
         union_select = request.GET.get('union_select', '')
         genre_select = request.GET.get('genre_select', '')
+        filter_uuid = request.GET.get('filter_uuid', '')
+        filter_type = request.GET.get('filter_type', '')
 
         results = Season.objects.all()
 
@@ -182,6 +184,18 @@ class SeasonList(APIView):
 
         if genre_select != 'AA':
             results = results.filter(genre__exact=genre_select)
+
+        if filter_uuid and filter_type:
+            if filter_type == "Show":
+                results = results.filter(show__uuid=filter_uuid)
+            elif filter_type == "Company":
+                results = results.filter(companies__uuid=filter_uuid)
+            elif filter_type == "Network":
+                results = results.filter(network__uuid=filter_uuid)
+            else:
+                results = results.filter(Exists(JobTitle.objects
+                                                .filter(uuid=filter_uuid,
+                                                        ratereport__season=OuterRef('pk'))))
 
         results = (results.annotate(job_reports=ArraySubquery(job_report_sq.values('job_report')))
                           .values('uuid',

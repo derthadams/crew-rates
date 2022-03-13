@@ -46,7 +46,8 @@ export default function App() {
                 date_range: dateRange,
                 union_select: unionSelect,
                 genre_select: genreSelect,
-                filter: filter
+                filter_uuid: filter ? filter.value : "",
+                filter_type: filter ? filter.type : ""
             }
         }).then((response) => {
             const initialData = response.data;
