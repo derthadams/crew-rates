@@ -18,7 +18,7 @@ createStore(dataDefault, {});
 function Survey() {
     return (
         <StateMachineProvider>
-            {process.env.NODE_ENV !== 'production' && <DevTool/>}
+            {/*{process.env.NODE_ENV !== 'production' && <DevTool/>}*/}
             {/*<BrowserRouter basename="/add-rate">*/}
             <MemoryRouter>
                 <Routes>
