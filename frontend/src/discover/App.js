@@ -8,6 +8,7 @@ export default function App() {
     const [dateRange, setDateRange] = useState(0);
     const [unionSelect, setUnionSelect] = useState('AA');
     const [genreSelect, setGenreSelect] = useState('AA');
+    const [filter, setFilter] = useState({});
 
     const handleDateChange = (event) => {
         setDateRange(parseInt(event.target.value));
@@ -19,6 +20,10 @@ export default function App() {
 
     const handleGenreChange = (event) => {
         setGenreSelect(event.target.value);
+    }
+
+    const handleFilterChange = (newValue) => {
+        setFilter(newValue);
     }
 
     const genre = JSON.parse(
@@ -40,7 +45,8 @@ export default function App() {
             params: {
                 date_range: dateRange,
                 union_select: unionSelect,
-                genre_select: genreSelect
+                genre_select: genreSelect,
+                filter: filter
             }
         }).then((response) => {
             const initialData = response.data;
@@ -50,7 +56,7 @@ export default function App() {
 
     useEffect(() => {
         getInitialData();
-    }, [dateRange, unionSelect, genreSelect]);
+    }, [dateRange, unionSelect, genreSelect, filter]);
 
     return (
         <div>
@@ -61,7 +67,10 @@ export default function App() {
                             unionSelect={unionSelect}
                             handleUnionChange={handleUnionChange}
                             genreSelect={genreSelect}
-                            handleGenreChange={handleGenreChange}/>
+                            handleGenreChange={handleGenreChange}
+                            filter={filter}
+                            handleFilterChange={handleFilterChange}
+                            searchURL={apiUrls["filter-search"]}/>
             <ReportContainer reports={reports}
                              genre={genre}
                              unionStatus={unionStatus} />

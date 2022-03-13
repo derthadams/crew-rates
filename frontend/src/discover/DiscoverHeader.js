@@ -5,21 +5,59 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 
-import Select from "react-select";
+import AsyncSelect from "react-select/async";
+
+import axios from 'axios';
 
 import "./discover-header.css";
+
+const MINIMUM_QUERY_LENGTH = 2;
+
+const badgeColors = {
+    "Show": "primary",
+    "Job Title": "success",
+    "Company": "dark",
+    "Network": "secondary"
+}
 
 export default function DiscoverHeader ({ genreOptions, unionOptions,
                                             dateRange, handleDateChange,
                                             unionSelect, handleUnionChange,
-                                            genreSelect, handleGenreChange}) {
+                                            genreSelect, handleGenreChange,
+                                            handleFilterChange,
+                                            searchURL}) {
+    const asyncOptions = (inputValue) =>
+        inputValue.length >= MINIMUM_QUERY_LENGTH &&
+        axios.get(searchURL, { params:{ q: inputValue }})
+                .then((response) => response.data)
+
+
+    const formatLabel = (option) => {
+        const optionHTML = `<span>${option.label}</span>
+                            <span class="badge rounded-pill p-1 mt-1 mb-1 
+                                         bg-${badgeColors[option.type]}">
+                                <small>${option.type}</small>
+                            </span>`
+
+        return (
+            <span dangerouslySetInnerHTML={{ __html: optionHTML}}
+                  className={"option-container"}
+            />
+        )
+    }
+
     return (
         <div className={"sticky-top header-wrapper"}>
             <div className={"bg-light pt-1 pb-2"}>
                 <div className="">
                     <Row className={"discover-nav-row"}>
                         <Col md={6}>
-                            <Select
+                            <AsyncSelect
+                                components={{dropdownIndicator: null}}
+                                formatOptionLabel={formatLabel}
+                                isClearable
+                                loadOptions={asyncOptions}
+                                onChange={handleFilterChange}
                                 placeholder={"Filter by show, company, network, job title"}
                             />
                         </Col>

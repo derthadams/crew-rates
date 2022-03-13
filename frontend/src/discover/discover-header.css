@@ -10,3 +10,8 @@
 .form-select {
     -webkit-appearance: none;
 }
+
+.option-container {
+    display: flex;
+    justify-content: space-between;
+}
