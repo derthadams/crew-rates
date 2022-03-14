@@ -188,11 +188,9 @@ class SeasonList(APIView):
         if filter_uuid and filter_type:
             if filter_type == "Show":
                 results = results.filter(show__uuid=filter_uuid)
-            elif filter_type == "Company":
-                results = results.filter(companies__uuid=filter_uuid)
             elif filter_type == "Network":
                 results = results.filter(network__uuid=filter_uuid)
-            else:
+            elif filter_type == "Job Title":
                 results = results.filter(Exists(JobTitle.objects
                                                 .filter(uuid=filter_uuid,
                                                         ratereport__season=OuterRef('pk'))))
@@ -214,6 +212,9 @@ class SeasonList(APIView):
                                                         ordering='companies__name')
                                   ).order_by('-start_date')
                    )
+
+        if filter_type and filter_type == "Company":
+            results = results.filter(companies__uuid=filter_uuid)
 
         serializer = SeasonSerializer(results, many=True)
         data = serializer.data
