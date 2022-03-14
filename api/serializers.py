@@ -27,14 +27,23 @@ class SeasonSerializer(serializers.Serializer): # noqa
     )
 
 
+class HistogramSerializer(serializers.Serializer): # noqa
+    bins = serializers.JSONField()
+    bin_size = serializers.IntegerField()
+    med = serializers.FloatField()
+
+
+class SummarySerializer(serializers.Serializer): # noqa
+    histogram = HistogramSerializer()
+    statistics = serializers.JSONField()
+    rate_count = serializers.IntegerField()
+
+
 class FeedSerializer(serializers.Serializer): # noqa
     reports = serializers.ListField(
         child=SeasonSerializer()
     )
-    histogram = serializers.JSONField()
-    statistics = serializers.JSONField()
-    bin_size = serializers.IntegerField()
-    rate_count = serializers.IntegerField()
+    summary = SummarySerializer()
 
 
 class JobTitleSerializer(serializers.Serializer): # noqa

@@ -258,10 +258,15 @@ class SeasonList(APIView):
 
         feed = {
             'reports': results,
-            'histogram': histogram,
-            'statistics': statistics,
-            'bin_size': self.BIN_SIZE,
-            'rate_count': rate_count
+            'summary': {
+                'histogram': {
+                    'bins': histogram,
+                    'bin_size': self.BIN_SIZE,
+                    'med': statistics["med"] if statistics else 0
+                },
+                'statistics': statistics,
+                'rate_count': rate_count
+            }
         }
 
         serializer = FeedSerializer(feed)
