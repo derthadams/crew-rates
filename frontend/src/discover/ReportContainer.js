@@ -1,11 +1,13 @@
 import React from "react";
 import "./report-container.css";
 import RateReport from "./RateReport";
+import Summary from './Summary';
 
 export default function ReportContainer({ reports, genre, unionStatus, genreSelect, unionSelect }) {
     return (
         <div className={"report-container d-flex py-1"}>
             <div id={"content-inner"}>
+                <Summary/>
                 {reports.length === 0 &&
                     <div className={"text-center mt-5"}>
                         <h3>No results</h3>
