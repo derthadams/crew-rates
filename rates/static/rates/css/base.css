@@ -22,5 +22,6 @@ a.no-underline:focus {
 
 .show > .nav-link,
 .nav-link.active {
+    font-weight: bold;
     color: rgba(0, 0, 0, 1)!important;
 }
