@@ -383,7 +383,7 @@ function PageOne() {
                 {/*Selected option list is state.selectValue*/}
                 {/*selectValue is always a list, even if the select element is not multiple*/}
 
-            <Row className="mt-4">
+            <Row className="mt-2">
                 <Col xs={4} sm={6}>
                 </Col>
                 <Col xs={4} sm={3}>
