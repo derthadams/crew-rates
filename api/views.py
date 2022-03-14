@@ -17,7 +17,7 @@ from rates.models import Company, JobTitle, Network, RateReport, Season, Show # 
 from .api_config import *
 from .postgres import ArraySubquery, Median
 from .serializers import RawRateReportSerializer, JobTitleSerializer, \
-    ShowSerializer, CompanySerializer, NetworkSerializer, SeasonSerializer, FilterSearchSerializer
+    ShowSerializer, CompanySerializer, NetworkSerializer, FeedSerializer, FilterSearchSerializer
 
 from rates.admin import _approve_raw_rate_report # noqa
 
@@ -253,7 +253,14 @@ class SeasonList(APIView):
         if filter_type and filter_type == "Company":
             results = results.filter(companies__uuid=filter_uuid)
 
-        serializer = SeasonSerializer(results, many=True)
+        feed = {
+            'reports': results,
+            'histogram': histogram,
+            'statistics': statistics,
+        }
+
+        serializer = FeedSerializer(feed)
+
         data = serializer.data
         return Response(data, status=status.HTTP_200_OK)
 

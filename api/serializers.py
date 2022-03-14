@@ -27,6 +27,14 @@ class SeasonSerializer(serializers.Serializer): # noqa
     )
 
 
+class FeedSerializer(serializers.Serializer): # noqa
+    reports = serializers.ListField(
+        child=SeasonSerializer()
+    )
+    histogram = serializers.JSONField()
+    statistics = serializers.JSONField()
+
+
 class JobTitleSerializer(serializers.Serializer): # noqa
     value = serializers.UUIDField()
     label = serializers.CharField(max_length=128)
