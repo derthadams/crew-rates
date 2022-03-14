@@ -174,6 +174,7 @@ class SeasonList(APIView):
 
         histogram = {}
         statistics = {}
+        rate_count = 0
 
         results = Season.objects.all()
 
@@ -210,6 +211,8 @@ class SeasonList(APIView):
                              .order_by('bin_floor').annotate(count=Count('bin_floor'))
                              .aggregate(bins=JSONBAgg(JSONObject(bin_floor='bin_floor',
                                                                  count='count'))))['bins']
+
+                rate_count = filtered_rate_reports.count()
 
                 statistics = filtered_rate_reports.aggregate(min=Min('ratereport__final_hourly'),
                                                              med=Median('ratereport__final_hourly'),
@@ -257,6 +260,8 @@ class SeasonList(APIView):
             'reports': results,
             'histogram': histogram,
             'statistics': statistics,
+            'bin_size': self.BIN_SIZE,
+            'rate_count': rate_count
         }
 
         serializer = FeedSerializer(feed)

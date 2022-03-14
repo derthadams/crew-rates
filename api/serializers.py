@@ -33,6 +33,8 @@ class FeedSerializer(serializers.Serializer): # noqa
     )
     histogram = serializers.JSONField()
     statistics = serializers.JSONField()
+    bin_size = serializers.IntegerField()
+    rate_count = serializers.IntegerField()
 
 
 class JobTitleSerializer(serializers.Serializer): # noqa
