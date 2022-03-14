@@ -208,7 +208,7 @@ class SeasonList(APIView):
                                             increase='ratereport__percent_increase'),
                                             ordering='ratereport__final_hourly'))))
 
-        if filter_type == "Job Title":
+        if filter_type and filter_type == "Job Title":
             job_report_sq = job_report_sq.filter(job_report__job_title__uuid=filter_uuid)
 
         results = (results.annotate(job_reports=ArraySubquery(job_report_sq.values('job_report')))
