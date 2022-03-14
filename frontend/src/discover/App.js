@@ -51,7 +51,6 @@ export default function App() {
             }
         }).then((response) => {
             const initialData = response.data;
-            console.log(initialData)
             setFeed(initialData);
         });
     };

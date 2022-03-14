@@ -2,7 +2,7 @@ import React from 'react';
 import { BarElement, CategoryScale, Chart as ChartJS,  LinearScale  } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-export default function Histogram ({ histogramData, medianRate, binSize }) {
+export default function Histogram ({ histogram }) {
     const FILL_COLOR = '#AED6F1';
     const ACCENT_COLOR = '#0D6EFD';
     const options = {
@@ -35,21 +35,22 @@ export default function Histogram ({ histogramData, medianRate, binSize }) {
         }
     }
 
-    const transformData = (data) => {
-        const lastIndex = data.length - 1
-        const minBin = data[0].bin_floor;
-        const maxBin = data[lastIndex].bin_floor;
+    const transformData = (histogram) => {
+        const { bins, bin_size, med } = histogram;
+        const lastBinIndex = bins.length - 1
+        const minBin = bins[0].bin_floor;
+        const maxBin = bins[lastBinIndex].bin_floor;
 
         let labels = [];
         let dataOut = [];
         let backgroundColor = [];
 
         let dataIndex = 0;
-        for (let bin = minBin; bin <= maxBin; bin += binSize) {
+        for (let bin = minBin; bin <= maxBin; bin += bin_size) {
             labels.push(bin);
-            if(data[dataIndex].bin_floor === bin) {
-                dataOut.push(data[dataIndex].count);
-                if(medianRate >= bin && medianRate < bin + binSize) {
+            if(bins[dataIndex].bin_floor === bin) {
+                dataOut.push(bins[dataIndex].count);
+                if(med >= bin && med < bin + bin_size) {
                     backgroundColor.push(ACCENT_COLOR);
                 } else {
                     backgroundColor.push(FILL_COLOR);
@@ -72,7 +73,7 @@ export default function Histogram ({ histogramData, medianRate, binSize }) {
 
     }
 
-    const chartData = transformData(histogramData);
+    const chartData = transformData(histogram);
 
     ChartJS.register(BarElement, CategoryScale, LinearScale);
 

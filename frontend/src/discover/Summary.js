@@ -6,15 +6,14 @@ import Card from 'react-bootstrap/Card';
 import Histogram from "./Histogram";
 import './summary.css';
 
-export default function Summary({ histogramData, statistics, binSize, genre,
-                                  union_status, heading, rateCount }) {
+export default function Summary({ summary, genre, union_status, heading }) {
     return (
         <Card className={"mb-1"}>
             <Card.Body>
                 <Card.Title className={"summary-heading d-flex mb-0"}>
                     <span>{heading}</span>
                     <span className={"ms-auto median-rate"}>
-                        ${statistics.med.toFixed(2)}/hr
+                        ${summary.statistics.med.toFixed(2)}/hr
                     </span>
                 </Card.Title>
 
@@ -37,18 +36,18 @@ export default function Summary({ histogramData, statistics, binSize, genre,
                     </span>
 
                     <span className={"ms-auto"}>
-                        <small>{rateCount} rates submitted</small>
+                        <small>{summary.rate_count} rates submitted</small>
                     </span>
                 </div>
             </Card.Body>
             <div className={"px-3"}>
-                <Histogram histogramData={histogramData} medianRate={statistics.med}
-                           binSize={binSize}/>
+                <Histogram histogram={summary.histogram}/>
             </div>
             <div className={"px-3 mb-3"}>
                 <Card.Text className={"d-flex mb-n1"}>
-                    <span>${statistics.min.toFixed(2)}</span>
-                    <span className={"ms-auto"}>${statistics.max.toFixed(2)}</span>
+                    <span>${summary.statistics.min.toFixed(2)}</span>
+                    <span className={"ms-auto"}>
+                        ${summary.statistics.max.toFixed(2)}</span>
                 </Card.Text>
                 <div className={"d-flex"}>
                     <span>

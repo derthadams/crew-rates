@@ -10,14 +10,11 @@ export default function ReportContainer({ feed, genre, unionStatus, genreSelect,
     return (
         <div className={"report-container d-flex py-1"}>
             <div id={"content-inner"}>
-                {feed.rate_count >= 3 &&
-                <Summary histogramData={feed.histogram}
-                         statistics={feed.statistics}
-                         binSize={feed.bin_size}
+                {feed.summary && feed.summary.rate_count >= 3 &&
+                <Summary summary={feed.summary}
                          genre={summaryGenre}
                          union_status={summaryUnion}
-                         heading={feed.reports[0].job_reports[0].job_title.title}
-                         rateCount={feed.rate_count}/>}
+                         heading={feed.reports[0].job_reports[0].job_title.title}/>}
                 {feed.reports && feed.reports.length === 0 &&
                     <div className={"text-center mt-5"}>
                         <h3>No results</h3>
