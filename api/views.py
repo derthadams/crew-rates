@@ -3,8 +3,8 @@ import requests
 
 from django.apps import apps
 from django.contrib.postgres.aggregates import JSONBAgg
-from django.db.models import Exists, F, OuterRef, Value
-from django.db.models.functions import JSONObject
+from django.db.models import Count, Exists, F, IntegerField, OuterRef, Value
+from django.db.models.functions import Cast, Floor, JSONObject
 from django.conf import settings
 from django.contrib.postgres.search import TrigramSimilarity
 
@@ -161,6 +161,7 @@ class AddRate(APIView):
 
 
 class SeasonList(APIView):
+    BIN_SIZE = 5
 
     def get(self, request): # noqa
         date_range = request.GET.get('date_range', '')
@@ -184,6 +185,9 @@ class SeasonList(APIView):
         if genre_select != 'AA':
             results = results.filter(genre__exact=genre_select)
 
+        # Grab results and put in another variable for histogram-making
+        summary_base = results
+
         if filter_uuid and filter_type:
             if filter_type == "Show":
                 results = results.filter(show__uuid=filter_uuid)
@@ -193,6 +197,16 @@ class SeasonList(APIView):
                 results = results.filter(Exists(JobTitle.objects
                                                 .filter(uuid=filter_uuid,
                                                         ratereport__season=OuterRef('pk'))))
+
+                histogram = (summary_base.filter(ratereport__job_title__uuid=filter_uuid)
+                             .annotate(bin_floor=Cast(
+                                            Floor(F('ratereport__final_hourly') /
+                                                  self.BIN_SIZE) * self.BIN_SIZE,
+                                       output_field=IntegerField())).values('bin_floor')
+                             .order_by('bin_floor').annotate(count=Count('bin_floor'))
+                             .aggregate(bins=JSONBAgg(JSONObject(bin_floor='bin_floor',
+                                                                 count='count'))))['bins']
+                print(histogram)
 
         job_report_sq = (Season.objects
                                .filter(id=OuterRef('pk'))
