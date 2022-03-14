@@ -16,7 +16,6 @@ from rates.models import Company, JobTitle, Network, RateReport, Season, Show # 
 
 from .api_config import *
 from .postgres import ArraySubquery
-from .queries import job_report_sq
 from .serializers import RawRateReportSerializer, JobTitleSerializer, \
     ShowSerializer, CompanySerializer, NetworkSerializer, SeasonSerializer, FilterSearchSerializer
 
@@ -194,6 +193,23 @@ class SeasonList(APIView):
                 results = results.filter(Exists(JobTitle.objects
                                                 .filter(uuid=filter_uuid,
                                                         ratereport__season=OuterRef('pk'))))
+
+        job_report_sq = (Season.objects
+                               .filter(id=OuterRef('pk'))
+                               .annotate(
+                                    job_report=JSONObject(
+                                        job_title=JSONObject(
+                                            title='ratereport__job_title__title',
+                                            uuid='ratereport__job_title__uuid'),
+                                        reports=JSONBAgg(JSONObject(
+                                            daily='ratereport__final_daily',
+                                            hourly='ratereport__final_hourly',
+                                            guarantee='ratereport__final_guarantee',
+                                            increase='ratereport__percent_increase'),
+                                            ordering='ratereport__final_hourly'))))
+
+        if filter_type == "Job Title":
+            job_report_sq = job_report_sq.filter(job_report__job_title__uuid=filter_uuid)
 
         results = (results.annotate(job_reports=ArraySubquery(job_report_sq.values('job_report')))
                           .values('uuid',
