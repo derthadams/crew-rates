@@ -4,7 +4,7 @@ import ReportContainer from "./ReportContainer";
 import axios from "axios";
 
 export default function App() {
-    const [feed, setFeed] = useState([]);
+    const [feed, setFeed] = useState({});
     const [dateRange, setDateRange] = useState(0);
     const [unionSelect, setUnionSelect] = useState('AA');
     const [genreSelect, setGenreSelect] = useState('AA');
@@ -73,7 +73,7 @@ export default function App() {
                             filter={filter}
                             handleFilterChange={handleFilterChange}
                             searchURL={apiUrls["filter-search"]}/>
-            <ReportContainer reports={feed.reports}
+            <ReportContainer reports={feed.reports ? feed.reports : []}
                              genre={genre}
                              unionStatus={unionStatus}
                              genreSelect={genreSelect}
