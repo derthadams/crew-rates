@@ -75,7 +75,9 @@ export default function App() {
                             searchURL={apiUrls["filter-search"]}/>
             <ReportContainer reports={feed.reports}
                              genre={genre}
-                             unionStatus={unionStatus} />
+                             unionStatus={unionStatus}
+                             genreSelect={genreSelect}
+                             unionSelect={unionSelect}/>
         </div>
     );
 }

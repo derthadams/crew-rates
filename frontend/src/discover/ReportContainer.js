@@ -2,7 +2,7 @@ import React from "react";
 import "./report-container.css";
 import RateReport from "./RateReport";
 
-export default function ReportContainer({ reports, unionStatus, genre }) {
+export default function ReportContainer({ reports, genre, unionStatus, genreSelect, unionSelect }) {
     return (
         <div className={"report-container d-flex py-1"}>
             <div id={"content-inner"}>
