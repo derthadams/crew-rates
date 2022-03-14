@@ -73,7 +73,7 @@ export default function App() {
                             filter={filter}
                             handleFilterChange={handleFilterChange}
                             searchURL={apiUrls["filter-search"]}/>
-            <ReportContainer reports={feed.reports ? feed.reports : []}
+            <ReportContainer feed={feed}
                              genre={genre}
                              unionStatus={unionStatus}
                              genreSelect={genreSelect}

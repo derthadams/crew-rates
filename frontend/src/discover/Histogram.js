@@ -2,9 +2,9 @@ import React from 'react';
 import { BarElement, CategoryScale, Chart as ChartJS,  LinearScale  } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-export default function Histogram () {
+export default function Histogram ({ histogramData, medianRate, binSize }) {
     const FILL_COLOR = '#AED6F1';
-    const ACCENT_COLOR = '#0d6efd';
+    const ACCENT_COLOR = '#0D6EFD';
     const options = {
         responsive: true,
         scales: {
@@ -35,23 +35,51 @@ export default function Histogram () {
         }
     }
 
-    const data = {
-        labels: [50, 55, 60, 65, 70, 75, 80, 85, 90, 95],
-        datasets: [
-            {
-                data: [25, 8, 11, 0, 7, 0, 0, 5, 3, 4],
-                backgroundColor: [FILL_COLOR, ACCENT_COLOR, FILL_COLOR, FILL_COLOR, FILL_COLOR,
-                    FILL_COLOR, FILL_COLOR, FILL_COLOR, FILL_COLOR, FILL_COLOR]
+    const transformData = (data) => {
+        const lastIndex = data.length - 1
+        const minBin = data[0].bin_floor;
+        const maxBin = data[lastIndex].bin_floor;
+
+        let labels = [];
+        let dataOut = [];
+        let backgroundColor = [];
+
+        let dataIndex = 0;
+        for (let bin = minBin; bin <= maxBin; bin += binSize) {
+            labels.push(bin);
+            if(data[dataIndex].bin_floor === bin) {
+                dataOut.push(data[dataIndex].count);
+                if(medianRate >= bin && medianRate < bin + binSize) {
+                    backgroundColor.push(ACCENT_COLOR);
+                } else {
+                    backgroundColor.push(FILL_COLOR);
+                }
+                dataIndex += 1;
+            } else {
+                dataOut.push(0);
             }
-        ]
+        }
+
+        return {
+            labels: labels,
+            datasets: [
+                {
+                    data: dataOut,
+                    backgroundColor: backgroundColor
+                }
+            ]
+        }
+
     }
+
+    const chartData = transformData(histogramData);
 
     ChartJS.register(BarElement, CategoryScale, LinearScale);
 
     return (
             <Bar
                     options={options}
-                    data={data}
+                    data={chartData}
                     type={'bar'}
                     height={80}
             />
