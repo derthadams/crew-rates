@@ -3,7 +3,7 @@ import requests
 
 from django.apps import apps
 from django.contrib.postgres.aggregates import JSONBAgg
-from django.db.models import Count, Exists, F, IntegerField, OuterRef, Value
+from django.db.models import Count, Exists, F, IntegerField, Min, Max, OuterRef, Value
 from django.db.models.functions import Cast, Floor, JSONObject
 from django.conf import settings
 from django.contrib.postgres.search import TrigramSimilarity
@@ -15,7 +15,7 @@ from rest_framework.views import APIView
 from rates.models import Company, JobTitle, Network, RateReport, Season, Show # noqa
 
 from .api_config import *
-from .postgres import ArraySubquery
+from .postgres import ArraySubquery, Median
 from .serializers import RawRateReportSerializer, JobTitleSerializer, \
     ShowSerializer, CompanySerializer, NetworkSerializer, SeasonSerializer, FilterSearchSerializer
 
@@ -172,6 +172,9 @@ class SeasonList(APIView):
         filter_uuid = request.GET.get('filter_uuid', '')
         filter_type = request.GET.get('filter_type', '')
 
+        histogram = {}
+        statistics = {}
+
         results = Season.objects.all()
 
         if date_range:
@@ -185,7 +188,6 @@ class SeasonList(APIView):
         if genre_select != 'AA':
             results = results.filter(genre__exact=genre_select)
 
-        # Grab results and put in another variable for histogram-making
         summary_base = results
 
         if filter_uuid and filter_type:
@@ -198,7 +200,9 @@ class SeasonList(APIView):
                                                 .filter(uuid=filter_uuid,
                                                         ratereport__season=OuterRef('pk'))))
 
-                histogram = (summary_base.filter(ratereport__job_title__uuid=filter_uuid)
+                filtered_rate_reports = summary_base.filter(ratereport__job_title__uuid=filter_uuid)
+
+                histogram = (filtered_rate_reports
                              .annotate(bin_floor=Cast(
                                             Floor(F('ratereport__final_hourly') /
                                                   self.BIN_SIZE) * self.BIN_SIZE,
@@ -206,7 +210,10 @@ class SeasonList(APIView):
                              .order_by('bin_floor').annotate(count=Count('bin_floor'))
                              .aggregate(bins=JSONBAgg(JSONObject(bin_floor='bin_floor',
                                                                  count='count'))))['bins']
-                print(histogram)
+
+                statistics = filtered_rate_reports.aggregate(min=Min('ratereport__final_hourly'),
+                                                             med=Median('ratereport__final_hourly'),
+                                                             max=Max('ratereport__final_hourly'))
 
         job_report_sq = (Season.objects
                                .filter(id=OuterRef('pk'))
