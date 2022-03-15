@@ -21,3 +21,4 @@ frontend/static/
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 *env.config
+newrelic.ini
