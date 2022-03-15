@@ -29,7 +29,7 @@ class SeasonSerializer(serializers.Serializer): # noqa
 
 class SeasonPagination(pagination.CursorPagination):
     ordering = ['-start_date', 'uuid']
-    page_size = 3
+    page_size = 5
 
 
 class HistogramSerializer(serializers.Serializer): # noqa
@@ -45,9 +45,7 @@ class SummarySerializer(serializers.Serializer): # noqa
 
 
 class FeedSerializer(serializers.Serializer): # noqa
-    reports = serializers.ListField(
-        child=SeasonSerializer()
-    )
+    reports = SeasonSerializer(many=True)
     summary = SummarySerializer()
 
 

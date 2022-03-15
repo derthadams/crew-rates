@@ -18,7 +18,7 @@ from .api_config import *
 from .postgres import ArraySubquery, Median
 from .serializers import RawRateReportSerializer, JobTitleSerializer, \
     ShowSerializer, CompanySerializer, NetworkSerializer, FeedSerializer, FilterSearchSerializer, \
-    SeasonSerializer, SeasonPagination
+    SeasonPagination
 
 from rates.admin import _approve_raw_rate_report # noqa
 
@@ -258,30 +258,25 @@ class SeasonList(APIView, SeasonPagination):
         if filter_type and filter_type == "Company":
             results = results.filter(companies__uuid=filter_uuid)
 
-        # feed = {
-        #     'reports': results,
-        #     'summary': {
-        #         'histogram': {
-        #             'bins': histogram,
-        #             'bin_size': self.BIN_SIZE,
-        #             'med': statistics["med"] if statistics else 0
-        #         },
-        #         'statistics': statistics,
-        #         'rate_count': rate_count
-        #     }
-        # }
-        #
         results = self.paginate_queryset(results, request)
 
         if results is not None:
-            serializer = SeasonSerializer(results, many=True)
+            feed = {
+                'reports': results,
+                'summary': {
+                    'histogram': {
+                        'bins': histogram,
+                        'bin_size': self.BIN_SIZE,
+                        'med': statistics["med"] if statistics else 0
+                    },
+                    'statistics': statistics,
+                    'rate_count': rate_count
+                }
+            }
+            serializer = FeedSerializer(feed)
             return self.get_paginated_response(serializer.data)
 
-        # data = serializer.data
-        # return Response(data, status=status.HTTP_200_OK)
-
-        serializer = SeasonSerializer(results, many=True)
-        return Response(serializer.data)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class FilterSearchView(APIView):
