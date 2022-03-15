@@ -1,5 +1,5 @@
 from django.apps import apps
-from rest_framework import serializers
+from rest_framework import pagination, serializers
 
 
 class RawRateReportSerializer(serializers.ModelSerializer):
@@ -25,6 +25,11 @@ class SeasonSerializer(serializers.Serializer): # noqa
     job_reports = serializers.ListField(
         child=serializers.JSONField()
     )
+
+
+class SeasonPagination(pagination.CursorPagination):
+    ordering = ['-start_date', 'uuid']
+    page_size = 3
 
 
 class HistogramSerializer(serializers.Serializer): # noqa

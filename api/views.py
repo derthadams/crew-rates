@@ -17,7 +17,8 @@ from rates.models import Company, JobTitle, Network, RateReport, Season, Show # 
 from .api_config import *
 from .postgres import ArraySubquery, Median
 from .serializers import RawRateReportSerializer, JobTitleSerializer, \
-    ShowSerializer, CompanySerializer, NetworkSerializer, FeedSerializer, FilterSearchSerializer
+    ShowSerializer, CompanySerializer, NetworkSerializer, FeedSerializer, FilterSearchSerializer, \
+    SeasonSerializer, SeasonPagination
 
 from rates.admin import _approve_raw_rate_report # noqa
 
@@ -160,10 +161,10 @@ class AddRate(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SeasonList(APIView):
+class SeasonList(APIView, SeasonPagination):
     BIN_SIZE = 5
 
-    def get(self, request): # noqa
+    def get(self, request, format=None): # noqa
         date_range = request.GET.get('date_range', '')
         if date_range.isnumeric():
             date_range = int(date_range)
@@ -257,23 +258,30 @@ class SeasonList(APIView):
         if filter_type and filter_type == "Company":
             results = results.filter(companies__uuid=filter_uuid)
 
-        feed = {
-            'reports': results,
-            'summary': {
-                'histogram': {
-                    'bins': histogram,
-                    'bin_size': self.BIN_SIZE,
-                    'med': statistics["med"] if statistics else 0
-                },
-                'statistics': statistics,
-                'rate_count': rate_count
-            }
-        }
+        # feed = {
+        #     'reports': results,
+        #     'summary': {
+        #         'histogram': {
+        #             'bins': histogram,
+        #             'bin_size': self.BIN_SIZE,
+        #             'med': statistics["med"] if statistics else 0
+        #         },
+        #         'statistics': statistics,
+        #         'rate_count': rate_count
+        #     }
+        # }
+        #
+        results = self.paginate_queryset(results, request)
 
-        serializer = FeedSerializer(feed)
+        if results is not None:
+            serializer = SeasonSerializer(results, many=True)
+            return self.get_paginated_response(serializer.data)
 
-        data = serializer.data
-        return Response(data, status=status.HTTP_200_OK)
+        # data = serializer.data
+        # return Response(data, status=status.HTTP_200_OK)
+
+        serializer = SeasonSerializer(results, many=True)
+        return Response(serializer.data)
 
 
 class FilterSearchView(APIView):
