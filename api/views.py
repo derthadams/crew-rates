@@ -251,7 +251,7 @@ class SeasonList(APIView):
                                   company_list=JSONBAgg(JSONObject(name='companies__name',
                                                                    uuid='companies__uuid'),
                                                         ordering='companies__name')
-                                  ).order_by('-start_date')
+                                  ).order_by('-start_date', 'uuid')
                    )
 
         if filter_type and filter_type == "Company":
