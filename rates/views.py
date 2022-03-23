@@ -35,7 +35,8 @@ def discover(request):
         'unionOptions': unionOptions,
         'apiUrls': {
             'season-list': reverse('season-list'),
-            'filter-search': reverse('filter-search')
+            'filter-search': reverse('filter-search'),
+            'summary': reverse('summary')
         }
     }
     return HttpResponse(template.render(context, request))
