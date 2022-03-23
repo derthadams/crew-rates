@@ -42,7 +42,6 @@ export default function App() {
     const apiUrls = JSON.parse(document.getElementById("apiUrls").textContent);
 
     const getReports = (params, url=apiUrls["season-list"]) => {
-        console.log("url", url);
         axios.get(url, {
             params: params
         })
@@ -68,7 +67,6 @@ export default function App() {
             filter_uuid: filter ? filter.value : "",
             filter_type: filter ? filter.type : ""
         }
-        console.log("params", params);
         getReports(params);
         getSummary(params);
     }, [dateRange, unionSelect, genreSelect, filter]);
