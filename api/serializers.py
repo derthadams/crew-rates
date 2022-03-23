@@ -43,11 +43,14 @@ class SummarySerializer(serializers.Serializer): # noqa
     statistics = serializers.JSONField()
     rate_count = serializers.IntegerField()
     heading = serializers.CharField()
+    start_date = serializers.DateField()
+    union_title = serializers.CharField()
+    genre_title = serializers.CharField()
 
 
-class FeedSerializer(serializers.Serializer): # noqa
-    reports = SeasonSerializer(many=True)
-    summary = SummarySerializer()
+# class FeedSerializer(serializers.Serializer): # noqa
+#     reports = SeasonSerializer(many=True)
+#     summary = SummarySerializer()
 
 
 class JobTitleSerializer(serializers.Serializer): # noqa

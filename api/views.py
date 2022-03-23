@@ -259,6 +259,7 @@ class SummaryAPIView(APIView):
         rate_count = 0
 
         results = Season.objects.all()
+        date_limit = None
 
         if date_range:
             duration = timedelta(days=(30 * date_range))
@@ -291,7 +292,12 @@ class SummaryAPIView(APIView):
             statistics = filtered_rate_reports.aggregate(min=Min('ratereport__final_hourly'),
                                                          med=Median('ratereport__final_hourly'),
                                                          max=Max('ratereport__final_hourly'))
-        filter_title = JobTitle.objects.get(uuid=filter_uuid).title
+
+        filter_title = JobTitle.objects.get(uuid=filter_uuid).title if filter_uuid else ""
+        union_title = ("Union and Non-Union" if union_select == 'AA'
+                       else dict(Season.UNION_CHOICES)[union_select])
+        genre_title = ("All Genres" if genre_select == 'AA'
+                       else dict(Season.GENRE_CHOICES)[genre_select])
 
         summary = {
             'histogram': {
@@ -301,7 +307,10 @@ class SummaryAPIView(APIView):
             },
             'rate_count': rate_count,
             'statistics': statistics,
-            'heading': filter_title
+            'heading': filter_title,
+            'start_date': date_limit,
+            'union_title': union_title,
+            'genre_title': genre_title
         }
         serializer = SummarySerializer(summary)
         return Response(serializer.data, status=status.HTTP_200_OK)
