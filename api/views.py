@@ -17,7 +17,7 @@ from rates.models import Company, JobTitle, Network, RateReport, Season, Show # 
 from .api_config import *
 from .postgres import ArraySubquery, Median
 from .serializers import RawRateReportSerializer, JobTitleSerializer, \
-    ShowSerializer, CompanySerializer, NetworkSerializer, FeedSerializer, FilterSearchSerializer, \
+    ShowSerializer, CompanySerializer, NetworkSerializer, SeasonSerializer, FilterSearchSerializer,\
     SummarySerializer, SeasonPagination
 
 from rates.admin import _approve_raw_rate_report # noqa
@@ -162,7 +162,6 @@ class AddRate(APIView):
 
 
 class SeasonListAPIView(APIView, SeasonPagination):
-    BIN_SIZE = 5
 
     def get(self, request, format=None): # noqa
         date_range = request.GET.get('date_range', '')
@@ -172,10 +171,6 @@ class SeasonListAPIView(APIView, SeasonPagination):
         genre_select = request.GET.get('genre_select', '')
         filter_uuid = request.GET.get('filter_uuid', '')
         filter_type = request.GET.get('filter_type', '')
-
-        histogram = {}
-        statistics = {}
-        rate_count = 0
 
         results = Season.objects.all()
 
@@ -190,8 +185,6 @@ class SeasonListAPIView(APIView, SeasonPagination):
         if genre_select != 'AA':
             results = results.filter(genre__exact=genre_select)
 
-        summary_base = results
-
         if filter_uuid and filter_type:
             if filter_type == "Show":
                 results = results.filter(show__uuid=filter_uuid)
@@ -201,24 +194,6 @@ class SeasonListAPIView(APIView, SeasonPagination):
                 results = results.filter(Exists(JobTitle.objects
                                                 .filter(uuid=filter_uuid,
                                                         ratereport__season=OuterRef('pk'))))
-
-                filtered_rate_reports = summary_base.filter(ratereport__job_title__uuid=filter_uuid)
-
-                histogram = (filtered_rate_reports
-                             .annotate(bin_floor=Cast(
-                                            Floor(F('ratereport__final_hourly') /
-                                                  self.BIN_SIZE) * self.BIN_SIZE,
-                                       output_field=IntegerField())).values('bin_floor')
-                             .order_by('bin_floor').annotate(count=Count('bin_floor'))
-                             .aggregate(bins=JSONBAgg(JSONObject(bin_floor='bin_floor',
-                                                                 count='count'),
-                                                                 ordering='bin_floor')))['bins']
-
-                rate_count = filtered_rate_reports.count()
-
-                statistics = filtered_rate_reports.aggregate(min=Min('ratereport__final_hourly'),
-                                                             med=Median('ratereport__final_hourly'),
-                                                             max=Max('ratereport__final_hourly'))
 
         job_report_sq = (Season.objects
                                .filter(id=OuterRef('pk'))
@@ -261,19 +236,7 @@ class SeasonListAPIView(APIView, SeasonPagination):
         results = self.paginate_queryset(results, request)
 
         if results is not None:
-            feed = {
-                'reports': results,
-                'summary': {
-                    'histogram': {
-                        'bins': histogram,
-                        'bin_size': self.BIN_SIZE,
-                        'med': statistics["med"] if statistics else 0
-                    },
-                    'statistics': statistics,
-                    'rate_count': rate_count
-                }
-            }
-            serializer = FeedSerializer(feed)
+            serializer = SeasonSerializer(results, many=True)
             return self.get_paginated_response(serializer.data)
 
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
