@@ -18,7 +18,7 @@ from .api_config import *
 from .postgres import ArraySubquery, Median
 from .serializers import RawRateReportSerializer, JobTitleSerializer, \
     ShowSerializer, CompanySerializer, NetworkSerializer, FeedSerializer, FilterSearchSerializer, \
-    SeasonPagination
+    SummarySerializer, SeasonPagination
 
 from rates.admin import _approve_raw_rate_report # noqa
 
@@ -161,7 +161,7 @@ class AddRate(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class SeasonList(APIView, SeasonPagination):
+class SeasonListAPIView(APIView, SeasonPagination):
     BIN_SIZE = 5
 
     def get(self, request, format=None): # noqa
@@ -279,7 +279,69 @@ class SeasonList(APIView, SeasonPagination):
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-class FilterSearchView(APIView):
+class SummaryAPIView(APIView):
+    BIN_SIZE = 5
+
+    def get(self, request): # noqa
+        date_range = request.GET.get('date_range', '')
+        if date_range.isnumeric():
+            date_range = int(date_range)
+        union_select = request.GET.get('union_select', '')
+        genre_select = request.GET.get('genre_select', '')
+        filter_uuid = request.GET.get('filter_uuid', '')
+        filter_type = request.GET.get('filter_type', '')
+
+        bins = {}
+        statistics = {}
+        rate_count = 0
+
+        results = Season.objects.all()
+
+        if date_range:
+            duration = timedelta(days=(30 * date_range))
+            date_limit = date.today() - duration
+            results = results.filter(start_date__gte=date_limit)
+
+        if union_select != 'AA':
+            results = results.filter(union__exact=union_select)
+
+        if genre_select != 'AA':
+            results = results.filter(genre__exact=genre_select)
+
+        summary_base = results
+
+        if filter_uuid and filter_type:
+            filtered_rate_reports = summary_base.filter(ratereport__job_title__uuid=filter_uuid)
+
+            bins = (filtered_rate_reports
+                         .annotate(bin_floor=Cast(
+                            Floor(F('ratereport__final_hourly') /
+                                  self.BIN_SIZE) * self.BIN_SIZE,
+                            output_field=IntegerField())).values('bin_floor')
+                         .order_by('bin_floor').annotate(count=Count('bin_floor'))
+                         .aggregate(bins=JSONBAgg(JSONObject(bin_floor='bin_floor',
+                                                             count='count'),
+                                                  ordering='bin_floor')))['bins']
+
+            rate_count = filtered_rate_reports.count()
+
+            statistics = filtered_rate_reports.aggregate(min=Min('ratereport__final_hourly'),
+                                                         med=Median('ratereport__final_hourly'),
+                                                         max=Max('ratereport__final_hourly'))
+        summary = {
+            'histogram': {
+                'bins': bins,
+                'bin_size': self.BIN_SIZE,
+                'med': statistics["med"] if statistics else 0
+            },
+            'rate_count': rate_count,
+            'statistics': statistics
+        }
+        serializer = SummarySerializer(summary)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FilterSearchAPIView(APIView):
 
     def get(self, request): # noqa
         q = request.GET.get('q', '')

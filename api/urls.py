@@ -10,6 +10,7 @@ urlpatterns = [
     path('shows/', views.ShowsAPIView.as_view(), name='shows'),
     path('companies/', views.CompaniesAPIView.as_view(), name='companies'),
     path('networks/', views.NetworksAPIView.as_view(), name='networks'),
-    path('season/list/', views.SeasonList.as_view(), name='season-list'),
-    path('filter-search/', views.FilterSearchView.as_view(), name='filter-search')
+    path('season/list/', views.SeasonListAPIView.as_view(), name='season-list'),
+    path('summary/', views.SummaryAPIView.as_view(), name='summary'),
+    path('filter-search/', views.FilterSearchAPIView.as_view(), name='filter-search')
 ]
