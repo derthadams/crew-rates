@@ -291,6 +291,8 @@ class SummaryAPIView(APIView):
             statistics = filtered_rate_reports.aggregate(min=Min('ratereport__final_hourly'),
                                                          med=Median('ratereport__final_hourly'),
                                                          max=Max('ratereport__final_hourly'))
+        filter_title = JobTitle.objects.get(uuid=filter_uuid).title
+
         summary = {
             'histogram': {
                 'bins': bins,
@@ -298,7 +300,8 @@ class SummaryAPIView(APIView):
                 'med': statistics["med"] if statistics else 0
             },
             'rate_count': rate_count,
-            'statistics': statistics
+            'statistics': statistics,
+            'heading': filter_title
         }
         serializer = SummarySerializer(summary)
         return Response(serializer.data, status=status.HTTP_200_OK)

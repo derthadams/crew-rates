@@ -42,6 +42,7 @@ class SummarySerializer(serializers.Serializer): # noqa
     histogram = HistogramSerializer()
     statistics = serializers.JSONField()
     rate_count = serializers.IntegerField()
+    heading = serializers.CharField()
 
 
 class FeedSerializer(serializers.Serializer): # noqa
