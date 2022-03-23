@@ -40,23 +40,29 @@ export default function App() {
     )
     const apiUrls = JSON.parse(document.getElementById("apiUrls").textContent);
 
-    const getInitialData = () => {
+    const getFeed = (cursor) => {
         axios.get(apiUrls["season-list"], {
             params: {
+                cursor: cursor ? cursor : "",
                 date_range: dateRange,
                 union_select: unionSelect,
                 genre_select: genreSelect,
                 filter_uuid: filter ? filter.value : "",
                 filter_type: filter ? filter.type : ""
             }
-        }).then((response) => {
-            const initialData = response.data;
-            setFeed(initialData);
+        })
+             .then((response) => {
+                 let feedData = response.data;
+                 if (feedData.next) {
+                     const nextURL = new URL(feedData.next);
+                     feedData['cursor'] = nextURL.searchParams.get('cursor');
+                     }
+                 setFeed(feedData);
         });
     };
 
     useEffect(() => {
-        getInitialData();
+        getFeed();
     }, [dateRange, unionSelect, genreSelect, filter]);
 
     return (
