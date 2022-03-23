@@ -4,14 +4,15 @@ import Badge from 'react-bootstrap/Badge';
 import Card from 'react-bootstrap/Card';
 
 import Histogram from "./Histogram";
+import convertDate from "../common/convertDate";
 import './summary.css';
 
-export default function Summary({ summary, genre, union_status, heading }) {
+export default function Summary({ summary }) {
     return (
         <Card className={"mb-1"}>
             <Card.Body>
                 <Card.Title className={"summary-heading d-flex mb-0"}>
-                    <span>{heading}</span>
+                    <span>{summary.heading}</span>
                     <span className={"ms-auto median-rate"}>
                         ${summary.statistics.med.toFixed(2)}/hr
                     </span>
@@ -19,7 +20,10 @@ export default function Summary({ summary, genre, union_status, heading }) {
 
                 <div className={"d-flex mb-0"}>
                     <span>
-                        <small>9/20/2021-3/20/2022</small>
+                        <small>{summary.start_date ?
+                                convertDate(summary.start_date, 'numeric') + " - Present"
+                                : "All Dates"}
+                        </small>
                     </span>
 
                     <span className={"ms-auto"}>
@@ -30,9 +34,9 @@ export default function Summary({ summary, genre, union_status, heading }) {
                 <div className={"d-flex"}>
                     <span>
                         <Badge bg={"dark"} className={"me-1 p-1"}>
-                            <small>{union_status}</small>
+                            <small>{summary.union_title}</small>
                         </Badge>
-                        <small>{genre}</small>
+                        <small>{summary.genre_title}</small>
                     </span>
 
                     <span className={"ms-auto"}>

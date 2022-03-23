@@ -5,6 +5,7 @@ import axios from "axios";
 
 export default function App() {
     const [feed, setFeed] = useState({});
+    const [summary, setSummary] = useState({});
     const [dateRange, setDateRange] = useState(0);
     const [unionSelect, setUnionSelect] = useState('AA');
     const [genreSelect, setGenreSelect] = useState('AA');
@@ -40,29 +41,36 @@ export default function App() {
     )
     const apiUrls = JSON.parse(document.getElementById("apiUrls").textContent);
 
-    const getFeed = (cursor) => {
-        axios.get(apiUrls["season-list"], {
-            params: {
-                cursor: cursor ? cursor : "",
-                date_range: dateRange,
-                union_select: unionSelect,
-                genre_select: genreSelect,
-                filter_uuid: filter ? filter.value : "",
-                filter_type: filter ? filter.type : ""
-            }
+    const getReports = (params, url=apiUrls["season-list"]) => {
+        console.log("url", url);
+        axios.get(url, {
+            params: params
         })
              .then((response) => {
-                 let feedData = response.data;
-                 if (feedData.next) {
-                     const nextURL = new URL(feedData.next);
-                     feedData['cursor'] = nextURL.searchParams.get('cursor');
-                     }
-                 setFeed(feedData);
+                 setFeed(response.data)
         });
     };
 
+    const getSummary = (params) => {
+        axios.get(apiUrls["summary"], {
+            params: params
+        })
+                .then((response) => {
+                    setSummary(response.data)
+                })
+    }
+
     useEffect(() => {
-        getFeed();
+        const params = {
+            date_range: dateRange,
+            union_select: unionSelect,
+            genre_select: genreSelect,
+            filter_uuid: filter ? filter.value : "",
+            filter_type: filter ? filter.type : ""
+        }
+        console.log("params", params);
+        getReports(params);
+        getSummary(params);
     }, [dateRange, unionSelect, genreSelect, filter]);
 
     return (
@@ -79,6 +87,7 @@ export default function App() {
                             handleFilterChange={handleFilterChange}
                             searchURL={apiUrls["filter-search"]}/>
             <ReportContainer feed={feed}
+                             summary={summary}
                              genre={genre}
                              unionStatus={unionStatus}
                              genreSelect={genreSelect}
