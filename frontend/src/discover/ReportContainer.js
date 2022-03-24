@@ -1,9 +1,16 @@
-import React from "react";
+import React, {useRef} from "react";
+
+import Spinner from "react-bootstrap/Spinner";
 import "./report-container.css";
 import RateReport from "./RateReport";
 import Summary from './Summary';
+import useObserver from './useObserver';
 
 export default function ReportContainer({ feed, summary, genre, unionStatus }) {
+    const endOfFeed = useRef(null);
+    const isLoading = useObserver(endOfFeed);
+
+    console.log("isLoading", isLoading);
 
     return (
         <div className={"report-container d-flex py-1"}>
@@ -26,6 +33,13 @@ export default function ReportContainer({ feed, summary, genre, unionStatus }) {
                         job_reports={result.job_reports}
                     />
                 ))}
+                {/*{feed.results && feed.results.length > 0 &&*/}
+                    <div ref={endOfFeed} className={"text-center py-1"}>
+                        {isLoading ?
+                        <Spinner animation={"border"}/>
+                        : ""}
+                    </div>
+                {/*}*/}
             </div>
         </div>
     );
