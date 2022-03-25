@@ -9,15 +9,12 @@ export default function useObserver( targetRef) {
     }
 
     useEffect(() => {
-        console.log("creating new intersection observer");
         observerRef.current = new IntersectionObserver(([entry]) => {
-            console.log(entry);
             setIsIntersecting(entry.isIntersecting);
         }, options);
     }, []);
 
     useEffect(() => {
-        console.log("targetRef", targetRef);
         observerRef.current.observe(targetRef.current);
 
         return () => {
