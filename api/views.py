@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date
 import requests
 
 from django.apps import apps
@@ -7,6 +7,8 @@ from django.db.models import Count, Exists, F, IntegerField, Min, Max, OuterRef,
 from django.db.models.functions import Cast, Floor, JSONObject
 from django.conf import settings
 from django.contrib.postgres.search import TrigramSimilarity
+
+from dateutil.relativedelta import relativedelta
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -161,29 +163,36 @@ class AddRate(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+def get_discover_params(request):
+    date_range = request.GET.get('date_range', '')
+    if date_range.isnumeric():
+        date_range = int(date_range)
+    union_select = request.GET.get('union_select', '')
+    genre_select = request.GET.get('genre_select', '')
+    filter_uuid = request.GET.get('filter_uuid', '')
+    filter_type = request.GET.get('filter_type', '')
+
+    results = Season.objects.all()
+    date_limit = None
+
+    if date_range:
+        date_limit = date.today() + relativedelta(months=-date_range)
+        results = results.filter(start_date__gte=date_limit)
+
+    if union_select != 'AA':
+        results = results.filter(union__exact=union_select)
+
+    if genre_select != 'AA':
+        results = results.filter(genre__exact=genre_select)
+
+    return results, date_limit, union_select, genre_select, filter_uuid, filter_type
+
+
 class SeasonListAPIView(APIView, SeasonPagination):
 
     def get(self, request, format=None): # noqa
-        date_range = request.GET.get('date_range', '')
-        if date_range.isnumeric():
-            date_range = int(date_range)
-        union_select = request.GET.get('union_select', '')
-        genre_select = request.GET.get('genre_select', '')
-        filter_uuid = request.GET.get('filter_uuid', '')
-        filter_type = request.GET.get('filter_type', '')
-
-        results = Season.objects.all()
-
-        if date_range:
-            duration = timedelta(days=(30 * date_range))
-            date_limit = date.today() - duration
-            results = results.filter(start_date__gte=date_limit)
-
-        if union_select != 'AA':
-            results = results.filter(union__exact=union_select)
-
-        if genre_select != 'AA':
-            results = results.filter(genre__exact=genre_select)
+        results, date_limit, union_select, genre_select, filter_uuid, filter_type = \
+            get_discover_params(request)
 
         if filter_uuid and filter_type:
             if filter_type == "Show":
@@ -246,36 +255,15 @@ class SummaryAPIView(APIView):
     BIN_SIZE = 5
 
     def get(self, request): # noqa
-        date_range = request.GET.get('date_range', '')
-        if date_range.isnumeric():
-            date_range = int(date_range)
-        union_select = request.GET.get('union_select', '')
-        genre_select = request.GET.get('genre_select', '')
-        filter_uuid = request.GET.get('filter_uuid', '')
-        filter_type = request.GET.get('filter_type', '')
+        results, date_limit, union_select, genre_select, filter_uuid, filter_type = \
+            get_discover_params(request)
 
         bins = {}
         statistics = {}
         rate_count = 0
 
-        results = Season.objects.all()
-        date_limit = None
-
-        if date_range:
-            duration = timedelta(days=(30 * date_range))
-            date_limit = date.today() - duration
-            results = results.filter(start_date__gte=date_limit)
-
-        if union_select != 'AA':
-            results = results.filter(union__exact=union_select)
-
-        if genre_select != 'AA':
-            results = results.filter(genre__exact=genre_select)
-
-        summary_base = results
-
         if filter_uuid and filter_type:
-            filtered_rate_reports = summary_base.filter(ratereport__job_title__uuid=filter_uuid)
+            filtered_rate_reports = results.filter(ratereport__job_title__uuid=filter_uuid)
 
             bins = (filtered_rate_reports
                          .annotate(bin_floor=Cast(
