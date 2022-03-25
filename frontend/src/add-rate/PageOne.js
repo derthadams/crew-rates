@@ -23,7 +23,7 @@ import AsyncAPISelect from "./AsyncAPISelect";
 import AddRateHeading from "./AddRateHeading";
 import customStyles from "./CustomSelectStyles";
 import { updateLocationDetails, updateFormData, clearFormData} from "./UpdateFunctions";
-import {dataDefault} from "./dataDefault";
+import { pageOneDefault } from "./dataDefault";
 
 function PageOne() {
     const { actions, state } = useStateMachine(
@@ -392,8 +392,8 @@ function PageOne() {
                             variant={"outline-danger"}
                             size={"sm"}
                             onClick={() => {
-                                actions.clearFormData({})
-                                reset(dataDefault.formData);
+                                reset(pageOneDefault);
+                                actions.updateFormData(getValues())
                             }}
                         >
                             Clear

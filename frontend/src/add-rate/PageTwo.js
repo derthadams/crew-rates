@@ -23,7 +23,7 @@ import AsyncAPISelect from "./AsyncAPISelect";
 import { updateFormData, clearFormData } from "./UpdateFunctions";
 import RateWidget from "./RateWidget";
 import AddRateHeading from "./AddRateHeading";
-import {dataDefault} from "./dataDefault";
+import { pageTwoDefault } from "./dataDefault";
 
 function PageTwo() {
     const locationState = useLocation();
@@ -320,7 +320,7 @@ function PageTwo() {
                                         variant={"outline-danger"}
                                         size={"sm"}
                                         onClick={() => {
-                                            methods.reset();
+                                            methods.reset(pageTwoDefault);
                                             actions.updateFormData(methods.getValues());
                                         }}
                                 >
