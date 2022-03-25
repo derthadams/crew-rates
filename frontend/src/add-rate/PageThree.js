@@ -5,7 +5,6 @@ import {Navigate, useLocation, useNavigate} from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Table from "react-bootstrap/Table";
-import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 
 import { useStateMachine } from "little-state-machine";
@@ -21,7 +20,7 @@ import axios from 'axios';
 import Cookies from 'cookies-js';
 import AddRateHeading from "./AddRateHeading";
 import convertDate from "../common/convertDate"
-import {dataDefault} from "./dataDefault";
+import { dataDefault } from "./dataDefault";
 
 function PageThree() {
     const locationState = useLocation();
@@ -91,13 +90,7 @@ function PageThree() {
     return (
         <div className=''>
             <AddRateHeading step={3}/>
-
-            {/*<Card>*/}
-            {/*    <Card.Body>*/}
-            {/*        Please review the information you entered.<br/>*/}
-            {/*        Select Edit to make changes, or Submit if everything looks good!*/}
-            {/*    </Card.Body>*/}
-            {/*</Card>*/}
+            
             <Table borderless>
                 <tbody>
                 <tr>
