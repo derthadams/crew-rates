@@ -320,8 +320,8 @@ function PageTwo() {
                                         variant={"outline-danger"}
                                         size={"sm"}
                                         onClick={() => {
-                                            actions.clearFormData({})
-                                            methods.reset(dataDefault.formData);
+                                            methods.reset();
+                                            actions.updateFormData(methods.getValues());
                                         }}
                                 >
                                     Clear
