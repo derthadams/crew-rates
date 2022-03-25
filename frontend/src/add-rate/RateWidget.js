@@ -7,11 +7,11 @@ import { useFormContext, Controller } from "react-hook-form"
 import {ErrorMessage} from "@hookform/error-message";
 
 
-function RateWidget(props) {
+function RateWidget({name}) {
     const { control, setValue, getValues , formState, trigger } = useFormContext();
-    const [daily, setDaily] = useState(getValues(`${props.name}_day_rate`) || 0);
-    const [guarantee, setGuarantee] = useState(getValues(`${props.name}_guarantee`) || 0);
-    const [hourly, setHourly] = useState(getValues(`${props.name}_hourly_rate`) || 0);
+    const [daily, setDaily] = useState(getValues(`${name}_day_rate`) || 0);
+    const [guarantee, setGuarantee] = useState(getValues(`${name}_guarantee`) || 0);
+    const [hourly, setHourly] = useState(getValues(`${name}_hourly_rate`) || 0);
     const [rateType, setRateType] = useState(1);
 
     const handleDailyChange = (event) => {
@@ -30,7 +30,7 @@ function RateWidget(props) {
         setRateType(0);
         if((guarantee === 0 && daily > 0) || daily === 0) {
             setDaily(0);
-            setValue(`${props.name}_day_rate`, '');
+            setValue(`${name}_day_rate`, '');
         }
     }
 
@@ -38,7 +38,7 @@ function RateWidget(props) {
         setRateType(1);
         if((guarantee === 0 && hourly > 0) || hourly === 0) {
             setHourly(0);
-            setValue(`${props.name}_hourly_rate`, '');
+            setValue(`${name}_hourly_rate`, '');
         }
     }
 
@@ -75,10 +75,10 @@ function RateWidget(props) {
     const calculateHourly = () => {
         if(guarantee === 0 || daily === 0) {
             setHourly(0);
-            setValue(`${props.name}_hourly_rate`, '');
+            setValue(`${name}_hourly_rate`, '');
         } else {
             setHourly(parseFloat(Number(daily / hoursToStraightTime(guarantee)).toFixed(4)));
-            setValue(`${props.name}_hourly_rate`,
+            setValue(`${name}_hourly_rate`,
                 parseFloat(Number(daily / hoursToStraightTime(guarantee)).toFixed(4)));
         }
     }
@@ -86,31 +86,31 @@ function RateWidget(props) {
     const calculateDaily = () => {
         if(guarantee === 0 || hourly === 0) {
             setDaily(0);
-            setValue(`${props.name}_day_rate`, '');
+            setValue(`${name}_day_rate`, '');
         } else {
             setDaily(Math.round(hourly * hoursToStraightTime(guarantee)));
-            setValue(`${props.name}_day_rate`, Math.round(hourly * hoursToStraightTime(guarantee)));
+            setValue(`${name}_day_rate`, Math.round(hourly * hoursToStraightTime(guarantee)));
         }
     }
 
     useEffect (async () => {
         recalculateOnDailyChange();
-        if(formState.errors[`${props.name}_day_rate`]) {
-            await trigger(`${props.name}_day_rate`)
+        if(formState.errors[`${name}_day_rate`]) {
+            await trigger(`${name}_day_rate`)
         }
     }, [daily]);
 
     useEffect(async () => {
         recalculateOnGuaranteeChange();
-        if(formState.errors[`${props.name}_guarantee`]) {
-            await trigger(`${props.name}_guarantee`)
+        if(formState.errors[`${name}_guarantee`]) {
+            await trigger(`${name}_guarantee`)
         }
     }, [guarantee]);
 
     useEffect(async () => {
         recalculateOnHourlyChange();
-        if(formState.errors[`${props.name}_hourly_rate`]) {
-            await trigger(`${props.name}_hourly_rate`)
+        if(formState.errors[`${name}_hourly_rate`]) {
+            await trigger(`${name}_hourly_rate`)
         }
     }, [hourly]);
 
@@ -122,7 +122,7 @@ function RateWidget(props) {
                         <Form.Group>
                             <Form.Label>Day rate</Form.Label>
                             <Controller
-                                name={`${props.name}_day_rate`}
+                                name={`${name}_day_rate`}
                                 control={control}
                                 rules={{
                                     required: {
@@ -134,7 +134,7 @@ function RateWidget(props) {
                                 render={({   field,
                                              fieldState: { invalid}}) =>
                                 <Form.Control
-                                    aria-label={`${props.name}_day_rate`}
+                                    aria-label={`${name}_day_rate`}
                                     {...field}
                                     type="number"
                                     placeholder="$"
@@ -156,7 +156,7 @@ function RateWidget(props) {
                             />
                             <ErrorMessage
                                 errors={formState.errors}
-                                name={`${props.name}_day_rate`}
+                                name={`${name}_day_rate`}
                                 render = {
                                     ({ message }) =>
                                         <Form.Text className="text-danger">{message}</Form.Text>
@@ -170,7 +170,7 @@ function RateWidget(props) {
                     <Form.Group>
                         <Form.Label>Guarantee</Form.Label>
                         <Controller
-                            name={`${props.name}_guarantee`}
+                            name={`${name}_guarantee`}
                             control={control}
                             rules={{
                                 required: {
@@ -182,7 +182,7 @@ function RateWidget(props) {
                             render={({  field,
                                         fieldState: { invalid }})=>
                                 <Form.Control
-                                    aria-label={`${props.name}_guarantee`}
+                                    aria-label={`${name}_guarantee`}
                                     {...field}
                                     type="number"
                                     placeholder="hrs"
@@ -200,7 +200,7 @@ function RateWidget(props) {
                         />
                         <ErrorMessage
                             errors={formState.errors}
-                            name={`${props.name}_guarantee`}
+                            name={`${name}_guarantee`}
                             render = {
                                 ({ message }) =>
                                     <Form.Text className="text-danger">{message}</Form.Text>
@@ -213,7 +213,7 @@ function RateWidget(props) {
                     <Form.Group>
                         <Form.Label>Hourly rate</Form.Label>
                         <Controller
-                            name={`${props.name}_hourly_rate`}
+                            name={`${name}_hourly_rate`}
                             control={control}
                             rules={{
                                 required: {
@@ -225,7 +225,7 @@ function RateWidget(props) {
                             render={({  field,
                                         fieldState: { invalid }}) =>
                                 <Form.Control
-                                    aria-label={`${props.name}_hourly_rate`}
+                                    aria-label={`${name}_hourly_rate`}
                                     {...field}
                                     type="number"
                                     placeholder="$"
@@ -246,7 +246,7 @@ function RateWidget(props) {
                         />
                         <ErrorMessage
                             errors={formState.errors}
-                            name={`${props.name}_hourly_rate`}
+                            name={`${name}_hourly_rate`}
                             render = {
                                 ({ message }) =>
                                     <Form.Text className="text-danger">{message}</Form.Text>
