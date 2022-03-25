@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function useObserver( targetRef ) {
-    const [isLoading, setIsLoading] = useState(false);
+export default function useObserver( targetRef) {
+    const [isIntersecting, setIsIntersecting] = useState(false);
     const observerRef = useRef(null);
 
     const options = {
@@ -9,12 +9,10 @@ export default function useObserver( targetRef ) {
     }
 
     useEffect(() => {
+        console.log("creating new intersection observer");
         observerRef.current = new IntersectionObserver(([entry]) => {
             console.log(entry);
-            setIsLoading(entry.isIntersecting);
-            setTimeout(() => {
-                setIsLoading(false)
-            }, 500);
+            setIsIntersecting(entry.isIntersecting);
         }, options);
     }, []);
 
@@ -27,5 +25,5 @@ export default function useObserver( targetRef ) {
         };
     }, [targetRef]);
 
-    return isLoading;
+    return isIntersecting;
 }
