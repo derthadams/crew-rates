@@ -11,8 +11,20 @@ export default function App() {
     const [unionSelect, setUnionSelect] = useState('AA');
     const [genreSelect, setGenreSelect] = useState('AA');
     const [filter, setFilter] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const endOfFeed = useRef(null);
     const endOfFeedIsVisible = useObserver(endOfFeed);
+
+    const appendResults = (newPage) => {
+        setFeed(prevState => ({
+                next: newPage.next,
+                previous: newPage.previous,
+                results: [
+                    ...prevState.results,
+                    ...newPage.results
+                ]
+            }));
+    }
 
     const handleDateChange = (event) => {
         setDateRange(parseInt(event.target.value));
@@ -45,12 +57,19 @@ export default function App() {
     const apiUrls = JSON.parse(document.getElementById("apiUrls").textContent);
 
     const getReports = (params, url=apiUrls["season-list"]) => {
+        setIsLoading(true);
         axios.get(url, {
             params: params
         })
              .then((response) => {
-                 setFeed(response.data)
-        });
+                 setIsLoading(false);
+                 if(url !== apiUrls["season-list"]) {
+                     appendResults(response.data);
+                 } else {
+                     setFeed(response.data);
+                 }
+        })
+        ;
     };
 
     const getSummary = (params) => {
@@ -75,7 +94,9 @@ export default function App() {
     }, [dateRange, unionSelect, genreSelect, filter]);
 
     useEffect(() => {
-        console.log("endOfFeedIsVisible", endOfFeedIsVisible);
+        if(endOfFeedIsVisible && feed.results && feed.results.length > 0 && feed.next) {
+            getReports({}, feed.next);
+        }
     }, [endOfFeedIsVisible]);
 
     return (
@@ -93,7 +114,7 @@ export default function App() {
                             searchURL={apiUrls["filter-search"]}/>
             <ReportContainer feed={feed}
                              endOfFeed={endOfFeed}
-                             isLoading={endOfFeedIsVisible}
+                             isLoading={isLoading}
                              summary={summary}
                              genre={genre}
                              unionStatus={unionStatus}
