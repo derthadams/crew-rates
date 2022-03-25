@@ -7,22 +7,12 @@ import Summary from './Summary';
 
 export default function ReportContainer({ feed, endOfFeed, isLoading,
                                           summary, genre, unionStatus }) {
-    // const endOfFeed = useRef(null);
-    // const isLoading = useObserver(endOfFeed);
-
-    // useEffect(() => {
-    //     console.log("isLoading", isLoading);
-    // }, [isLoading]);
 
     return (
         <div className={"report-container d-flex py-1"}>
             <div id={"content-inner"}>
                 {summary && summary.rate_count >= 3 &&
                 <Summary summary={summary}/>}
-                {feed.results && feed.results.length === 0 &&
-                    <div className={"text-center mt-5"}>
-                        <h3>No results</h3>
-                    </div>}
                 {feed.results && feed.results.map((result) => (
                     <RateReport
                         key={result.uuid}
@@ -35,13 +25,14 @@ export default function ReportContainer({ feed, endOfFeed, isLoading,
                         job_reports={result.job_reports}
                     />
                 ))}
-                {/*{feed.results && feed.results.length > 0 &&*/}
                     <div ref={endOfFeed} className={"text-center py-1"}>
                         {isLoading ?
                         <Spinner animation={"border"}/>
-                        : ""}
+                        : feed.results && feed.results.length === 0 &&
+                                <div className={"text-center mt-5"}>
+                                    <h3>No results</h3>
+                                </div>}
                     </div>
-                {/*}*/}
             </div>
         </div>
     );
