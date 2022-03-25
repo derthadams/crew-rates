@@ -1,16 +1,18 @@
-import React, {useRef} from "react";
+import React from "react";
 
 import Spinner from "react-bootstrap/Spinner";
 import "./report-container.css";
 import RateReport from "./RateReport";
 import Summary from './Summary';
-import useObserver from './useObserver';
 
-export default function ReportContainer({ feed, summary, genre, unionStatus }) {
-    const endOfFeed = useRef(null);
-    const isLoading = useObserver(endOfFeed);
+export default function ReportContainer({ feed, endOfFeed, isLoading,
+                                          summary, genre, unionStatus }) {
+    // const endOfFeed = useRef(null);
+    // const isLoading = useObserver(endOfFeed);
 
-    console.log("isLoading", isLoading);
+    // useEffect(() => {
+    //     console.log("isLoading", isLoading);
+    // }, [isLoading]);
 
     return (
         <div className={"report-container d-flex py-1"}>

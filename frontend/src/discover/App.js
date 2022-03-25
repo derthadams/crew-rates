@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useRef} from "react";
 import DiscoverHeader from "./DiscoverHeader";
 import ReportContainer from "./ReportContainer";
 import axios from "axios";
+import useObserver from "./useObserver";
 
 export default function App() {
     const [feed, setFeed] = useState({});
@@ -10,6 +11,8 @@ export default function App() {
     const [unionSelect, setUnionSelect] = useState('AA');
     const [genreSelect, setGenreSelect] = useState('AA');
     const [filter, setFilter] = useState({});
+    const endOfFeed = useRef(null);
+    const endOfFeedIsVisible = useObserver(endOfFeed);
 
     const handleDateChange = (event) => {
         setDateRange(parseInt(event.target.value));
@@ -71,6 +74,10 @@ export default function App() {
         getSummary(params);
     }, [dateRange, unionSelect, genreSelect, filter]);
 
+    useEffect(() => {
+        console.log("endOfFeedIsVisible", endOfFeedIsVisible);
+    }, [endOfFeedIsVisible]);
+
     return (
         <div>
             <DiscoverHeader genreOptions={genreOptions}
@@ -85,6 +92,8 @@ export default function App() {
                             handleFilterChange={handleFilterChange}
                             searchURL={apiUrls["filter-search"]}/>
             <ReportContainer feed={feed}
+                             endOfFeed={endOfFeed}
+                             isLoading={endOfFeedIsVisible}
                              summary={summary}
                              genre={genre}
                              unionStatus={unionStatus}
