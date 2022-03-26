@@ -14,6 +14,13 @@ function RateWidget({name}) {
     const [hourly, setHourly] = useState(getValues(`${name}_hourly_rate`) || 0);
     const [rateType, setRateType] = useState(1);
 
+    const getHourly = () => getValues(`${name}_hourly_rate`) === '' ?
+            0 : Number(getValues(`${name}_hourly_rate`));
+    const getDaily = () => getValues(`${name}_day_rate`) === '' ?
+            0 : Number(getValues(`${name}_day_rate`));
+    const getGuarantee = () => getValues(`${name}_guarantee`) === '' ?
+            0 : Number(getValues(`${name}_guarantee`));
+
     const handleDailyChange = (event) => {
         setDaily(parseFloat(Number(event.target.value).toFixed(2)));
     }
@@ -28,36 +35,34 @@ function RateWidget({name}) {
 
     const handleHourlyClick = (event) => {
         setRateType(0);
-        if((guarantee === 0 && daily > 0) || daily === 0) {
-            setDaily(0);
+        if((getGuarantee() === 0 && getDaily() > 0) || getDaily() === 0) {
             setValue(`${name}_day_rate`, '');
         }
     }
 
     const handleDailyClick = (event) => {
         setRateType(1);
-        if((guarantee === 0 && hourly > 0) || hourly === 0) {
-            setHourly(0);
+        if((getGuarantee() === 0 && getHourly() > 0) || getHourly() === 0) {
             setValue(`${name}_hourly_rate`, '');
         }
     }
 
     const recalculateOnDailyChange = () => {
-        if (guarantee > 0 && rateType === 1) {
+        if (getGuarantee() > 0 && rateType === 1) {
             calculateHourly();
         }
     }
 
     const recalculateOnGuaranteeChange = () => {
-        if (daily > 0 && rateType === 1) {
+        if (getDaily() > 0 && rateType === 1) {
             calculateHourly();
-        } else if(hourly > 0 && rateType === 0) {
+        } else if(getHourly() > 0 && rateType === 0) {
             calculateDaily();
         }
     }
 
     const recalculateOnHourlyChange = () => {
-        if(guarantee > 0 && rateType === 0) {
+        if(getGuarantee() > 0 && rateType === 0) {
             calculateDaily();
         }
     }
@@ -73,23 +78,21 @@ function RateWidget({name}) {
     }
 
     const calculateHourly = () => {
-        if(guarantee === 0 || daily === 0) {
-            setHourly(0);
+        if(getGuarantee() === 0 || getDaily() === 0) {
             setValue(`${name}_hourly_rate`, '');
         } else {
-            setHourly(parseFloat(Number(daily / hoursToStraightTime(guarantee)).toFixed(4)));
+            setHourly(parseFloat(Number(getDaily() / hoursToStraightTime(getGuarantee())).toFixed(4)));
             setValue(`${name}_hourly_rate`,
-                parseFloat(Number(daily / hoursToStraightTime(guarantee)).toFixed(4)));
+                    parseFloat(Number(getDaily() / hoursToStraightTime(getGuarantee())).toFixed(4)));
         }
     }
 
     const calculateDaily = () => {
-        if(guarantee === 0 || hourly === 0) {
-            setDaily(0);
+        if(getGuarantee() === 0 || getHourly() === 0) {
             setValue(`${name}_day_rate`, '');
         } else {
-            setDaily(Math.round(hourly * hoursToStraightTime(guarantee)));
-            setValue(`${name}_day_rate`, Math.round(hourly * hoursToStraightTime(guarantee)));
+            setDaily(Math.round(getHourly() * hoursToStraightTime(getGuarantee())));
+            setValue(`${name}_day_rate`, Math.round(getHourly() * hoursToStraightTime(getGuarantee())));
         }
     }
 
