@@ -4,6 +4,8 @@ import Badge from "react-bootstrap/Badge";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup"
 import convertDate from "../common/convertDate"
+
+import JobTitleReport from "./JobTitleReport";
 import "./rate-report.css";
 
 export default function RateReport({
@@ -80,24 +82,8 @@ export default function RateReport({
 
                     {/*Job Report*/}
 
-                    {job_reports.map((report) => (
-                        <ListGroup.Item key={report.job_title.uuid}>
-                            <div className="d-flex">
-                                <span>{report.job_title.title}</span>
-                                <span className={"ms-auto"}>
-                                    {report.reports[0].increase > 0 && (
-                                    <Badge bg={"primary"} className={"me-1"}>
-                                        &#8679;&nbsp;{report.reports[0].increase}%
-                                    </Badge>
-                                    )}
-                                    <strong>
-                                        ${report.reports[0].daily}/{report.reports[0].guarantee}&nbsp;
-                                    </strong>
-                                        (${report.reports[0].hourly.toFixed(2)}/hr)
-                                </span>
-                            </div>
-                        </ListGroup.Item>
-                    ))}
+                    {job_reports.map((report) => <JobTitleReport key={report.job_title.uuid}
+                                                                 report={report}/>)}
                 </ListGroup>
             </Card.Body>
 

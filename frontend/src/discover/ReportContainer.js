@@ -25,9 +25,11 @@ export default function ReportContainer({ feed, endOfFeed, isLoading,
                         job_reports={result.job_reports}
                     />
                 ))}
-                    <div ref={endOfFeed} className={"text-center py-1"}>
+                    <div ref={endOfFeed} className={"text-center"}>
                         {isLoading ?
-                        <Spinner animation={"border"}/>
+                            <div className="py-1">
+                                <Spinner animation={"border"}/>
+                            </div>
                         : feed.results && feed.results.length === 0 &&
                                 <div className={"text-center mt-5"}>
                                     <h3>No results</h3>
