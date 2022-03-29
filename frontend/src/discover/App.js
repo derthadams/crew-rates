@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, {useState, useEffect, useLayoutEffect, useRef} from "react";
 import DiscoverHeader from "./DiscoverHeader";
 import ReportContainer from "./ReportContainer";
 import axios from "axios";
@@ -98,6 +98,12 @@ export default function App() {
             getReports({}, feed.next);
         }
     }, [endOfFeedIsVisible]);
+
+    useLayoutEffect(() => {
+        if(endOfFeedIsVisible && feed.next) {
+            getReports({}, feed.next);
+        }
+    }, [feed]);
 
     return (
         <div>
