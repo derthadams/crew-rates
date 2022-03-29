@@ -237,20 +237,32 @@ class RawRateReport(models.Model):
     show_matches = models.ManyToManyField(
         Show,
         related_name='show_matches',
-        null=True)
+        null=True, blank=True)
+    show_override = models.ForeignKey(Show, on_delete=models.SET_NULL, null=True, blank=True)
     season_number = models.PositiveSmallIntegerField(
         validators=[MinValueValidator(1)])
     companies = models.JSONField(null=True, blank=True)
     company_matches = models.ManyToManyField(
         Company,
         related_name='company_matches',
-        null=True)
+        null=True, blank=True)
+    companies_override = models.ManyToManyField(
+        Company,
+        related_name='companies_override',
+        null=True,
+        blank=True)
     network = models.CharField(max_length=36, null=True, blank=True)
     network_name = models.CharField(max_length=128, null=True, blank=True)
     network_matches = models.ManyToManyField(
         Network,
         related_name='network_matches',
-        null=True)
+        null=True, blank=True)
+    network_override = models.ForeignKey(
+        Network,
+        related_name='network_override',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
     genre = models.CharField(
         max_length=4,
         choices=Season.GENRE_CHOICES,
@@ -271,7 +283,8 @@ class RawRateReport(models.Model):
     job_title_matches = models.ManyToManyField(
         JobTitle,
         related_name='job_title_matches',
-        null=True)
+        null=True, blank=True)
+    job_title_override = models.ForeignKey(JobTitle, on_delete=models.SET_NULL, null=True, blank=True)
     offered_daily = models.DecimalField(
         decimal_places=2,
         max_digits=8

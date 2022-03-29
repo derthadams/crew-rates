@@ -1,11 +1,10 @@
-# from math import ceil
-
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.db import models
 from django.forms import NullBooleanSelect, Textarea
 from django.utils.translation import gettext_lazy as _
+
 
 from .models import User, Company, JobTitle, Show, Network, Location, Season, \
     RawRateReport, RateReport, RatesInvitation
@@ -35,37 +34,49 @@ def calc_percent_increase(final_hourly, final_daily, offered_hourly, offered_dai
 
 def _approve_raw_rate_report(raw_report):
     uuid_null = '00000000-0000-0000-0000-000000000000'
-    if raw_report.job_title == uuid_null:
-        job_title_obj, created = JobTitle.objects.get_or_create( # noqa
-            title=raw_report.job_title_name)
+    if raw_report.job_title_override: # noqa
+        job_title = raw_report.job_title_override.id
     else:
-        job_title_obj = JobTitle.objects.get(uuid=raw_report.job_title) # noqa
-    job_title = job_title_obj.pk
+        if raw_report.job_title == uuid_null:
+            job_title_obj, created = JobTitle.objects.get_or_create( # noqa
+                title=raw_report.job_title_name)
+        else:
+            job_title_obj = JobTitle.objects.get(uuid=raw_report.job_title) # noqa
+        job_title = job_title_obj.pk
 
-    if raw_report.show == uuid_null:
-        show_obj, created = Show.objects.get_or_create( # noqa
-            title=raw_report.show_title)
+    if raw_report.show_override: # noqa
+        show = raw_report.show_override.id
     else:
-        show_obj = Show.objects.get(uuid=raw_report.show) # noqa
-    show = show_obj.pk
+        if raw_report.show == uuid_null:
+            show_obj, created = Show.objects.get_or_create( # noqa
+                title=raw_report.show_title)
+        else:
+            show_obj = Show.objects.get(uuid=raw_report.show) # noqa
+        show = show_obj.pk
 
     companies = []
-    for company in raw_report.companies:
-        if company['uuid'] == uuid_null:
-            company_obj, created = Company.objects.get_or_create(
-                name=company['name'])
-        else:
-            company_obj = Company.objects.get(uuid=company['uuid'])
-        companies.append(company_obj.pk)
+    if len(raw_report.companies_override.all()) > 0:
+        companies = list(raw_report.companies_override.all().values_list('id', flat=True))
+    else:
+        for company in raw_report.companies:
+            if company['uuid'] == uuid_null:
+                company_obj, created = Company.objects.get_or_create( # noqa
+                    name=company['name'])
+            else:
+                company_obj = Company.objects.get(uuid=company['uuid']) # noqa
+            companies.append(company_obj.pk)
 
     network = None
-    if raw_report.network:
-        if raw_report.network == uuid_null:
-            network_obj, created = Network.objects.get_or_create(
-                name=raw_report.network_name)
-        else:
-            network_obj = Network.objects.get(uuid=raw_report.network)
-        network = network_obj.pk
+    if raw_report.network_override:
+        network = raw_report.network_override.id
+    else:
+        if raw_report.network:
+            if raw_report.network == uuid_null:
+                network_obj, created = Network.objects.get_or_create( # noqa
+                    name=raw_report.network_name)
+            else:
+                network_obj = Network.objects.get(uuid=raw_report.network) # noqa
+            network = network_obj.pk
 
     if raw_report.locations:
         locations_set = set()
@@ -87,7 +98,7 @@ def _approve_raw_rate_report(raw_report):
         locations = []
         scopes = []
 
-    seasons = Season.objects.filter(
+    seasons = Season.objects.filter( # noqa
         show__id=show,
         number=raw_report.season_number
     )
@@ -184,69 +195,6 @@ def make_location_object(location_dict, latitude=None, longitude=None):
 """
 
 
-class CompanyMatchInline(admin.TabularInline):
-    def company_name(self, instance):
-        return instance.company.name
-
-    def company_uuid(self, instance):
-        return instance.company.uuid
-
-    company_name.short_description = 'Name'
-    company_uuid.short_description = 'UUID'
-
-    model = RawRateReport.company_matches.through
-    fields = ['company_name', 'company_uuid']
-    readonly_fields = ['company_name', 'company_uuid']
-    can_delete = False
-    verbose_name = 'Company matches'
-    verbose_name_plural = 'Company matches'
-    extra = 0
-    max_num = 0
-    template = 'grappelli/admin/edit_inline/headless_tabular.html'
-
-
-class JobTitleMatchInline(admin.TabularInline):
-    def job_title_title(self, instance):
-        return instance.jobtitle.title
-
-    def job_title_uuid(self, instance):
-        return instance.jobtitle.uuid
-
-    job_title_title.short_description = 'Job Title'
-    job_title_uuid.short_description = 'UUID'
-
-    model = RawRateReport.job_title_matches.through
-    fields = ['job_title_title', 'job_title_uuid', ]
-    readonly_fields = ['job_title_title', 'job_title_uuid', ]
-    can_delete = False
-    verbose_name = 'Job title matches'
-    verbose_name_plural = 'Job title matches'
-    extra = 0
-    max_num = 0
-    template = 'grappelli/admin/edit_inline/headless_tabular.html'
-
-
-class NetworkMatchInline(admin.TabularInline):
-    def network_name(self, instance):
-        return instance.network.name
-
-    def network_uuid(self, instance):
-        return instance.network.uuid
-
-    network_name.short_description = 'Name'
-    network_uuid.short_description = 'UUID'
-
-    model = RawRateReport.network_matches.through
-    fields = ['network_name', 'network_uuid']
-    readonly_fields = ['network_name', 'network_uuid']
-    can_delete = False
-    verbose_name = 'Network matches'
-    verbose_name_plural = 'Network matches'
-    extra = 0
-    max_num = 0
-    template = 'grappelli/admin/edit_inline/headless_tabular.html'
-
-
 class RateReportInline(admin.TabularInline):
     model = RateReport
     ordering = ('job_title',)
@@ -284,27 +232,6 @@ class SeasonCompanyInline(admin.TabularInline):
     # template = 'admin/rates/company/edit_inline/tabular.html'
 
 
-class ShowMatchInline(admin.TabularInline):
-    def show_title(self, instance):
-        return instance.show.title
-
-    def show_uuid(self, instance):
-        return instance.show.uuid
-
-    show_title.short_description = 'Title'
-    show_uuid.short_description = 'UUID'
-
-    model = RawRateReport.show_matches.through
-    fields = ['show_title', 'show_uuid']
-    readonly_fields = ['show_title', 'show_uuid']
-    can_delete = False
-    verbose_name = 'Show matches'
-    verbose_name_plural = 'Show matches'
-    extra = 0
-    max_num = 0
-    template = 'grappelli/admin/edit_inline/headless_tabular.html'
-
-
 """
 ---------------------- ADMIN CLASSES ---------------------------
 """
@@ -325,6 +252,7 @@ class JobTitleAdmin(admin.ModelAdmin):
     readonly_fields = [
         'uuid'
     ]
+    search_fields = ['title', 'uuid']
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -347,52 +275,49 @@ class RateReportAdmin(admin.ModelAdmin):
 
 class RawRateReportAdmin(admin.ModelAdmin):
     actions = [approve_raw_rate_report]
+    autocomplete_fields = [
+        'company_matches',
+        'companies_override',
+        'job_title_matches',
+        'job_title_override',
+        'network_matches',
+        'network_override',
+        'show_matches',
+        'show_override'
+    ]
     fieldsets = (
         (None, {
-            'fields': ('user', 'approved'),
-            'classes': ('wide',)
+            'fields': ('user', ('approved', 'user_created_values')),
         }),
         (None, {
-            'fields': ('job_title', 'job_title_name'),
-        }),
-        (None, {
-            'classes': ('placeholder', 'RawRateReport_job_title_matches-group', 'wide'),
-            'fields': ()
+            'fields': (('job_title_name', 'job_title'), ('job_title_matches',),
+                       ('job_title_override',))
         }),
         (None,
          {
-             'fields': (('offered_hourly', 'offered_guarantee'),
+             'fields': (('offered_hourly', 'offered_daily', 'offered_guarantee'),
                         ('negotiated', 'increased',),
-                        ('final_hourly', 'final_guarantee'))
+                        ('final_hourly', 'final_daily', 'final_guarantee'))
          }),
         (None, {
-            'fields': ('show', ('show_title', 'season_number'), ),
-            'classes': ('wide',)
-        }),
-        (None, {
-            'classes': ('placeholder', 'RawRateReport_show_matches-group', 'wide'),
-            'fields': ()
+            'fields': (('show_title', 'show', 'season_number'),
+                       ('show_matches', ), ('show_override',)),
         }),
         (None, {
             'fields': (('genre', 'union'),
                        ('start_date', 'end_date'))
         }),
         (None, {
-            'fields': ('companies',)
+            'fields': (('companies',), ('company_matches',), ('companies_override',))
         }),
         (None, {
-            'classes': ('placeholder', 'RawRateReport_company_matches-group'),
-            'fields': ()
-        }),
-        (None, {
-            'fields': (('network', 'network_name'),)
-        }),
-        (None, {
-            'classes': ('placeholder', 'RawRateReport_network_matches-group'),
-            'fields': ()
+            'fields': (('network_name', 'network'), ('network_matches', ), ('network_override',))
         }),
         (None, {
             'fields': ('locations',)
+        }),
+        (None, {
+            'fields': (('created_at', 'modified_at'),)
         })
     )
 
@@ -409,7 +334,8 @@ class RawRateReportAdmin(admin.ModelAdmin):
     list_display = ('user', 'show_title', 'season_number', 'job_title_name', 'final_hourly',
                     'final_guarantee', 'created_at')
     list_filter = ('approved',)
-    inlines = [JobTitleMatchInline, ShowMatchInline, CompanyMatchInline, NetworkMatchInline]
+
+    readonly_fields = ['created_at', 'modified_at']
 
 
 class SeasonAdmin(admin.ModelAdmin):
