@@ -10,18 +10,17 @@ export default function JobTitleReport({ report }) {
             <ListGroup.Item>
                 <div className="d-flex">
                     <span>{report.job_title.title}</span>
-                    <span className={"ms-auto"}>
+                    <span className={"ms-auto d-flex justify-content-end align-items-center"}>
                         {report.reports[0].increase > 0 && (
-                        <Badge bg={"primary"} className={"me-1"}>
-                            &#8679;&nbsp;{report.reports[0].increase}%
+                        <Badge bg={"primary"} className={"me-1 p-1"}>
+                            <small>&#8679;&nbsp;{report.reports[0].increase}%</small>
                         </Badge>
                         )}
 
                         <strong>
                         ${report.reports[0].daily}/{report.reports[0].guarantee}&nbsp;
                         </strong>
-
-                        (${report.reports[0].hourly.toFixed(2)}/hr)
+                        <small>(${report.reports[0].hourly.toFixed(2)}/hr)</small>
                     </span>
                 </div>
             </ListGroup.Item>
@@ -36,7 +35,7 @@ export default function JobTitleReport({ report }) {
                     <span>
                     {report.reports[0].increase > 0 && (
                             <Badge bg={"primary"} className={"me-1 p-1"}>
-                                &#8679;&nbsp;{report.reports[0].increase}%
+                                <small>&#8679;&nbsp;{report.reports[0].increase}%</small>
                             </Badge>
                     )}
                             <strong>
