@@ -1,8 +1,42 @@
 {% extends "admin/base.html" %}
+{% load static baton_tags %}
+{% load i18n %}
 
-{% load static %}
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
-{% block extrastyle %}
-    {{ block.super }}
-    <link rel="stylesheet" href="{% static 'rates/css/extra-admin.css' %}">
+{% block extrahead %}
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+
+    <script src="{% static 'baton/app/dist/baton.min.js' %}"></script>
+    <!-- <script src="http://localhost:8080/static/baton/app/dist/baton.min.js"></script> -->
+    {% baton_config as conf %}
+    {{ conf | json_script:"baton-config" }}
+    <script>
+        (function ($, undefined) {
+            $(document).ready(function () {
+                Baton.init(JSON.parse(document.getElementById('baton-config').textContent));
+            })
+        })(jQuery, undefined)
+    </script>
+    <style>
+        html,
+        body,
+        button,
+        input,
+        optgroup,
+        select,
+        textarea {
+            font-family: Helvetica Neue, sans-serif;
+        }
+    </style>
+{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block footer %}
+    {% footer %}
 {% endblock %}
