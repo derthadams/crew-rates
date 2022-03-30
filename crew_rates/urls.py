@@ -16,12 +16,15 @@ Including another URLconf
 from baton.autodiscover import admin
 from django.contrib.flatpages import views as flatpage_views
 from django.urls import include, path
+from .settings.base import get_env_variable
+
+admin_path = get_env_variable('ADMIN_PATH')
 
 urlpatterns = [
     # Include urls for all modules
     path('', include('rates.urls')),
     path('accounts/', include('allauth.urls')),
-    path('admin/', admin.site.urls),
+    path(admin_path, admin.site.urls),
     path('baton/', include('baton.urls')),
     path('api/', include('api.urls')),
     path('tos/', flatpage_views.flatpage, {'url': '/tos/'}, name='tos'),
