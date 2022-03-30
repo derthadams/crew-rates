@@ -305,7 +305,7 @@ class RawRateReportAdmin(admin.ModelAdmin):
         }),
         (None, {
             'fields': (('genre', 'union'),
-                       ('start_date', 'end_date'))
+                       'start_date', 'end_date')
         }),
         (None, {
             'fields': (('companies',), ('company_matches',), ('companies_override',))
