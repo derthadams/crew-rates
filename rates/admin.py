@@ -205,7 +205,7 @@ class RateReportInline(admin.TabularInline):
     can_delete = False
     extra = 0
     max_num = 0
-    # template = 'admin/rates/company/edit_inline/tabular.html'
+    template = 'admin/rates/company/edit_inline/tabular.html'
 
 
 class SeasonInline(admin.TabularInline):
@@ -217,7 +217,7 @@ class SeasonInline(admin.TabularInline):
     can_delete = False
     extra = 0
     max_num = 0
-    # template = 'admin/rates/company/edit_inline/tabular.html'
+    template = 'admin/rates/company/edit_inline/tabular.html'
 
 
 class SeasonCompanyInline(admin.TabularInline):
@@ -229,7 +229,7 @@ class SeasonCompanyInline(admin.TabularInline):
     verbose_name_plural = 'Seasons'
     extra = 0
     max_num = 0
-    # template = 'admin/rates/company/edit_inline/tabular.html'
+    template = 'admin/rates/company/edit_inline/tabular.html'
 
 
 """
