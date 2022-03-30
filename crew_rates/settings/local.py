@@ -64,10 +64,3 @@ DATABASES = {
     }
 }
 
-BATON = {
-    'SITE_HEADER': 'Crew Rates',
-    'SITE_TITLE': 'Crew Rates Admin',
-    'COPYRIGHT': '© 2022 crewrates.org', # noqa
-    'POWERED_BY': '<a href="https://www.otto.to.it">Otto srl</a>',
-    'GRAVATAR_DEFAULT_IMG': 'retro',
-}
