@@ -17,7 +17,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 INSTALLED_APPS = [
     'rates.apps.RatesConfig',
     'api.apps.ApiConfig',
-    'grappelli',
+    'baton',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'captcha',
     'debug_toolbar',
+    'baton.autodiscover',
 ]
 
 SITE_ID = 1
@@ -61,4 +62,12 @@ DATABASES = {
         'HOST': get_env_variable('RATES_DATABASE_HOST'),
         'PORT': get_env_variable('RATES_DATABASE_PORT')
     }
+}
+
+BATON = {
+    'SITE_HEADER': 'Crew Rates',
+    'SITE_TITLE': 'Crew Rates Admin',
+    'COPYRIGHT': '© 2022 crewrates.org', # noqa
+    'POWERED_BY': '<a href="https://www.otto.to.it">Otto srl</a>',
+    'GRAVATAR_DEFAULT_IMG': 'retro',
 }

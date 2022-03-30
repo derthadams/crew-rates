@@ -19,6 +19,7 @@ cryptography==36.0.1
 defusedxml==0.7.1
 Django==3.2.12
 django-allauth==0.44.0
+django-baton==2.3.0
 django-debug-toolbar==3.2.4
 django-grappelli==2.15.5
 django-invitations==1.9.3

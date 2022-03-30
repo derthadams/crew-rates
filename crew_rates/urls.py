@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
+from baton.autodiscover import admin
 from django.contrib.flatpages import views as flatpage_views
 from django.urls import include, path
 
@@ -21,8 +21,8 @@ urlpatterns = [
     # Include urls for all modules
     path('', include('rates.urls')),
     path('accounts/', include('allauth.urls')),
-    path('grappelli/', include('grappelli.urls')),
     path('admin/', admin.site.urls),
+    path('baton/', include('baton.urls')),
     path('api/', include('api.urls')),
     path('tos/', flatpage_views.flatpage, {'url': '/tos/'}, name='tos'),
     path('privacy/', flatpage_views.flatpage, {'url': '/privacy/'}, name='privacy'),

@@ -35,7 +35,7 @@ if EC2_PRIVATE_IP:
 INSTALLED_APPS = [
     'rates.apps.RatesConfig',
     'api.apps.ApiConfig',
-    'grappelli',
+    'baton',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'invitations',
     'rest_framework',
     'captcha',
+    'baton.autodiscover',
 ]
 
 SITE_ID = 2
