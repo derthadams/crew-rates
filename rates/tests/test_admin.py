@@ -1,3 +1,5 @@
+import os
+
 from django.test import TestCase
 from django.urls import reverse
 from django.apps import apps
@@ -24,7 +26,8 @@ class RatesAdminTest(TestCase):
 
     def test_add_rates_invitation(self):
         self.client.login(email='admin@example.com', password='incredible_secret')
-        response = self.client.post('/admin/rates/ratesinvitation/add/',
+        admin_path = os.environ.get('ADMIN_PATH')
+        response = self.client.post(f'/{admin_path}rates/ratesinvitation/add/',
                          {
                              'email': 'derth@me.com',
                              'name': 'Betty',
