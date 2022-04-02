@@ -1,0 +1,78 @@
+{% extends 'rates/base_contact.html' %}
+
+{% load static %}
+
+{% block content-inner %}
+    <div class="pb-3">
+        <p>Crew Rates is an invitation-only rate-sharing app for crew members on TV productions.
+            Here's some of the things members can do:</p>
+    <h2>Negotiate better rates using crowdsourced rate information</h2>
+    </div>
+
+    <div class="row pb-3">
+        <div class="col-7 col-sm-6">
+            <img src="{% static 'rates/img/feed.png' %}" class="img-fluid" alt="">
+        </div>
+        <div class="col-5 col-sm-6 mt-3">
+            <p>View a feed of rates for recent productions.</p>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <p class="mt-4">A blue badge next to a rate indicates a negotiating win. The number
+                is the percentage increase between the offered rate and final negotiated rate.</p>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row pb-3">
+        <div class="col-5 col-sm-6 mt-3">
+            Search for rates by show, company, network, job title, union status or genre.
+        </div>
+        <div class="col-7 col-sm-6">
+            <img src="{% static 'rates/img/company.png' %}" class="img-fluid" alt="">
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row pb-3">
+        <div class="col-7 col-sm-6">
+            <img src="{% static 'rates/img/summary.png' %}" class="img-fluid" alt="">
+        </div>
+        <div class="col-5 col-sm-6 mt-3">
+            When you filter by job title, you can view a rate summary chart.
+            Drill down by filtering by date, union status, and genre.
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>Give back to the community</h2>
+    <div class="row">
+        <div class="col-5 col-sm-6 mt-3">
+            Use the Add a Rate form to anonymously share your own rates and help everyone negotiate
+            better deals.
+        </div>
+        <div class="col-7 col-sm-6">
+            <img src="{% static 'rates/img/addrate_01.png' %}" class="img-fluid" alt="">
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row pb-3">
+        <div class="col-7 col-sm-6">
+            <img src="{% static 'rates/img/addrate_02.png' %}" class="img-fluid" alt="">
+        </div>
+        <div class="col-5 col-sm-6 mt-3">
+            Add details to share your negotiating wins with the community.
+        </div>
+    </div>
+
+    <hr>
+
+    <p><a href="/contact">Contact us</a> to request an invitation.</p>
+
+{% endblock %}
