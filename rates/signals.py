@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 from django.db.models.signals import post_save
 from django.dispatch import receiver, Signal
 
+from django_ses.signals import bounce_received, complaint_received
 
 import requests
 from requests_oauthlib import OAuth1
@@ -89,3 +90,36 @@ def user_signed_up(request, user, **kwargs):
 
     except invitation.DoesNotExist:
         print("this may not have been an invited user")
+
+
+@receiver(bounce_received)
+def bounce_handler(sender, mail_obj, bounce_obj, raw_message, *args, **kwargs):
+    message_id = mail_obj['messageId']
+    recipient_list = mail_obj['destination']
+    print(f"Email with message ID {message_id} bounced with recipient list {str(recipient_list)}")
+    print(f"Bounce object: {bounce_obj}")
+    send_mail(
+        'SES Bounce simulation',
+        f"Email with message ID {message_id} bounced with recipient list {str(recipient_list)}\n"
+        f"Bounce object: {bounce_obj}\nSender: {sender}\nRaw Message: {raw_message}",
+        'alert@crewrates.org',
+        'derth@me.com',
+        fail_silently=False
+    )
+
+
+@receiver(complaint_received)
+def complaint_receiver(sender, mail_obj, complaint_obj, raw_message, *args, **kwargs):
+    message_id = mail_obj['messageId']
+    recipient_list = mail_obj['destination']
+    print(f"Email with message ID {message_id} with recipient list {str(recipient_list)} was the "
+          f"subject of a complaint")
+    print(f"Complaint object: {complaint_obj}")
+    send_mail(
+        'SES Bounce simulation',
+        f"Email with message ID {message_id} bounced with recipient list {str(recipient_list)}\n"
+        f"Bounce object: {complaint_obj}\nSender: {sender}\nRaw Message: {raw_message}",
+        'alert@crewrates.org',
+        'derth@me.com',
+        fail_silently=False
+    )
