@@ -15,7 +15,9 @@ Including another URLconf
 """
 from baton.autodiscover import admin
 from django.contrib.flatpages import views as flatpage_views
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.decorators.csrf import csrf_exempt
+from django_ses.views import SESEventWebhookView
 from .settings.base import get_env_variable
 
 admin_path = get_env_variable('ADMIN_PATH')
@@ -30,5 +32,6 @@ urlpatterns = [
     path('tos/', flatpage_views.flatpage, {'url': '/tos/'}, name='tos'),
     path('privacy/', flatpage_views.flatpage, {'url': '/privacy/'}, name='privacy'),
     path('invitations/', include('invitations.urls', namespace='invitations')),
+    re_path(r'^ses/event-webhook/$', SESEventWebhookView.as_view(), name='handle-event-webhook'),
     path('__debug__', include('debug_toolbar.urls')),
 ]
