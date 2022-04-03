@@ -7,5 +7,6 @@ urlpatterns = [
     path(r'add-rate/<path:path>', views.add_rate, name='add-rate_with_path'),
     path(r'contact/', views.ContactFormView.as_view(), name='contact'),
     path(r'thanks/', views.thanks, name='thanks'),
+    path(r'home/', views.home, name='home'),
     path(r'settings/', views.settings, name='settings')
 ]

@@ -2,8 +2,16 @@
 
 {% load static %}
 
+{% block title %}
+    <title>Crew Rates - Contact</title>
+{% endblock %}
+
 {% block content-inner %}
             <h1 class="display-1">Contact us</h1>
+            <p>Crew Rates is intended for crew members on television productions.
+                If you're requesting an invitation, please tell us what you do for a living and
+                what kind of shows you work on. If you have an IMDb profile, it can be helpful
+                to provide a link.</p>
             <form novalidate method="POST" action="{% url 'contact' %}">
                 {% csrf_token %}
 

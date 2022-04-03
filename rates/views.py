@@ -110,3 +110,9 @@ def thanks(request):
     template = loader.get_template('rates/thanks.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+
+def home(request):
+    template = loader.get_template('rates/home.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
