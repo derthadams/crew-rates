@@ -96,14 +96,16 @@ def user_signed_up(request, user, **kwargs):
 def bounce_handler(sender, mail_obj, bounce_obj, raw_message, *args, **kwargs):
     message_id = mail_obj['messageId']
     recipient_list = mail_obj['destination']
+    super_users = User.objects.filter(is_superuser=True)
+    emails = map(lambda x: x.email, super_users)
     print(f"Email with message ID {message_id} bounced with recipient list {str(recipient_list)}")
     print(f"Bounce object: {bounce_obj}")
     send_mail(
-        'SES Bounce simulation',
+        'SES Bounce Alert',
         f"Email with message ID {message_id} bounced with recipient list {str(recipient_list)}\n"
         f"Bounce object: {bounce_obj}\nSender: {sender}\nRaw Message: {raw_message}",
         'alert@crewrates.org',
-        'derth@me.com',
+        emails,
         fail_silently=False
     )
 
@@ -112,14 +114,17 @@ def bounce_handler(sender, mail_obj, bounce_obj, raw_message, *args, **kwargs):
 def complaint_receiver(sender, mail_obj, complaint_obj, raw_message, *args, **kwargs):
     message_id = mail_obj['messageId']
     recipient_list = mail_obj['destination']
+    super_users = User.objects.filter(is_superuser=True)
+    emails = map(lambda x: x.email, super_users)
     print(f"Email with message ID {message_id} with recipient list {str(recipient_list)} was the "
-          f"subject of a complaint")
+          f"subject of a complaint.")
     print(f"Complaint object: {complaint_obj}")
     send_mail(
-        'SES Bounce simulation',
-        f"Email with message ID {message_id} bounced with recipient list {str(recipient_list)}\n"
-        f"Bounce object: {complaint_obj}\nSender: {sender}\nRaw Message: {raw_message}",
+        'SES Complaint Alert',
+        f"Email with message ID {message_id}  with recipient list {str(recipient_list)} was the"
+        f"subject of a complaint.\n"
+        f"Complaint object: {complaint_obj}\nSender: {sender}\nRaw Message: {raw_message}",
         'alert@crewrates.org',
-        'derth@me.com',
+        emails,
         fail_silently=False
     )

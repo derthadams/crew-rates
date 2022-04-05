@@ -6,4 +6,4 @@ class RatesConfig(AppConfig):
     name = 'rates'
 
     def ready(self):
-        import rates.signals
+        import rates.signals # noqa
