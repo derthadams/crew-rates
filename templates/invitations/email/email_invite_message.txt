@@ -3,11 +3,9 @@
 
 Hello {% if preferred_name %}{{ preferred_name }}{% else %}{{ first_name }}{% endif %},
 
-You've been invited to join crewrates.org!
+{% if inviter.preferred_name %}{{ inviter.preferred_name }}{% else %}{{ inviter.first_name }}{% endif %} {% if inviter.last_name %}{{ inviter.last_name }}{% endif %} has invited you to join Crew Rates!
 
-Crew Rates lets you see what other people have gotten paid on recent shows, so that you can negotiate better deals.
-
-You can also give back to the project by anonymously sharing your own rates.
+Crew Rates helps you negotiate better deals using crowdsourced rate information, and allows you to give back to the community by anonymously sharing your own rates.
 
 If you'd like to join, please go to {{ invite_url }} to create an account.
 

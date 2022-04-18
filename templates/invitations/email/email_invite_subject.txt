@@ -1,4 +1,4 @@
 {% load i18n %}
 {% autoescape off %}
-{% blocktrans %}You're invited to join crewrates.org!{% endblocktrans %}
+{% if inviter.preferred_name %}{{ inviter.preferred_name }}{% else %}{{ inviter.first_name }}{% endif %} {% if inviter.last_name %}{{ inviter.last_name}}{% endif %} has invited you to join Crew Rates!
 {% endautoescape %}

@@ -14,10 +14,16 @@
 
   <div style="font-family: Helvetica, Arial, sans-serif; font-size: 14px;">
     {% autoescape off %}
-      <p>Hello {% if preferred_name %}{{ preferred_name }}{% else %}{{ first_name }}{% endif %},<br/><br/>
-        You've been invited to join crewrates.org!<br/><br/>
-          Crew Rates lets you see what other people have gotten paid on recent shows, so that you can negotiate better deals.<br/><br/>
-          You can also give back to the project by anonymously sharing your own rates.<br/><br/>
+      <p>Hello {% if preferred_name %}{{ preferred_name }}{% else %}{{ first_name }}{% endif %},
+          <br/><br/>
+        {% if inviter.preferred_name %}
+            {{ inviter.preferred_name }}
+        {% else %}
+            {{ inviter.first_name }}
+        {% endif %} {% if inviter.last_name %}{{ inviter.last_name }}{% endif %} has invited you
+          to join Crew Rates!<br/><br/>
+          Crew Rates helps you negotiate better deals using crowdsourced rate information, and
+          allows you to give back to the community by anonymously sharing your own rates.<br/><br/>
         If you'd like to join, please click the button below to create an account.
       </p>
 
