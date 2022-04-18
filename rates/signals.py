@@ -101,7 +101,7 @@ def bounce_handler(sender, mail_obj, bounce_obj, raw_message, *args, **kwargs):
 
 
 @receiver(complaint_received)
-def complaint_receiver(sender, mail_obj, complaint_obj, raw_message, *args, **kwargs):
+def complaint_handler(sender, mail_obj, complaint_obj, raw_message, *args, **kwargs):
     message_id = mail_obj['messageId']
     recipient_list = mail_obj['destination']
     print(f"Email with message ID {message_id} with recipient list {str(recipient_list)} was the "
