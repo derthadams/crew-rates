@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.db import models
@@ -171,7 +172,8 @@ def _approve_raw_rate_report(raw_report):
 def approve_raw_rate_report(modeladmin, request, queryset):
     for raw_report in queryset:
         _approve_raw_rate_report(raw_report)
-        raw_report.delete()
+        if settings.DELETE_RAW_REPORTS_ON_APPROVAL:
+            raw_report.delete()
 
 
 def make_location_object(location_dict, latitude=None, longitude=None):
