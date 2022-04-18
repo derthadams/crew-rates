@@ -107,8 +107,12 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
-ACCOUNT_FORMS = {'login': 'rates.forms.LoginForm'}
+ACCOUNT_FORMS = {
+    'login': 'rates.forms.LoginForm',
+    'reset_password': 'rates.forms.RatesResetPasswordForm'
+}
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login'
+ACCOUNT_PREVENT_ENUMERATION = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_USER_MODEL_EMAIL_FIELD = 'email'

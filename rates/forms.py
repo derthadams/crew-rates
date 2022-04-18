@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _, pgettext
 
 from allauth.socialaccount.models import SocialAccount, SocialToken
 from allauth.account.adapter import get_adapter as get_account_adapter
-from allauth.account.forms import PasswordField
+from allauth.account.forms import PasswordField, ResetPasswordForm
 from allauth.account import app_settings
 from allauth.account.utils import perform_login
 from allauth.utils import get_username_max_length, set_form_field_order
@@ -246,3 +246,13 @@ class DeleteUser(Form):
 
     def __init__(self, *args, **kwargs):
         super(DeleteUser, self).__init__(*args, **kwargs)
+
+
+class RatesResetPasswordForm(ResetPasswordForm):
+
+    def save(self, request, **kwargs):
+        email = self.cleaned_data["email"]
+        if self.users:
+            self._send_password_reset_mail(request, email, self.users, **kwargs)
+        return email
+
