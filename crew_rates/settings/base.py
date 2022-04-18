@@ -166,7 +166,7 @@ AWS_SES_REGION_NAME = 'us-west-2'
 AWS_SES_REGION_ENDPOINT = 'email.us-west-2.amazonaws.com'
 AWS_SES_CONFIGURATION_SET = get_env_variable('AWS_SES_CONFIGURATION_SET')
 
-DEFAULT_FROM_EMAIL = "no-reply@crewrates.org"
+DEFAULT_FROM_EMAIL = "Crew Rates <no-reply@crewrates.org>"
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
