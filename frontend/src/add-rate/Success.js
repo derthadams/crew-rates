@@ -38,7 +38,7 @@ function Success() {
                         <Button
                             variant="primary"
                             onClick={handleAnotherRate}
-                        >Add Another Rate</Button>
+                        >Add another rate</Button>
                     </Row>
                 </Col>
                 <Col className="col-3 col-sm-4"> </Col>
