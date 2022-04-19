@@ -173,7 +173,7 @@ real_housewives_report = {
             "name": "Evolution Media"
         }
     ],
-    "network": '7f641e0-bbfc-4469-9acd-404f2c8b923f',
+    "network": 'a7f641e0-bbfc-4469-9acd-404f2c8b923f',
     "network_name": "Bravo",
     "genre": "RE",
     "union": "NO",
