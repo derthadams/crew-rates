@@ -21,8 +21,8 @@ real_housewives_show = {
     'uuid': '1a2ae161-c4bb-4b8e-968e-f59a6c663541'
 }
 
-price_is_right = {
-    'name': 'The Price is Right',
+price_is_right_show = {
+    'title': 'The Price is Right',
     'uuid': '0eb1f64b-35d6-4963-914c-b0719c70e051'
 }
 
@@ -91,8 +91,8 @@ runway_report = {
     "genre": "RE",
     "union": "IA",
     "locations": [],
-    "start_date": date.today() + relativedelta(months=-5),
-    "end_date": "",
+    "start_date": str(date.today() + relativedelta(months=-5)),
+    "end_date": None,
     "job_title": "5c09a673-d0c7-481f-8500-36c581bd7b4e",
     "job_title_name": "Camera Operator",
     "offered_hourly": 50,
@@ -120,8 +120,8 @@ wipeout_report = {
     "genre": "RE",
     "union": "IA",
     "locations": [],
-    "start_date": date.today() + relativedelta(months=-5),
-    "end_date": "",
+    "start_date": str(date.today() + relativedelta(months=-5)),
+    "end_date": None,
     "job_title": "5c09a673-d0c7-481f-8500-36c581bd7b4e",
     "job_title_name": "Camera Operator",
     "offered_hourly": 59.0909,
@@ -149,8 +149,8 @@ love_is_blind_report = {
     "genre": "RE",
     "union": "IA",
     "locations": [],
-    "start_date": date.today() + relativedelta(months=-7),
-    "end_date": "",
+    "start_date": str(date.today() + relativedelta(months=-7)),
+    "end_date": None,
     "job_title": "5c09a673-d0c7-481f-8500-36c581bd7b4e",
     "job_title_name": "Camera Operator",
     "offered_hourly": 54.75,
@@ -178,8 +178,8 @@ real_housewives_report = {
     "genre": "RE",
     "union": "NO",
     "locations": [],
-    "start_date": date.today() + relativedelta(months=-5),
-    "end_date": "",
+    "start_date": str(date.today() + relativedelta(months=-5)),
+    "end_date": None,
     "job_title": "5c09a673-d0c7-481f-8500-36c581bd7b4e",
     "job_title_name": "Camera Operator",
     "offered_hourly": 46.4286,
@@ -192,7 +192,7 @@ real_housewives_report = {
     "final_daily": 650
 }
 
-game_show_report = {
+price_is_right_report = {
     "show": '0eb1f64b-35d6-4963-914c-b0719c70e051',
     "show_title": "The Price is Right",
     "season_number": 72,
@@ -207,8 +207,8 @@ game_show_report = {
     "genre": "GA",
     "union": "NA",
     "locations": [],
-    "start_date": date.today() + relativedelta(months=-5),
-    "end_date": "",
+    "start_date": str(date.today() + relativedelta(months=-5)),
+    "end_date": None,
     "job_title": "5c09a673-d0c7-481f-8500-36c581bd7b4e",
     "job_title_name": "Camera Operator",
     "offered_hourly": 46.4286,
