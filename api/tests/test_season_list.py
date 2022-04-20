@@ -28,7 +28,7 @@ class TestSeasonListAPIView(TestCase):
     def populate_reports(self):
         self.create_user_and_log_in()
         self.client.post(self.add_rate_url, content_type='application/json',
-                                    data=runway_report)
+                         data=runway_report)
         self.client.post(self.add_rate_url, content_type='application/json',
                          data=wipeout_report)
         self.client.post(self.add_rate_url, content_type='application/json',
@@ -61,16 +61,103 @@ class TestSeasonListAPIView(TestCase):
         Network.objects.create(**cbs)
 
         JobTitle.objects.create(**operator)
+        JobTitle.objects.create(**assistant)
 
     def test_no_params(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 0, 'union_select': 'AA',
                                                           'genre_select': 'AA'})
-        shows = Show.objects.all()
-        print(f"number of shows: {len(shows)}")
-        rate_reports = RateReport.objects.all()
-        print(f"number of rate reports: {len(rate_reports)}")
-        raw_rate_reports = RawRateReport.objects.all()
-        print(f"number of raw rate reports: {len(raw_rate_reports)}")
         response_data = json.loads(response.content)
-        print(response_data)
+        self.assertEqual(len(response_data['results']), 5)
+
+    def test_six_months_only(self):
+        self.populate_reports()
+        response = self.client.get(self.season_list_url, {'date_range': 6, 'union_select': 'AA',
+                                                          'genre_select': 'AA'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 2)
+
+    def test_six_months_ia(self):
+        self.populate_reports()
+        response = self.client.get(self.season_list_url, {'date_range': 6, 'union_select': 'IA',
+                                                          'genre_select': 'AA'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 2)
+
+    def test_twelve_months_ia(self):
+        self.populate_reports()
+        response = self.client.get(self.season_list_url, {'date_range': 12, 'union_select': 'IA',
+                                                          'genre_select': 'AA'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 3)
+
+    def test_ia_only(self):
+        self.populate_reports()
+        response = self.client.get(self.season_list_url, {'date_range': 0, 'union_select': 'IA',
+                                                          'genre_select': 'AA'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 3)
+
+    def test_reality_only(self):
+        self.populate_reports()
+        response = self.client.get(self.season_list_url, {'date_range': 0, 'union_select': 'AA',
+                                                          'genre_select': 'RE'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 4)
+
+    def test_no_reality(self):
+        self.populate_reports()
+        response = self.client.get(self.season_list_url, {'date_range': 0, 'union_select': 'NO',
+                                                          'genre_select': 'RE'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 1)
+
+    def test_twelve_months_reality(self):
+        self.populate_reports()
+        response = self.client.get(self.season_list_url, {'date_range': 12, 'union_select': 'AA',
+                                                          'genre_select': 'RE'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 3)
+
+    def two_years_no_reality(self):
+        self.populate_reports()
+        response = self.client.get(self.season_list_url, {'date_range': 24, 'union_select': 'NO',
+                                                          'genre_select': 'RE'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 1)
+
+    def test_operator_only(self):
+        self.populate_reports() # noqa
+        response = self.client.get(self.season_list_url,
+                                   {'date_range': 0, 'union_select': 'AA', 'genre_select': 'AA',
+                                    'filter_type': 'Job Title',
+                                    'filter_uuid': '5c09a673-d0c7-481f-8500-36c581bd7b4e'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 4)
+
+    def test_runway_only(self):
+        self.populate_reports() # noqa
+        response = self.client.get(self.season_list_url,
+                                   {'date_range': 0, 'union_select': 'AA', 'genre_select': 'AA',
+                                    'filter_type': 'Show',
+                                    'filter_uuid': '48a6f024-2aa1-4f29-8db0-de0454385a2c'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 1)
+
+    def test_bravo_only(self):
+        self.populate_reports() # noqa
+        response = self.client.get(self.season_list_url,
+                                   {'date_range': 0, 'union_select': 'AA', 'genre_select': 'AA',
+                                    'filter_type': 'Network',
+                                    'filter_uuid': 'a7f641e0-bbfc-4469-9acd-404f2c8b923f'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 2)
+
+    def test_endemol_only(self):
+        self.populate_reports() # noqa
+        response = self.client.get(self.season_list_url,
+                                   {'date_range': 0, 'union_select': 'AA', 'genre_select': 'AA',
+                                    'filter_type': 'Company',
+                                    'filter_uuid': 'caf6966d-a961-4a57-8872-39a4f51ce798'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data['results']), 1)
