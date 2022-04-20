@@ -76,6 +76,11 @@ operator = {
     'uuid': '5c09a673-d0c7-481f-8500-36c581bd7b4e'
 }
 
+assistant = {
+    'title': 'Camera Assistant',
+    'uuid': '4d932df0-9efa-4996-a4c8-b02d0e9219b7'
+}
+
 runway_report = {
     "show": '48a6f024-2aa1-4f29-8db0-de0454385a2c',
     "show_title": "Project Runway",
@@ -151,8 +156,8 @@ love_is_blind_report = {
     "locations": [],
     "start_date": str(date.today() + relativedelta(months=-7)),
     "end_date": None,
-    "job_title": "5c09a673-d0c7-481f-8500-36c581bd7b4e",
-    "job_title_name": "Camera Operator",
+    "job_title": "4d932df0-9efa-4996-a4c8-b02d0e9219b7",
+    "job_title_name": "Camera Assistant",
     "offered_hourly": 54.75,
     "offered_guarantee": 12,
     "offered_daily": 766.5,
