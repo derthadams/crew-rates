@@ -161,3 +161,13 @@ class TestSeasonListAPIView(TestCase):
                                     'filter_uuid': 'caf6966d-a961-4a57-8872-39a4f51ce798'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 1)
+
+    def test_summary_operator_no_params(self):
+        self.populate_reports() # noqa
+        response = self.client.get(self.summary_url,
+                                   {'date_range': 0, 'union_select': 'AA', 'genre_select': 'AA',
+                                    'filter_type': 'Job Title',
+                                    'filter_uuid': '5c09a673-d0c7-481f-8500-36c581bd7b4e'})
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data['rate_count'], 4)
+        self.assertEqual(response_data['histogram']['med'], 63.6363)
