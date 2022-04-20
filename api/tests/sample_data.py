@@ -216,12 +216,12 @@ price_is_right_report = {
     "end_date": None,
     "job_title": "5c09a673-d0c7-481f-8500-36c581bd7b4e",
     "job_title_name": "Camera Operator",
-    "offered_hourly": 46.4286,
-    "offered_guarantee": 12,
-    "offered_daily": 650,
+    "offered_hourly": 95,
+    "offered_guarantee": 8,
+    "offered_daily": 760,
     "negotiated": False,
     "increased": False,
-    "final_hourly": 46.4286,
-    "final_guarantee": 12,
-    "final_daily": 650
+    "final_hourly": 95,
+    "final_guarantee": 8,
+    "final_daily": 760
 }
