@@ -20,7 +20,7 @@ from .sample_data import *
 '''
 
 
-class TestSeasonListAPIView(TestCase):
+class TestDiscoverAPIViews(TestCase):
     def create_user_and_log_in(self):
         User.objects.create_user(email='john@gmail.com', password='super-secret')
         self.client.login(email='john@gmail.com', password='super-secret')
@@ -42,6 +42,7 @@ class TestSeasonListAPIView(TestCase):
     def setUpTestData(cls):
         cls.season_list_url = reverse('season-list')
         cls.add_rate_url = reverse('add-rate-api')
+        cls.summary_url = reverse('summary')
 
         Show.objects.create(**runway_show) # noqa
         Show.objects.create(**wipeout_show)
@@ -63,70 +64,70 @@ class TestSeasonListAPIView(TestCase):
         JobTitle.objects.create(**operator)
         JobTitle.objects.create(**assistant)
 
-    def test_no_params(self):
+    def test_season_list_no_params(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 0, 'union_select': 'AA',
                                                           'genre_select': 'AA'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 5)
 
-    def test_six_months_only(self):
+    def test_season_list_six_months_only(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 6, 'union_select': 'AA',
                                                           'genre_select': 'AA'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 2)
 
-    def test_six_months_ia(self):
+    def test_season_list_six_months_ia(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 6, 'union_select': 'IA',
                                                           'genre_select': 'AA'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 2)
 
-    def test_twelve_months_ia(self):
+    def test_season_list_twelve_months_ia(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 12, 'union_select': 'IA',
                                                           'genre_select': 'AA'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 3)
 
-    def test_ia_only(self):
+    def test_season_list_ia_only(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 0, 'union_select': 'IA',
                                                           'genre_select': 'AA'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 3)
 
-    def test_reality_only(self):
+    def test_season_list_reality_only(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 0, 'union_select': 'AA',
                                                           'genre_select': 'RE'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 4)
 
-    def test_no_reality(self):
+    def test_season_list_no_reality(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 0, 'union_select': 'NO',
                                                           'genre_select': 'RE'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 1)
 
-    def test_twelve_months_reality(self):
+    def test_season_list_twelve_months_reality(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 12, 'union_select': 'AA',
                                                           'genre_select': 'RE'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 3)
 
-    def two_years_no_reality(self):
+    def test_season_list_two_years_no_reality(self):
         self.populate_reports()
         response = self.client.get(self.season_list_url, {'date_range': 24, 'union_select': 'NO',
                                                           'genre_select': 'RE'})
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 1)
 
-    def test_operator_only(self):
+    def test_season_list_operator_only(self):
         self.populate_reports() # noqa
         response = self.client.get(self.season_list_url,
                                    {'date_range': 0, 'union_select': 'AA', 'genre_select': 'AA',
@@ -135,7 +136,7 @@ class TestSeasonListAPIView(TestCase):
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 4)
 
-    def test_runway_only(self):
+    def test_season_list_runway_only(self):
         self.populate_reports() # noqa
         response = self.client.get(self.season_list_url,
                                    {'date_range': 0, 'union_select': 'AA', 'genre_select': 'AA',
@@ -144,7 +145,7 @@ class TestSeasonListAPIView(TestCase):
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 1)
 
-    def test_bravo_only(self):
+    def test_season_list_bravo_only(self):
         self.populate_reports() # noqa
         response = self.client.get(self.season_list_url,
                                    {'date_range': 0, 'union_select': 'AA', 'genre_select': 'AA',
@@ -153,7 +154,7 @@ class TestSeasonListAPIView(TestCase):
         response_data = json.loads(response.content)
         self.assertEqual(len(response_data['results']), 2)
 
-    def test_endemol_only(self):
+    def test_season_list_endemol_only(self):
         self.populate_reports() # noqa
         response = self.client.get(self.season_list_url,
                                    {'date_range': 0, 'union_select': 'AA', 'genre_select': 'AA',
