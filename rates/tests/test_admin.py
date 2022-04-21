@@ -13,13 +13,14 @@ class RatesAdminTest(TestCase):
 
     def setUp(self):
         self.user_model = apps.get_model('rates', 'User')
-        self.job_title = apps.get_model('rates', 'JobTitle')
+        self.job_title = apps.get_model('rates', 'JobTitle') # noqa
         self.show = apps.get_model('rates', 'Show')
         self.company = apps.get_model('rates', 'Company')
         self.network = apps.get_model('rates', 'Network')
         self.season = apps.get_model('rates', 'Season')
         self.location = apps.get_model('rates', 'Location')
         self.raw_rate_report = apps.get_model('rates', 'RawRateReport')
+        self.rate_report = apps.get_model('rates', 'RateReport')
         self.rates_invitation = apps.get_model('rates', 'RatesInvitation')
         self.super_user = self.user_model.objects.create_superuser('admin@example.com', 'incredible_secret')
         self.add_rate_url = reverse('add-rate-api')
@@ -166,3 +167,38 @@ class RatesAdminTest(TestCase):
         final_daily = 600
         increase = calc_percent_increase(final_hourly, final_daily, offered_hourly, offered_daily)
         self.assertIsNone(increase)
+
+    def test_approve_raw_rate_report_valid_create_overrides(self):
+        self.client.login(email='admin@example.com', password='incredible_secret') # noqa
+        assistant = self.job_title.objects.create(uuid='4d932df0-9efa-4996-a4c8-b02d0e9219b7',
+                                                  title='Camera Assistant')
+        wipeout = self.show.objects.create(uuid='4a72cfed-5ad9-4200-964c-0e62f77882b7', # noqa
+                                           title='Wipeout')
+        endemol = self.company.objects.create(uuid='caf6966d-a961-4a57-8872-39a4f51ce798',
+                                              name='EndemolShine NorthAmerica')
+        tbs = self.network.objects.create(uuid='5609fa2a-789e-43e0-80d9-d3cb6e77aed8',
+                                          name='TBS')
+        response = self.client.post(self.add_rate_url, content_type="application/json", # noqa
+                                    data=valid_json_create) # noqa
+        self.assertEqual(response.status_code, 201)
+        report = self.raw_rate_report.objects.all()[0]
+        report.job_title_override = assistant
+        report.show_override = wipeout
+        report.companies_override.add(endemol)
+        report.network_override = tbs
+        report.save()
+        data = {'action': 'approve_raw_rate_report', '_selected_action': report.pk} # noqa
+        change_url = reverse('admin:rates_rawratereport_changelist')
+        response = self.client.post(change_url, data)
+        self.assertEqual(response.status_code, 302)
+        seasons = self.season.objects.all()
+        self.assertEqual(len(seasons), 1)
+        locations = self.location.objects.all()
+        self.assertEqual(len(locations), 4)
+        reports = self.rate_report.objects.all()
+        self.assertEqual(len(reports), 1)
+        self.assertEqual(reports[0].job_title.pk, assistant.pk)
+        self.assertEqual(seasons[0].show.pk, wipeout.pk)
+        company_pks = list(seasons[0].companies.all().values_list('id', flat=True))
+        self.assertEqual(company_pks[0], endemol.pk)
+        self.assertEqual(seasons[0].network.pk, tbs.pk)
