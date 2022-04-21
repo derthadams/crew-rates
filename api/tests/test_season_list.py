@@ -43,6 +43,7 @@ class TestDiscoverAPIViews(TestCase):
         cls.season_list_url = reverse('season-list')
         cls.add_rate_url = reverse('add-rate-api')
         cls.summary_url = reverse('summary')
+        cls.filter_search_url = reverse('filter-search')
 
         Show.objects.create(**runway_show) # noqa
         Show.objects.create(**wipeout_show)
@@ -172,3 +173,52 @@ class TestDiscoverAPIViews(TestCase):
         response_data = json.loads(response.content)
         self.assertEqual(response_data['rate_count'], 4)
         self.assertEqual(response_data['histogram']['med'], 63.6363)
+
+    def test_summary_operator_reality(self):
+        self.populate_reports() # noqa
+        response = self.client.get(self.summary_url,
+                                   {'date_range': 0, 'union_select': 'AA', 'genre_select': 'RE',
+                                    'filter_type': 'Job Title',
+                                    'filter_uuid': '5c09a673-d0c7-481f-8500-36c581bd7b4e'})
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data['rate_count'], 3)
+        self.assertEqual(response_data['histogram']['med'], 63.6363)
+
+    def test_summary_operator_ia(self):
+        self.populate_reports() # noqa
+        response = self.client.get(self.summary_url,
+                                   {'date_range': 0, 'union_select': 'IA', 'genre_select': 'AA',
+                                    'filter_type': 'Job Title',
+                                    'filter_uuid': '5c09a673-d0c7-481f-8500-36c581bd7b4e'})
+        response_data = json.loads(response.content)
+        self.assertEqual(response_data['rate_count'], 2)
+        self.assertEqual(response_data['histogram']['med'], 63.6363)
+
+    def test_filter_search_no_query(self):
+        self.populate_reports()
+        response = self.client.get(self.filter_search_url,
+                                   {'q': ''})
+        response_data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response_data), 0)
+
+    def test_filter_search_c(self):
+        self.populate_reports()
+        response = self.client.get(self.filter_search_url,
+                                   {'q': 'c'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data), 8)
+
+    def test_filter_search_ca(self):
+        self.populate_reports()
+        response = self.client.get(self.filter_search_url,
+                                   {'q': 'ca'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data), 4)
+
+    def test_filter_search_cam(self):
+        self.populate_reports()
+        response = self.client.get(self.filter_search_url,
+                                   {'q': 'cam'})
+        response_data = json.loads(response.content)
+        self.assertEqual(len(response_data), 2)
