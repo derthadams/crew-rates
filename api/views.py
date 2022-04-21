@@ -266,14 +266,14 @@ class SummaryAPIView(APIView):
             filtered_rate_reports = results.filter(ratereport__job_title__uuid=filter_uuid)
 
             bins = (filtered_rate_reports
-                         .annotate(bin_floor=Cast(
-                            Floor(F('ratereport__final_hourly') /
-                                  self.BIN_SIZE) * self.BIN_SIZE,
-                            output_field=IntegerField())).values('bin_floor')
-                         .order_by('bin_floor').annotate(count=Count('bin_floor'))
-                         .aggregate(bins=JSONBAgg(JSONObject(bin_floor='bin_floor',
-                                                             count='count'),
-                                                  ordering='bin_floor')))['bins']
+                    .annotate(bin_floor=Cast(
+                     Floor(F('ratereport__final_hourly') /
+                           self.BIN_SIZE) * self.BIN_SIZE,
+                     output_field=IntegerField())).values('bin_floor')
+                    .order_by('bin_floor').annotate(count=Count('bin_floor'))
+                    .aggregate(bins=JSONBAgg(JSONObject(bin_floor='bin_floor',
+                                                        count='count'),
+                                             ordering='bin_floor')))['bins']
 
             rate_count = filtered_rate_reports.count()
 
