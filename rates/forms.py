@@ -1,4 +1,3 @@
-# from django.core import exceptions, validators
 from django.core.mail import send_mail
 from django.forms import Form, ModelForm, HiddenInput, DateInput, RadioSelect, \
     Select, ModelChoiceField,  TextInput, EmailField, CharField
@@ -130,7 +129,7 @@ class RatesLoginForm(LoginForm):
                     "autocomplete": "email",
                 }
             )
-            login_field = EmailField(label=_("E-mail"), widget=login_widget)
+            login_field = EmailField(label=_("Email"), widget=login_widget)
         elif app_settings.AUTHENTICATION_METHOD == AuthenticationMethod.USERNAME:
             login_widget = TextInput(
                 attrs={"placeholder": _("Username"), "autocomplete": "username"}
