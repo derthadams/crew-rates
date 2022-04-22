@@ -23,6 +23,17 @@ class DeleteUserTest(TestCase):
         self.season = apps.get_model('rates', 'Season')
         self.location = apps.get_model('rates', 'Location')
 
+    def test_get_delete_user_form(self):
+        user = self.user_model.objects.create_user(email='will@gmail.com',
+                                                   first_name='William',
+                                                   last_name="Atlas",
+                                                   preferred_name="Will",
+                                                   password="super-secret")
+        self.client.login(email="will@gmail.com", password="super-secret")
+        response = self.client.get(self.settings_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Delete Your Account')
+
     def test_delete_user(self):
         user = self.user_model.objects.create_user(email='will@gmail.com',
                                             first_name='William',
