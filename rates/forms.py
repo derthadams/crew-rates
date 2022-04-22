@@ -1,18 +1,15 @@
-from django.core import exceptions, validators
+# from django.core import exceptions, validators
 from django.core.mail import send_mail
 from django.forms import Form, ModelForm, HiddenInput, DateInput, RadioSelect, \
-    Select, SelectMultiple, ModelChoiceField, BooleanField, TextInput, EmailField, CharField, \
-    ValidationError
+    Select, ModelChoiceField,  TextInput, EmailField, CharField
 from django.utils.translation import gettext_lazy as _, pgettext
 
 from allauth.socialaccount.models import SocialAccount, SocialToken
-from allauth.account.adapter import get_adapter as get_account_adapter
-from allauth.account.forms import PasswordField, ResetPasswordForm
+from allauth.account.forms import ResetPasswordForm, LoginForm
 from allauth.account import app_settings
-from allauth.account.utils import perform_login
 from allauth.utils import get_username_max_length, set_form_field_order
 from captcha.fields import ReCaptchaField
-from captcha.widgets import ReCaptchaV3, ReCaptchaV2Checkbox
+from captcha.widgets import ReCaptchaV3
 
 from .adapters import get_adapter
 from .models import RawRateReport, Contact, User
@@ -52,13 +49,6 @@ class RawRateReportForm(ModelForm):
             'companies': Select(attrs={'multiple': 'multiple'}),
             'locations': Select(attrs={'multiple': 'multiple'}),
         }
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     for field in self.fields:
-    #         # pass
-    #         self.fields[field].widget.attrs.update({'class': 'form-control',
-    #                                                 'autocomplete': 'off'})
 
 
 class ContactForm(Form):
@@ -118,12 +108,7 @@ class DisconnectForm(Form):
         )
 
 
-class LoginForm(Form):
-
-    password = PasswordField(label=_("Password"), autocomplete="current-password")
-    remember = BooleanField(label=_("Remember Me"), required=False)
-
-    user = None
+class RatesLoginForm(LoginForm):
     error_messages = {
         "account_inactive": _("This account is currently inactive."),
         "email_password_mismatch": _(
@@ -170,75 +155,6 @@ class LoginForm(Form):
         set_form_field_order(self, ["login", "password", "remember"])
         if app_settings.SESSION_REMEMBER is not None:
             del self.fields["remember"]
-
-    def user_credentials(self):
-        """
-        Provides the credentials required to authenticate the user for
-        login.
-        """
-        credentials = {}
-        login = self.cleaned_data["login"]
-        if app_settings.AUTHENTICATION_METHOD == AuthenticationMethod.EMAIL:
-            credentials["email"] = login
-        elif app_settings.AUTHENTICATION_METHOD == AuthenticationMethod.USERNAME:
-            credentials["username"] = login
-        else:
-            if self._is_login_email(login):
-                credentials["email"] = login
-            credentials["username"] = login
-        credentials["password"] = self.cleaned_data["password"]
-        return credentials
-
-    def clean_login(self):
-        login = self.cleaned_data["login"]
-        return login.strip()
-
-    def _is_login_email(self, login): # noqa
-        try:
-            validators.validate_email(login)
-            ret = True
-        except exceptions.ValidationError:
-            ret = False
-        return ret
-
-    def clean(self):
-        super(LoginForm, self).clean()
-        if self._errors:
-            return
-        credentials = self.user_credentials()
-        user = get_account_adapter(self.request).authenticate(self.request, **credentials)
-        if user:
-            self.user = user
-        else:
-            auth_method = app_settings.AUTHENTICATION_METHOD
-            if auth_method == app_settings.AuthenticationMethod.USERNAME_EMAIL:
-                login = self.cleaned_data["login"]
-                if self._is_login_email(login):
-                    auth_method = app_settings.AuthenticationMethod.EMAIL
-                else:
-                    auth_method = app_settings.AuthenticationMethod.USERNAME
-            raise ValidationError(
-                self.error_messages["%s_password_mismatch" % auth_method]
-            )
-        return self.cleaned_data
-
-    def login(self, request, redirect_url=None):
-        email = self.user_credentials().get("email")
-        ret = perform_login(
-            request,
-            self.user,
-            email_verification=app_settings.EMAIL_VERIFICATION,
-            redirect_url=redirect_url,
-            email=email,
-        )
-        remember = app_settings.SESSION_REMEMBER
-        if remember is None:
-            remember = self.cleaned_data["remember"]
-        if remember:
-            request.session.set_expiry(app_settings.SESSION_COOKIE_AGE)
-        else:
-            request.session.set_expiry(0)
-        return ret
 
 
 class DeleteUser(Form):

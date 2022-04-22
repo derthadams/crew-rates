@@ -108,7 +108,7 @@ ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
 ACCOUNT_FORMS = {
-    'login': 'rates.forms.LoginForm',
+    'login': 'rates.forms.RatesLoginForm',
     'reset_password': 'rates.forms.RatesResetPasswordForm'
 }
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login'
