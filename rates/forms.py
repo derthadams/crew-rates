@@ -53,12 +53,12 @@ class RawRateReportForm(ModelForm):
             'locations': Select(attrs={'multiple': 'multiple'}),
         }
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields:
-            # pass
-            self.fields[field].widget.attrs.update({'class': 'form-control',
-                                                    'autocomplete': 'off'})
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     for field in self.fields:
+    #         # pass
+    #         self.fields[field].widget.attrs.update({'class': 'form-control',
+    #                                                 'autocomplete': 'off'})
 
 
 class ContactForm(Form):
@@ -193,7 +193,7 @@ class LoginForm(Form):
         login = self.cleaned_data["login"]
         return login.strip()
 
-    def _is_login_email(self, login):
+    def _is_login_email(self, login): # noqa
         try:
             validators.validate_email(login)
             ret = True
