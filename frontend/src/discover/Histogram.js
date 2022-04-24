@@ -58,6 +58,7 @@ export default function Histogram ({ histogram }) {
                 dataIndex += 1;
             } else {
                 dataOut.push(0);
+                backgroundColor.push(FILL_COLOR);
             }
         }
 
