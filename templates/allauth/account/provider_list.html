@@ -16,14 +16,18 @@
         {% endfor %}
     {% endif %}
     <div>
-        <a title="{{ provider.name }}"
-           class="socialaccount_provider {{ provider.id }} btn btn-light bs-social-btn text-left"
-           role="button"
-           href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
-            {% with 'rates/img/logo_'|add:provider.name|add:'.png' as logo_url %}
-                <img src="{% static logo_url %}" alt="" width="40"
-                     height="40" class="social-logo">{% endwith %}
-          {{ function }} with {{ provider.name }}</a>
+        <form
+            action="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}"
+            method="post">
+            {% csrf_token %}
+            <button
+               class="socialaccount_provider {{ provider.id }} btn btn-light bs-social-btn text-left"
+               type="submit">
+                {% with 'rates/img/logo_'|add:provider.name|add:'.png' as logo_url %}
+                    <img src="{% static logo_url %}" alt="" width="40"
+                         height="40" class="social-logo">{% endwith %}
+                {{ function }} with {{ provider.name }}</button>
+        </form>
     </div>
 {% endfor %}
 
