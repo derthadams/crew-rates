@@ -24,23 +24,6 @@ the types of jobs they do.
 
 ## Design
 
-One of the first things design considerations was the question of anonymity: how deep did it have
-to go? Was it enough to just display shared rate information without names attached, or did the
-backend design also have to mask the identities of contributors?
-
-In the first iteration of the design, users were
-invited using their email address, and could only register using social auth. Once they had 
-registered,
-the only identifying data retained about them in the application's database was their access 
-token from their social auth provider.
-
-After experimenting with the flow and talking to some potential users, I decided that while this 
-did provide a higher degree of anonymity, it was a more brittle design that would provide fewer
-fail-safes in case the user had problems with their account. Some potential users also said they 
-preferred
-to create their own app-specific credentials rather than using a social auth provider. Currently 
-the design includes registration by both social auth and email/password.
-
 The app is built on the Django framework with a Postgres database and uses django-allauth for 
 authentication. The frontend uses a hybrid model between Django and React: authentication pages,
 user account setting pages, the contact form and static pages are rendered by Django using its 
