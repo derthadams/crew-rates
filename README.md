@@ -25,12 +25,12 @@ the types of jobs they do.
 ## Design
 
 The app is built on the Django framework with a Postgres database and uses django-allauth for 
-authentication. The frontend uses a hybrid model between Django and React: authentication pages,
+authentication. The frontend uses a hybrid Django/React model: authentication pages,
 user account setting pages, the contact form and static pages are rendered by Django using its 
 templating system, while the Discover and Add a Rate pages are single-page React apps that 
-communicate with Django Rest Framework APIs.
+communicate with the backend using Django Rest Framework APIs.
 
-The questionnaire uses Django API endpoints to populate options lists for autocomplete searches,
+The questionnaire uses DRF APIs to populate options lists for autocomplete searches from the database,
 and integrates with the Google Places API to validate location information.
 
 I've deployed the app on AWS using Elastic Beanstalk, which makes it easy to push incremental
@@ -38,7 +38,7 @@ changes to production. Static files are served using Cloudfront, and transaction
 by Simple Email Service.
 
 Recently I invited a small group of people to use the app as Beta testers so that I can identify
-any usability issues, and so I can see how the app performs under load. I've instrumented the app
+any usability issues, and to find out how the app performs under load. I've instrumented the app
 using New Relic and have been checking the logs to see if there are any slow database queries or
 other bottlenecks.
 
