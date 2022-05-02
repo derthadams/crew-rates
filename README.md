@@ -1,5 +1,9 @@
 # Crew Rates
-Live at [crewrates.org](https://crewrates.org) (user account required)
+Live at [crewrates.org](https://crewrates.org) (user account required to sign in)
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/39425112/166316498-8c7e9f78-bea5-4ebc-bbda-0c0b459afbc8.png" width="320">
+</div>
 
 ## Introduction
 It can be hard for crew members on film and TV productions to effectively negotiate their pay
@@ -55,14 +59,14 @@ any usability issues, and so I can see how the app performs under load. I've ins
 using New Relic and have been checking the logs to see if there are any slow database queries or
 other bottlenecks.
 
-## Screenshots
+## UI Demos
 
 UI design for the app is mobile-first, since most crew members will be using it while working on
 set.
 
 <div align="center">
 
-| <video autoplay loop muted playsinline src="https://user-images.githubusercontent.com/39425112/166310613-37023283-926a-49bf-b24c-e8c940f2c24e.mp4" width="400"/> |
+| ![Sign in page](https://user-images.githubusercontent.com/39425112/166314491-bc307c91-e3d2-4c6a-ab30-b42922a108b2.gif) |
 | :----: |
 | **Sign in page with social and email options leads to the Discover page with a reverse-chronological scroll of recent rate submissions.** |
 
@@ -70,7 +74,7 @@ set.
 
 <div align="center">
 
-| ![Filter rates by company](https://user-images.githubusercontent.com/39425112/166304226-bbb87e59-2ec3-4719-b3df-e70d1c51f274.gif) |
+| ![Filter rates by company](https://user-images.githubusercontent.com/39425112/166315199-0ae87b69-fc2f-441b-947b-d191dec44f15.gif) |
 | :----: |
 | **Users can filter rates by show, company, network, or job title.** |
 
@@ -78,14 +82,14 @@ set.
 
 <div align="center">
 
-| ![Job Title Summary](https://user-images.githubusercontent.com/39425112/166305338-e4bf97e8-ca89-4f6e-8731-4f8961df2400.gif) |
+| ![Job Title Summary](https://user-images.githubusercontent.com/39425112/166315843-803d59b9-d404-4cd1-a092-1d076e73baf0.gif) |
 | :----: |
-| **When a user filters by job title, a summary chart appears which can be further refined by date, union status or genre.** |
+| **When a user filters rates by job title, a summary chart appears which can be further refined by date, union status or genre.** |
 
 </div>
 <div align="center">
 
-| ![Add a Rate form, page one](https://user-images.githubusercontent.com/39425112/166305725-b8b42951-8854-4189-8a4e-d89bca3734bc.gif) |
+| ![Add a Rate form, page one](https://user-images.githubusercontent.com/39425112/166316082-310e41f1-91d6-4aa5-bcc3-6df753fe03f2.gif) |
 | :----: |
 | **Add a Rate form, page one: autocomplete options are provided from the database, and the location field is integrated with Google Places API.** |
 
@@ -93,8 +97,8 @@ set.
 
 <div align="center">
 
-| ![Add a Rate form, page two](https://user-images.githubusercontent.com/39425112/166306020-7bb30ad5-2ce5-48af-a226-6961628dfbb9.gif) |
+| ![Add a Rate form, page two](https://user-images.githubusercontent.com/39425112/166316302-901dd9b2-c28b-4bfa-8946-ad2c0ebbda0a.gif) |
 | :----: |
-| **Add a Rate form, page two: captures whether user attempted to negotiate rate, and if so, how much of an increase they received.** |
+| **Add a Rate form, page two: captures whether user attempted to negotiate a higher rate, and if so, how much of an increase they received.** |
 
 </div>
