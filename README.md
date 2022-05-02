@@ -62,7 +62,7 @@ set.
 
 <div align="center">
 
-| ![Sign in page](https://user-images.githubusercontent.com/39425112/166303854-f09a66f6-5e6f-4d6d-8991-67d98a8c2a19.gif) |
+| <video src='https://user-images.githubusercontent.com/39425112/166310613-37023283-926a-49bf-b24c-e8c940f2c24e.mp4' width=400/> |
 | :----: |
 | **Sign in page with social and email options leads to the Discover page with a reverse-chronological scroll of recent rate submissions.** |
 
