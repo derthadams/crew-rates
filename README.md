@@ -62,7 +62,9 @@ set.
 
 <div align="center">
 
-| <video autoplay loop playsinline src='https://user-images.githubusercontent.com/39425112/166310613-37023283-926a-49bf-b24c-e8c940f2c24e.mp4' width=400/> |
+<video autoplay loop muted playsinline width="400">
+<source src="https://user-images.githubusercontent.com/39425112/166310613-37023283-926a-49bf-b24c-e8c940f2c24e.mp4">
+</video>
 | :----: |
 | **Sign in page with social and email options leads to the Discover page with a reverse-chronological scroll of recent rate submissions.** |
 
