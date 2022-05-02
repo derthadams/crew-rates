@@ -62,8 +62,9 @@ set.
 
 <div align="center">
 
-<video autoplay loop muted playsinline src="https://user-images.githubusercontent.com/39425112/166310613-37023283-926a-49bf-b24c-e8c940f2c24e.mp4" width="400"/>
-**Sign in page with social and email options leads to the Discover page with a reverse-chronological scroll of recent rate submissions.**
+| <video autoplay loop muted playsinline src="https://user-images.githubusercontent.com/39425112/166310613-37023283-926a-49bf-b24c-e8c940f2c24e.mp4" width="400"/> |
+| :----: |
+| **Sign in page with social and email options leads to the Discover page with a reverse-chronological scroll of recent rate submissions.** |
 
 </div>
 
